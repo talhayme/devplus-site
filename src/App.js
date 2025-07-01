@@ -51,22 +51,32 @@ const DevPlusWebsite = () => {
     }
   };
 
-  // Компонент с анимацией, которая не исчезает при скролле
+  // Компонент с анимацией без перерендеров
   const AnimatedCard = ({ children, delay = 0, className = "", animation = "fade-up" }) => {
-    const [isVisible, setIsVisible] = useState(false);
     const ref = useRef(null);
+    const observerRef = useRef(null);
+    const timeoutRef = useRef(null);
 
     useEffect(() => {
-      const currentRef = ref.current;
-      
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          // Только показываем, никогда не скрываем
-          if (entry.isIntersecting && !isVisible) {
-            setTimeout(() => {
-              setIsVisible(true);
-            }, delay);
-          }
+      const element = ref.current;
+      if (!element) return;
+
+      observerRef.current = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              timeoutRef.current = setTimeout(() => {
+                if (element) {
+                  element.classList.add('animated-visible');
+                }
+              }, delay);
+              
+              // Отключаем наблюдатель после срабатывания
+              if (observerRef.current) {
+                observerRef.current.disconnect();
+              }
+            }
+          });
         },
         { 
           threshold: 0.1,
@@ -74,40 +84,29 @@ const DevPlusWebsite = () => {
         }
       );
 
-      if (currentRef) observer.observe(currentRef);
-      
+      observerRef.current.observe(element);
+
       return () => {
-        if (currentRef) observer.unobserve(currentRef);
+        if (observerRef.current) {
+          observerRef.current.disconnect();
+        }
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
       };
-    }, [delay, isVisible]);
+    }, [delay]);
 
-    const animations = {
-      'fade-up': {
-        hidden: 'opacity-0 translate-y-10',
-        visible: 'opacity-100 translate-y-0'
-      },
-      'fade-in': {
-        hidden: 'opacity-0',
-        visible: 'opacity-100'
-      },
-      'scale': {
-        hidden: 'opacity-0 scale-95',
-        visible: 'opacity-100 scale-100'
-      },
-      'slide-right': {
-        hidden: 'opacity-0 -translate-x-10',
-        visible: 'opacity-100 translate-x-0'
-      }
+    const animationClasses = {
+      'fade-up': 'opacity-0 translate-y-5',
+      'fade-in': 'opacity-0',
+      'scale': 'opacity-0 scale-95',
+      'slide-right': 'opacity-0 -translate-x-5'
     };
-
-    const currentAnimation = animations[animation] || animations['fade-up'];
 
     return (
       <div
         ref={ref}
-        className={`transition-all duration-1000 ease-out ${
-          isVisible ? currentAnimation.visible : currentAnimation.hidden
-        } ${className}`}
+        className={`transition-all duration-1000 ease-out ${animationClasses[animation] || animationClasses['fade-up']} ${className}`}
       >
         {children}
       </div>
@@ -534,7 +533,12 @@ const DevPlusWebsite = () => {
         </div>
       </footer>
 
-      <style jsx>{`
+      <style jsx global>{`
+        .animated-visible {
+          opacity: 1 !important;
+          transform: translateY(0) translateX(0) scale(1) !important;
+        }
+        
         @keyframes blob {
           0% { transform: translate(0px, 0px) scale(1); }
           33% { transform: translate(30px, -50px) scale(1.1); }

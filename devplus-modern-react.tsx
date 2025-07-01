@@ -52,67 +52,86 @@ const DevPlusWebsite = () => {
   };
 
   // Компонент с анимацией, которая не исчезает при скролле
-  const AnimatedCard = ({ children, delay = 0, className = "", animation = "fade-up" }) => {
-    const [isVisible, setIsVisible] = useState(false);
-    const ref = useRef(null);
+// Компонент с анимацией, которая срабатывает только один раз
+const AnimatedCard = ({ children, delay = 0, className = "", animation = "fade-up" }) => {
+  const ref = useRef(null);
+  const [hasAnimated, setHasAnimated] = useState(false);
 
-    useEffect(() => {
-      const currentRef = ref.current;
-      
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          // Только показываем, никогда не скрываем
-          if (entry.isIntersecting && !isVisible) {
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    // Если уже анимировали, сразу показываем элемент
+    if (hasAnimated) {
+      element.style.opacity = '1';
+      element.style.transform = 'translateY(0) translateX(0) scale(1)';
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !hasAnimated) {
             setTimeout(() => {
-              setIsVisible(true);
+              element.style.opacity = '1';
+              element.style.transform = 'translateY(0) translateX(0) scale(1)';
+              setHasAnimated(true);
             }, delay);
+            observer.unobserve(element);
           }
-        },
-        { 
-          threshold: 0.1,
-          rootMargin: '0px 0px -50px 0px'
-        }
-      );
-
-      if (currentRef) observer.observe(currentRef);
-      
-      return () => {
-        if (currentRef) observer.unobserve(currentRef);
-      };
-    }, [delay, isVisible]);
-
-    const animations = {
-      'fade-up': {
-        hidden: 'opacity-0 translate-y-10',
-        visible: 'opacity-100 translate-y-0'
+        });
       },
-      'fade-in': {
-        hidden: 'opacity-0',
-        visible: 'opacity-100'
-      },
-      'scale': {
-        hidden: 'opacity-0 scale-95',
-        visible: 'opacity-100 scale-100'
-      },
-      'slide-right': {
-        hidden: 'opacity-0 -translate-x-10',
-        visible: 'opacity-100 translate-x-0'
+      { 
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
       }
-    };
-
-    const currentAnimation = animations[animation] || animations['fade-up'];
-
-    return (
-      <div
-        ref={ref}
-        className={`transition-all duration-1000 ease-out ${
-          isVisible ? currentAnimation.visible : currentAnimation.hidden
-        } ${className}`}
-      >
-        {children}
-      </div>
     );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [delay, hasAnimated]);
+
+  const initialStyles = {
+    'fade-up': {
+      opacity: 0,
+      transform: 'translateY(20px)',
+      transition: 'all 1s ease-out'
+    },
+    'fade-in': {
+      opacity: 0,
+      transform: 'none',
+      transition: 'opacity 1s ease-out'
+    },
+    'scale': {
+      opacity: 0,
+      transform: 'scale(0.95)',
+      transition: 'all 1s ease-out'
+    },
+    'slide-right': {
+      opacity: 0,
+      transform: 'translateX(-20px)',
+      transition: 'all 1s ease-out'
+    }
   };
+
+  // Если уже анимировали, показываем элемент сразу
+  const styles = hasAnimated 
+    ? { opacity: 1, transform: 'none', transition: 'all 1s ease-out' }
+    : (initialStyles[animation] || initialStyles['fade-up']);
+
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={styles}
+    >
+      {children}
+    </div>
+  );
+};
 
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
