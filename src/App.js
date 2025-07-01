@@ -6,6 +6,17 @@ const DevPlusWebsite = () => {
   const [activeDemo, setActiveDemo] = useState('search');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [showDemoForm, setShowDemoForm] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    company: '',
+    email: '',
+    phone: '',
+    employees: '1-5',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
   
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -51,49 +62,225 @@ const DevPlusWebsite = () => {
     }
   };
 
-  // Компонент с анимацией без перерендеров
+  // Обработка отправки формы
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    try {
+      // Замените URL на ваш сервер
+      // Для Next.js: '/api/demo-request'
+      // Для Express: 'http://localhost:3001/api/demo-request' или 'https://your-server.com/api/demo-request'
+      const response = await fetch('/api/demo-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({
+          name: '',
+          company: '',
+          email: '',
+          phone: '',
+          employees: '1-5',
+          message: ''
+        });
+        setTimeout(() => {
+          setShowDemoForm(false);
+          setSubmitStatus(null);
+        }, 3000);
+      } else {
+        console.error('Ошибка:', data);
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Ошибка отправки:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Модальное окно с формой
+  const DemoFormModal = () => {
+    if (!showDemoForm) return null;
+
+    return (
+      <div className="fixed inset-0 z-50 overflow-y-auto">
+        <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+          {/* Фон */}
+          <div 
+            className="fixed inset-0 transition-opacity bg-gray-900 bg-opacity-75"
+            onClick={() => setShowDemoForm(false)}
+          />
+
+          {/* Модальное окно */}
+          <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+            <div className="absolute top-4 right-4">
+              <button
+                onClick={() => setShowDemoForm(false)}
+                className="text-gray-400 hover:text-gray-500"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">
+              Запросить демонстрацию
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Покажем, как DEV Plus решит ваши задачи. Ответим в течение 24 часов.
+            </p>
+
+            {submitStatus === 'success' ? (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Check className="w-8 h-8 text-green-600" />
+                </div>
+                <h4 className="text-xl font-semibold text-gray-900 mb-2">Заявка отправлена!</h4>
+                <p className="text-gray-600">Мы свяжемся с вами в ближайшее время</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Ваше имя *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Компания *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    value={formData.company}
+                    onChange={(e) => setFormData({...formData, company: e.target.value})}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Email *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Телефон *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Количество юристов в компании
+                  </label>
+                  <select
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    value={formData.employees}
+                    onChange={(e) => setFormData({...formData, employees: e.target.value})}
+                  >
+                    <option value="1-5">1-5</option>
+                    <option value="6-20">6-20</option>
+                    <option value="21-50">21-50</option>
+                    <option value="50+">Более 50</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Комментарий
+                  </label>
+                  <textarea
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    rows={3}
+                    value={formData.message}
+                    onChange={(e) => setFormData({...formData, message: e.target.value})}
+                    placeholder="Расскажите о ваших задачах..."
+                  />
+                </div>
+
+                {submitStatus === 'error' && (
+                  <div className="text-red-600 text-sm">
+                    Произошла ошибка. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`w-full py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
+                    isSubmitting 
+                      ? 'bg-gray-300 cursor-not-allowed' 
+                      : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg'
+                  }`}
+                >
+                  {isSubmitting ? 'Отправка...' : 'Отправить заявку'}
+                </button>
+
+                <p className="text-xs text-gray-500 text-center">
+                  Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных
+                </p>
+              </form>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Простейший компонент анимации - только появление, без исчезновения
   const AnimatedCard = ({ children, delay = 0, className = "", animation = "fade-up" }) => {
     const ref = useRef(null);
-    const observerRef = useRef(null);
-    const timeoutRef = useRef(null);
 
     useEffect(() => {
       const element = ref.current;
       if (!element) return;
 
-      observerRef.current = new IntersectionObserver(
+      const observer = new IntersectionObserver(
         (entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              timeoutRef.current = setTimeout(() => {
-                if (element) {
-                  element.classList.add('animated-visible');
-                }
-              }, delay);
-              
-              // Отключаем наблюдатель после срабатывания
-              if (observerRef.current) {
-                observerRef.current.disconnect();
-              }
-            }
-          });
+          if (entries[0].isIntersecting) {
+            setTimeout(() => {
+              element.classList.add('animated-visible');
+            }, delay);
+            observer.disconnect(); // Сразу отключаем после первого показа
+          }
         },
-        { 
-          threshold: 0.1,
-          rootMargin: '0px 0px -50px 0px'
-        }
+        { threshold: 0.1 }
       );
 
-      observerRef.current.observe(element);
+      observer.observe(element);
 
-      return () => {
-        if (observerRef.current) {
-          observerRef.current.disconnect();
-        }
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-        }
-      };
+      return () => observer.disconnect();
     }, [delay]);
 
     const animationClasses = {
@@ -106,7 +293,7 @@ const DevPlusWebsite = () => {
     return (
       <div
         ref={ref}
-        className={`transition-all duration-1000 ease-out ${animationClasses[animation] || animationClasses['fade-up']} ${className}`}
+        className={`animated-element transition-all duration-1000 ease-out ${animationClasses[animation] || animationClasses['fade-up']} ${className}`}
       >
         {children}
       </div>
@@ -134,6 +321,12 @@ const DevPlusWebsite = () => {
               <a href="#demo" className="text-gray-700 hover:text-blue-600 transition-colors">Демо</a>
               <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
                 Начать бесплатно
+              </button>
+              <button 
+                onClick={() => setShowDemoForm(true)}
+                className="text-gray-700 hover:text-blue-600 transition-colors cursor-pointer"
+              >
+                Запросить демо
               </button>
             </div>
 
@@ -478,7 +671,8 @@ const DevPlusWebsite = () => {
               <button className="px-8 py-4 bg-white text-blue-600 rounded-full hover:bg-gray-100 font-semibold transition-all duration-300 transform hover:-translate-y-1">
                 Начать бесплатный период
               </button>
-              <button className="px-8 py-4 border-2 border-white text-white rounded-full hover:bg-white/10 font-semibold transition-all duration-300">
+              <button className="px-8 py-4 border-2 border-white text-white rounded-full hover:bg-white/10 font-semibold transition-all duration-300"
+                      onClick={() => setShowDemoForm(true)}>
                 Запросить демо
               </button>
             </div>
@@ -533,10 +727,12 @@ const DevPlusWebsite = () => {
         </div>
       </footer>
 
+      <DemoFormModal />
+
       <style jsx global>{`
-        .animated-visible {
+        .animated-element.animated-visible {
           opacity: 1 !important;
-          transform: translateY(0) translateX(0) scale(1) !important;
+          transform: none !important;
         }
         
         @keyframes blob {
