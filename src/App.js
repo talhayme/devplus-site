@@ -301,7 +301,8 @@ const DevPlusWebsite = () => {
               <a href="#features" className="text-gray-700 hover:text-blue-600 transition-colors">Возможности</a>
               <a href="#pricing" className="text-gray-700 hover:text-blue-600 transition-colors">Тарифы</a>
               <a href="#demo" className="text-gray-700 hover:text-blue-600 transition-colors">Демо</a>
-              <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+              <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+              onClick={() => setShowDemoForm(true)}>
                 Начать бесплатно
               </button>
               <button 
@@ -373,18 +374,11 @@ const DevPlusWebsite = () => {
                 </div>
               </div>
 
-              <div className="animate-fade-up opacity-0" style={{ animationDelay: '600ms' }}>
-                <div className="flex items-center space-x-8">
-                  <div className="flex -space-x-2">
-                    {[...Array(4)].map((_, i) => (
-                      <div key={i} className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 border-2 border-white" />
-                    ))}
-                  </div>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-semibold">500+ компаний</span> уже используют DEV Plus
-                  </p>
-                </div>
-              </div>
+         <div className="animate-fade-up opacity-0" style={{ animationDelay: '600ms' }}>
+  <p className="text-sm text-gray-600">
+    Начните 14-дневный бесплатный период прямо сейчас
+  </p>
+</div>
             </div>
 
             <div className="animate-fade-up opacity-0 relative" style={{ animationDelay: '800ms' }}>
@@ -423,24 +417,27 @@ const DevPlusWebsite = () => {
 
       {/* Компании-клиенты */}
       <section id="clients" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
-            <h2 className="text-4xl font-bold text-center mb-4">Нам доверяют лидеры рынка</h2>
-            <p className="text-xl text-gray-600 text-center mb-12">
-              Более 500 компаний оптимизировали юридические процессы с DEV Plus
-            </p>
-          </div>
+   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
+  {[
+    '/logos/company1.png',
+    '/logos/company2.png', 
+    '/logos/company3.png',
+    '/logos/company4.png',
+    '/logos/company5.png',
+    '/logos/company6.png'
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="animate-scale opacity-0" style={{ animationDelay: `${i * 100}ms` }}>
-                <div className="h-20 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer group">
-                  <span className="text-gray-400 group-hover:text-gray-600 transition-colors">Логотип {i + 1}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+  ].map((logo, i) => (
+    <div key={i} className="animate-scale opacity-0" style={{ animationDelay: `${i * 100}ms` }}>
+<div className="h-24 flex items-center justify-center hover:opacity-80 transition-opacity cursor-pointer">
+  <img 
+    src={logo} 
+    alt={`Клиент ${i + 1}`}
+    className="max-h-16 max-w-full object-contain filter grayscale hover:grayscale-0 transition-all"
+  />
+</div>
+    </div>
+  ))}
+</div>
       </section>
 
       {/* Проблемы */}
@@ -573,71 +570,77 @@ const DevPlusWebsite = () => {
       </section>
 
       {/* Тарифы */}
-      <section id="pricing" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
-            <h2 className="text-4xl font-bold text-center mb-4">Выберите подходящий тариф</h2>
-            <p className="text-xl text-gray-600 text-center mb-12">Начните с бесплатного пробного периода на 14 дней</p>
-          </div>
+ <section id="pricing" className="py-20 bg-gray-50">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
+      <h2 className="text-4xl font-bold text-center mb-4">Выберите подходящий тариф</h2>
+      <p className="text-xl text-gray-600 text-center mb-12">Начните с бесплатного пробного периода на 14 дней</p>
+    </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Стартовый",
-                price: "29 900",
-                features: ["До 5 пользователей", "100 документов", "Базовый поиск", "Email поддержка", "Обновления законодательства"],
-                popular: false
-              },
-              {
-                name: "Профессиональный",
-                price: "79 900",
-                features: ["До 20 пользователей", "1000 документов", "Расширенный AI-поиск", "API для интеграций", "Приоритетная поддержка 24/7", "Обучение сотрудников"],
-                popular: true
-              },
-              {
-                name: "Корпоративный",
-                price: "Индивидуально",
-                features: ["Неограниченно пользователей", "Неограниченно документов", "Выделенный сервер", "Кастомизация", "Персональный менеджер", "SLA гарантии"],
-                popular: false
-              }
-            ].map((plan, i) => (
-              <div key={i} className="animate-fade-up opacity-0" style={{ animationDelay: `${i * 200}ms` }}>
-                <div className={`relative rounded-2xl p-8 ${
-                  plan.popular 
-                    ? 'bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-2xl transform scale-105' 
-                    : 'bg-white border border-gray-200'
-                }`}>
-                  {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-gray-900 px-4 py-1 rounded-full text-sm font-semibold">
-                      Популярный
-                    </div>
-                  )}
-                  <h3 className="text-2xl font-bold mb-4">{plan.name}</h3>
-                  <div className="mb-6">
-                    <span className="text-4xl font-bold">{plan.price}</span>
-                    {plan.price !== "Индивидуально" && <span className="text-lg"> ₽/мес</span>}
-                  </div>
-                  <ul className="space-y-3 mb-8">
-                    {plan.features.map((feature, j) => (
-                      <li key={j} className="flex items-start space-x-3">
-                        <Check className={`w-5 h-5 flex-shrink-0 mt-0.5 ${plan.popular ? 'text-white' : 'text-green-500'}`} />
-                        <span className={plan.popular ? 'text-white' : 'text-gray-700'}>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <button className={`w-full py-3 rounded-full font-semibold transition-all duration-300 ${
-                    plan.popular
-                      ? 'bg-white text-blue-600 hover:bg-gray-100'
-                      : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg'
-                  }`}>
-                    {plan.price === "Индивидуально" ? "Получить расчет" : "Выбрать тариф"}
-                  </button>
-                </div>
+    <div className="grid md:grid-cols-3 gap-8">
+      {[
+        {
+          name: "Стартовый",
+          price: "29 900",
+          features: ["До 5 пользователей", "100 документов", "Базовый поиск", "Email поддержка", "Обновления законодательства"],
+          popular: false,
+          buttonText: "Начать бесплатно"
+        },
+        {
+          name: "Профессиональный",
+          price: "79 900",
+          features: ["До 20 пользователей", "1000 документов", "Расширенный AI-поиск", "API для интеграций", "Приоритетная поддержка 24/7", "Обучение сотрудников"],
+          popular: true,
+          buttonText: "Попробовать 14 дней"
+        },
+        {
+          name: "Корпоративный",
+          price: "Индивидуально",
+          features: ["Неограниченно пользователей", "Неограниченно документов", "Выделенный сервер", "Кастомизация", "Персональный менеджер", "SLA гарантии"],
+          popular: false,
+          buttonText: "Получить расчет"
+        }
+      ].map((plan, i) => (
+        <div key={i} className="animate-fade-up opacity-0" style={{ animationDelay: `${i * 200}ms` }}>
+          <div className={`relative rounded-2xl p-8 ${
+            plan.popular 
+              ? 'bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-2xl transform scale-105' 
+              : 'bg-white border border-gray-200'
+          }`}>
+            {plan.popular && (
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-gray-900 px-4 py-1 rounded-full text-sm font-semibold">
+                Популярный
               </div>
-            ))}
+            )}
+            <h3 className="text-2xl font-bold mb-4">{plan.name}</h3>
+            <div className="mb-6">
+              <span className="text-4xl font-bold">{plan.price}</span>
+              {plan.price !== "Индивидуально" && <span className="text-lg"> ₽/мес</span>}
+            </div>
+            <ul className="space-y-3 mb-8">
+              {plan.features.map((feature, j) => (
+                <li key={j} className="flex items-start space-x-3">
+                  <Check className={`w-5 h-5 flex-shrink-0 mt-0.5 ${plan.popular ? 'text-white' : 'text-green-500'}`} />
+                  <span className={plan.popular ? 'text-white' : 'text-gray-700'}>{feature}</span>
+                </li>
+              ))}
+            </ul>
+            <button 
+              onClick={() => setShowDemoForm(true)}
+              className={`w-full py-3 rounded-full font-semibold transition-all duration-300 ${
+                plan.popular
+                  ? 'bg-white text-blue-600 hover:bg-gray-100'
+                  : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg'
+              }`}
+            >
+              {plan.buttonText}
+            </button>
           </div>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* CTA секция */}
       <section id="demo" className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
@@ -650,7 +653,8 @@ const DevPlusWebsite = () => {
               Присоединяйтесь к 500+ компаниям, которые уже экономят время и повышают эффективность с DEV Plus
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-8 py-4 bg-white text-blue-600 rounded-full hover:bg-gray-100 font-semibold transition-all duration-300 transform hover:-translate-y-1">
+              <button className="px-8 py-4 bg-white text-blue-600 rounded-full hover:bg-gray-100 font-semibold transition-all duration-300 transform hover:-translate-y-1"
+              onClick={() => setShowDemoForm(true)}>
                 Начать бесплатный период
               </button>
               <button className="px-8 py-4 border-2 border-white text-white rounded-full hover:bg-white/10 font-semibold transition-all duration-300"
