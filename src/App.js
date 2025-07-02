@@ -1,12 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import { ChevronRight, Search, Upload, GitCompare, BarChart3, Check, ArrowRight, Zap, Shield, Clock, TrendingUp, Menu, X, PlayCircle, Sparkles } from 'lucide-react';
 
-const DevPlusWebsite = () => {
-  const [scrollY, setScrollY] = useState(0);
-  const [activeDemo, setActiveDemo] = useState('search');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [hoveredCard, setHoveredCard] = useState(null);
-  const [showDemoForm, setShowDemoForm] = useState(false);
+// Вынесем модальное окно в отдельный мемоизированный компонент
+const DemoFormModal = memo(({ showDemoForm, setShowDemoForm }) => {
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -17,57 +13,12 @@ const DevPlusWebsite = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
-  
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const navbarStyle = {
-    transform: scrollY > 100 ? 'translateY(0)' : 'translateY(0)',
-    backdropFilter: scrollY > 50 ? 'blur(20px)' : 'blur(0px)',
-    background: scrollY > 50 ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0)',
-    boxShadow: scrollY > 50 ? '0 10px 40px rgba(0, 0, 0, 0.1)' : 'none',
-  };
-
-  const demos = {
-    search: {
-      icon: <Search className="w-6 h-6" />,
-      title: "Умный поиск",
-      description: "AI понимает контекст вашего вопроса и находит релевантную информацию во всех документах",
-      features: ["Поиск на естественном языке", "Учет синонимов и юридической терминологии", "Ранжирование по релевантности"],
-      color: "from-blue-500 to-purple-600"
-    },
-    upload: {
-      icon: <Upload className="w-6 h-6" />,
-      title: "Загрузка документов",
-      description: "Перетащите файлы или целые папки. Система автоматически распознает и структурирует информацию",
-      features: ["Поддержка всех форматов", "Автоматическое OCR", "Сохранение структуры"],
-      color: "from-green-500 to-teal-600"
-    },
-    compare: {
-      icon: <GitCompare className="w-6 h-6" />,
-      title: "Сравнение версий",
-      description: "Мгновенно находите различия между версиями договоров с AI-анализом важности изменений",
-      features: ["Визуальное выделение", "AI-анализ критичности", "История версий"],
-      color: "from-orange-500 to-red-600"
-    },
-    analytics: {
-      icon: <BarChart3 className="w-6 h-6" />,
-      title: "Аналитика",
-      description: "Отслеживайте эффективность команды и экономию времени в режиме реального времени",
-      features: ["Статистика по пользователям", "Частые темы запросов", "Расчет экономии"],
-      color: "from-purple-500 to-pink-600"
-    }
-  };
 
   // Обработка отправки формы
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Временное решение - отправка напрямую в Telegram
     const TELEGRAM_BOT_TOKEN = '7981860487:AAEWXPGYxUPm-_kakYLABZtnHuVW3wUaI0Y';
     const TELEGRAM_CHAT_ID = '111748497';
     
@@ -122,211 +73,214 @@ const DevPlusWebsite = () => {
     }
   };
 
-  // Модальное окно с формой
-  const DemoFormModal = React.memo(() => {
-    if (!showDemoForm) return null;
-
-    return (
-      <div className="fixed inset-0 z-50 overflow-y-auto" onClick={(e) => {
-        if (e.target === e.currentTarget) setShowDemoForm(false);
-      }}>
-        <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-          {/* Фон */}
-          <div className="fixed inset-0 transition-opacity bg-gray-900 bg-opacity-75" />
-
-          {/* Модальное окно */}
-          <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl relative">
-            <div className="absolute top-4 right-4">
-              <button
-                onClick={() => setShowDemoForm(false)}
-                className="text-gray-400 hover:text-gray-500"
-                type="button"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">
-              Запросить демонстрацию
-            </h3>
-            <p className="text-gray-600 mb-6">
-              Покажем, как DEV Plus решит ваши задачи. Ответим в течение 24 часов.
-            </p>
-
-            {submitStatus === 'success' ? (
-              <div className="text-center py-8">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Check className="w-8 h-8 text-green-600" />
-                </div>
-                <h4 className="text-xl font-semibold text-gray-900 mb-2">Заявка отправлена!</h4>
-                <p className="text-gray-600">Мы свяжемся с вами в ближайшее время</p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Ваше имя *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    value={formData.name}
-                    onChange={(e) => setFormData(prev => ({...prev, name: e.target.value}))}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Компания *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    value={formData.company}
-                    onChange={(e) => setFormData(prev => ({...prev, company: e.target.value}))}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    value={formData.email}
-                    onChange={(e) => setFormData(prev => ({...prev, email: e.target.value}))}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Телефон *
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    value={formData.phone}
-                    onChange={(e) => setFormData(prev => ({...prev, phone: e.target.value}))}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Количество юристов в компании
-                  </label>
-                  <select
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    value={formData.employees}
-                    onChange={(e) => setFormData(prev => ({...prev, employees: e.target.value}))}
-                  >
-                    <option value="1-5">1-5</option>
-                    <option value="6-20">6-20</option>
-                    <option value="21-50">21-50</option>
-                    <option value="50+">Более 50</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Комментарий
-                  </label>
-                  <textarea
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    rows={3}
-                    value={formData.message}
-                    onChange={(e) => setFormData(prev => ({...prev, message: e.target.value}))}
-                    placeholder="Расскажите о ваших задачах..."
-                  />
-                </div>
-
-                {submitStatus === 'error' && (
-                  <div className="text-red-600 text-sm">
-                    Произошла ошибка. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`w-full py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
-                    isSubmitting 
-                      ? 'bg-gray-300 cursor-not-allowed' 
-                      : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg'
-                  }`}
-                >
-                  {isSubmitting ? 'Отправка...' : 'Отправить заявку'}
-                </button>
-
-                <p className="text-xs text-gray-500 text-center">
-                  Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных
-                </p>
-              </form>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  });
-
-  // Простейший компонент анимации - только появление, без исчезновения
-// Исправленный компонент анимации - замените существующий AnimatedCard на этот
-  const AnimatedCard = React.memo(({ children, delay = 0, className = "", animation = "fade-up" }) => {
-  const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [hasAnimated, setHasAnimated] = useState(false);
-
-  useEffect(() => {
-    const element = ref.current;
-    if (!element || hasAnimated) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !hasAnimated) {
-            setTimeout(() => {
-              setIsVisible(true);
-              setHasAnimated(true);
-            }, delay);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    observer.observe(element);
-
-    return () => {
-      if (observer && element) {
-        observer.unobserve(element);
-      }
-    };
-  }, [delay, hasAnimated]);
-
-  const animationClasses = {
-    'fade-up': 'opacity-0 translate-y-5',
-    'fade-in': 'opacity-0',
-    'scale': 'opacity-0 scale-95',
-    'slide-right': 'opacity-0 -translate-x-5'
+  // Обработчик изменения поля формы
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
+  if (!showDemoForm) return null;
+
   return (
-    <div
-      ref={ref}
-      className={`transition-all duration-1000 ease-out ${
-        isVisible 
-          ? 'opacity-100 translate-y-0 translate-x-0 scale-100' 
-          : animationClasses[animation] || animationClasses['fade-up']
-      } ${className}`}
+    <div 
+      className="fixed inset-0 z-50 overflow-y-auto" 
+      onClick={(e) => {
+        if (e.target === e.currentTarget) setShowDemoForm(false);
+      }}
     >
-      {children}
+      <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div className="fixed inset-0 transition-opacity bg-gray-900 bg-opacity-75" />
+
+        <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl relative">
+          <div className="absolute top-4 right-4">
+            <button
+              onClick={() => setShowDemoForm(false)}
+              className="text-gray-400 hover:text-gray-500"
+              type="button"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+
+          <h3 className="text-2xl font-bold text-gray-900 mb-2">
+            Запросить демонстрацию
+          </h3>
+          <p className="text-gray-600 mb-6">
+            Покажем, как DEV Plus решит ваши задачи. Ответим в течение 24 часов.
+          </p>
+
+          {submitStatus === 'success' ? (
+            <div className="text-center py-8">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Check className="w-8 h-8 text-green-600" />
+              </div>
+              <h4 className="text-xl font-semibold text-gray-900 mb-2">Заявка отправлена!</h4>
+              <p className="text-gray-600">Мы свяжемся с вами в ближайшее время</p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Ваше имя *
+                </label>
+                <input
+                  type="text"
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  value={formData.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Компания *
+                </label>
+                <input
+                  type="text"
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  value={formData.company}
+                  onChange={(e) => handleInputChange('company', e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email *
+                </label>
+                <input
+                  type="email"
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Телефон *
+                </label>
+                <input
+                  type="tel"
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  value={formData.phone}
+                  onChange={(e) => handleInputChange('phone', e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Количество юристов в компании
+                </label>
+                <select
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  value={formData.employees}
+                  onChange={(e) => handleInputChange('employees', e.target.value)}
+                >
+                  <option value="1-5">1-5</option>
+                  <option value="6-20">6-20</option>
+                  <option value="21-50">21-50</option>
+                  <option value="50+">Более 50</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Комментарий
+                </label>
+                <textarea
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  rows={3}
+                  value={formData.message}
+                  onChange={(e) => handleInputChange('message', e.target.value)}
+                  placeholder="Расскажите о ваших задачах..."
+                />
+              </div>
+
+              {submitStatus === 'error' && (
+                <div className="text-red-600 text-sm">
+                  Произошла ошибка. Пожалуйста, попробуйте позже или свяжитесь с нами по телефону.
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`w-full py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
+                  isSubmitting 
+                    ? 'bg-gray-300 cursor-not-allowed' 
+                    : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg'
+                }`}
+              >
+                {isSubmitting ? 'Отправка...' : 'Отправить заявку'}
+              </button>
+
+              <p className="text-xs text-gray-500 text-center">
+                Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных
+              </p>
+            </form>
+          )}
+        </div>
+      </div>
     </div>
   );
 });
+
+const DevPlusWebsite = () => {
+  const [scrollY, setScrollY] = useState(0);
+  const [activeDemo, setActiveDemo] = useState('search');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hoveredCard, setHoveredCard] = useState(null);
+  const [showDemoForm, setShowDemoForm] = useState(false);
+  
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navbarStyle = {
+    transform: scrollY > 100 ? 'translateY(0)' : 'translateY(0)',
+    backdropFilter: scrollY > 50 ? 'blur(20px)' : 'blur(0px)',
+    background: scrollY > 50 ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0)',
+    boxShadow: scrollY > 50 ? '0 10px 40px rgba(0, 0, 0, 0.1)' : 'none',
+  };
+
+  const demos = {
+    search: {
+      icon: <Search className="w-6 h-6" />,
+      title: "Умный поиск",
+      description: "AI понимает контекст вашего вопроса и находит релевантную информацию во всех документах",
+      features: ["Поиск на естественном языке", "Учет синонимов и юридической терминологии", "Ранжирование по релевантности"],
+      color: "from-blue-500 to-purple-600"
+    },
+    upload: {
+      icon: <Upload className="w-6 h-6" />,
+      title: "Загрузка документов",
+      description: "Перетащите файлы или целые папки. Система автоматически распознает и структурирует информацию",
+      features: ["Поддержка всех форматов", "Автоматическое OCR", "Сохранение структуры"],
+      color: "from-green-500 to-teal-600"
+    },
+    compare: {
+      icon: <GitCompare className="w-6 h-6" />,
+      title: "Сравнение версий",
+      description: "Мгновенно находите различия между версиями договоров с AI-анализом важности изменений",
+      features: ["Визуальное выделение", "AI-анализ критичности", "История версий"],
+      color: "from-orange-500 to-red-600"
+    },
+    analytics: {
+      icon: <BarChart3 className="w-6 h-6" />,
+      title: "Аналитика",
+      description: "Отслеживайте эффективность команды и экономию времени в режиме реального времени",
+      features: ["Статистика по пользователям", "Частые темы запросов", "Расчет экономии"],
+      color: "from-purple-500 to-pink-600"
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
@@ -389,7 +343,7 @@ const DevPlusWebsite = () => {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
-              <AnimatedCard>
+              <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
                 <h1 className="text-5xl md:text-7xl font-bold leading-tight">
                   <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                     AI-юрист
@@ -397,16 +351,16 @@ const DevPlusWebsite = () => {
                   <br />
                   <span className="text-gray-900">нового поколения</span>
                 </h1>
-              </AnimatedCard>
+              </div>
               
-              <AnimatedCard delay={200}>
+              <div className="animate-fade-up opacity-0" style={{ animationDelay: '200ms' }}>
                 <p className="text-xl text-gray-600 leading-relaxed">
                   Находите нужные документы за секунды, а не часы. 
                   Революционная система поиска по юридической базе знаний с AI.
                 </p>
-              </AnimatedCard>
+              </div>
 
-              <AnimatedCard delay={400}>
+              <div className="animate-fade-up opacity-0" style={{ animationDelay: '400ms' }}>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center">
                     Попробовать бесплатно
@@ -417,9 +371,9 @@ const DevPlusWebsite = () => {
                     Смотреть демо
                   </button>
                 </div>
-              </AnimatedCard>
+              </div>
 
-              <AnimatedCard delay={600}>
+              <div className="animate-fade-up opacity-0" style={{ animationDelay: '600ms' }}>
                 <div className="flex items-center space-x-8">
                   <div className="flex -space-x-2">
                     {[...Array(4)].map((_, i) => (
@@ -430,10 +384,10 @@ const DevPlusWebsite = () => {
                     <span className="font-semibold">500+ компаний</span> уже используют DEV Plus
                   </p>
                 </div>
-              </AnimatedCard>
+              </div>
             </div>
 
-            <AnimatedCard delay={800} className="relative">
+            <div className="animate-fade-up opacity-0 relative" style={{ animationDelay: '800ms' }}>
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl transform rotate-3 scale-105 opacity-20 blur-xl" />
                 <div className="relative bg-white rounded-3xl shadow-2xl overflow-hidden">
@@ -462,7 +416,7 @@ const DevPlusWebsite = () => {
                   </div>
                 </div>
               </div>
-            </AnimatedCard>
+            </div>
           </div>
         </div>
       </section>
@@ -470,20 +424,20 @@ const DevPlusWebsite = () => {
       {/* Компании-клиенты */}
       <section id="clients" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedCard>
+          <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
             <h2 className="text-4xl font-bold text-center mb-4">Нам доверяют лидеры рынка</h2>
             <p className="text-xl text-gray-600 text-center mb-12">
               Более 500 компаний оптимизировали юридические процессы с DEV Plus
             </p>
-          </AnimatedCard>
+          </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
             {[...Array(6)].map((_, i) => (
-              <AnimatedCard key={i} delay={i * 100} animation="scale">
+              <div key={i} className="animate-scale opacity-0" style={{ animationDelay: `${i * 100}ms` }}>
                 <div className="h-20 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer group">
                   <span className="text-gray-400 group-hover:text-gray-600 transition-colors">Логотип {i + 1}</span>
                 </div>
-              </AnimatedCard>
+              </div>
             ))}
           </div>
         </div>
@@ -492,9 +446,9 @@ const DevPlusWebsite = () => {
       {/* Проблемы */}
       <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedCard>
+          <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
             <h2 className="text-4xl font-bold text-center mb-12">Знакомые проблемы?</h2>
-          </AnimatedCard>
+          </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
@@ -514,7 +468,7 @@ const DevPlusWebsite = () => {
                 icon: <Search className="w-8 h-8" />
               }
             ].map((problem, i) => (
-              <AnimatedCard key={i} delay={i * 200}>
+              <div key={i} className="animate-fade-up opacity-0" style={{ animationDelay: `${i * 200}ms` }}>
                 <div 
                   className="relative p-8 rounded-2xl bg-white border border-gray-200 hover:border-red-300 hover:shadow-xl transition-all duration-300 cursor-pointer"
                   onMouseEnter={() => setHoveredCard(i)}
@@ -529,7 +483,7 @@ const DevPlusWebsite = () => {
                   <h3 className="text-xl font-semibold mb-3">{problem.title}</h3>
                   <p className="text-gray-600">{problem.description}</p>
                 </div>
-              </AnimatedCard>
+              </div>
             ))}
           </div>
         </div>
@@ -538,11 +492,11 @@ const DevPlusWebsite = () => {
       {/* Демонстрация функций */}
       <section id="features" className="py-20 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedCard>
+          <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
             <h2 className="text-4xl font-bold text-center mb-12">Посмотрите, как это работает</h2>
-          </AnimatedCard>
+          </div>
 
-          <AnimatedCard delay={200}>
+          <div className="animate-fade-up opacity-0" style={{ animationDelay: '200ms' }}>
             <div className="flex flex-wrap justify-center gap-4 mb-12">
               {Object.entries(demos).map(([key, demo]) => (
                 <button
@@ -559,9 +513,9 @@ const DevPlusWebsite = () => {
                 </button>
               ))}
             </div>
-          </AnimatedCard>
+          </div>
 
-          <AnimatedCard delay={400}>
+          <div className="animate-fade-up opacity-0" style={{ animationDelay: '400ms' }}>
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-6">
                 <h3 className="text-3xl font-bold">{demos[activeDemo].title}</h3>
@@ -588,16 +542,16 @@ const DevPlusWebsite = () => {
                 </div>
               </div>
             </div>
-          </AnimatedCard>
+          </div>
         </div>
       </section>
 
       {/* Преимущества */}
       <section className="py-20 bg-gradient-to-br from-blue-600 to-purple-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedCard>
+          <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
             <h2 className="text-4xl font-bold text-center mb-12">Преимущества для вашего бизнеса</h2>
-          </AnimatedCard>
+          </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
@@ -606,13 +560,13 @@ const DevPlusWebsite = () => {
               { icon: "📈", value: "+40%", label: "Рост продуктивности отдела" },
               { icon: "🔒", value: "100%", label: "Безопасность ваших данных" }
             ].map((benefit, i) => (
-              <AnimatedCard key={i} delay={i * 100} animation="scale">
+              <div key={i} className="animate-scale opacity-0" style={{ animationDelay: `${i * 100}ms` }}>
                 <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 hover:bg-white/20 transition-all duration-300 text-center">
                   <div className="text-5xl mb-4">{benefit.icon}</div>
                   <div className="text-3xl font-bold mb-2">{benefit.value}</div>
                   <p className="text-white/80">{benefit.label}</p>
                 </div>
-              </AnimatedCard>
+              </div>
             ))}
           </div>
         </div>
@@ -621,10 +575,10 @@ const DevPlusWebsite = () => {
       {/* Тарифы */}
       <section id="pricing" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedCard>
+          <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
             <h2 className="text-4xl font-bold text-center mb-4">Выберите подходящий тариф</h2>
             <p className="text-xl text-gray-600 text-center mb-12">Начните с бесплатного пробного периода на 14 дней</p>
-          </AnimatedCard>
+          </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
@@ -647,7 +601,7 @@ const DevPlusWebsite = () => {
                 popular: false
               }
             ].map((plan, i) => (
-              <AnimatedCard key={i} delay={i * 200}>
+              <div key={i} className="animate-fade-up opacity-0" style={{ animationDelay: `${i * 200}ms` }}>
                 <div className={`relative rounded-2xl p-8 ${
                   plan.popular 
                     ? 'bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-2xl transform scale-105' 
@@ -679,7 +633,7 @@ const DevPlusWebsite = () => {
                     {plan.price === "Индивидуально" ? "Получить расчет" : "Выбрать тариф"}
                   </button>
                 </div>
-              </AnimatedCard>
+              </div>
             ))}
           </div>
         </div>
@@ -688,7 +642,7 @@ const DevPlusWebsite = () => {
       {/* CTA секция */}
       <section id="demo" className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <AnimatedCard>
+          <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
             <h2 className="text-4xl font-bold text-white mb-6">
               Готовы революционизировать вашу юридическую работу?
             </h2>
@@ -704,7 +658,7 @@ const DevPlusWebsite = () => {
                 Запросить демо
               </button>
             </div>
-          </AnimatedCard>
+          </div>
         </div>
       </section>
 
@@ -755,14 +709,34 @@ const DevPlusWebsite = () => {
         </div>
       </footer>
 
-      <DemoFormModal />
+      {/* Рендерим модальное окно */}
+      <DemoFormModal showDemoForm={showDemoForm} setShowDemoForm={setShowDemoForm} />
 
       <style jsx global>{`
-        .animated-element.animated-visible {
-          opacity: 1 !important;
-          transform: none !important;
+        @keyframes fade-up {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
         
+        @keyframes scale {
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        
+        .animate-fade-up {
+          transform: translateY(30px);
+          animation: fade-up 1s ease-out forwards;
+        }
+        
+        .animate-scale {
+          transform: scale(0.9);
+          animation: scale 1s ease-out forwards;
+        }
+
         @keyframes blob {
           0% { transform: translate(0px, 0px) scale(1); }
           33% { transform: translate(30px, -50px) scale(1.1); }
