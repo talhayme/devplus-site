@@ -262,15 +262,15 @@ const DevPlusWebsite = () => {
     upload: {
       icon: <Upload className="w-6 h-6" />,
       title: "Загрузка документов",
-      description: "Перетащите файлы или целые папки. Система автоматически распознает и структурирует информацию",
-      features: ["Поддержка всех форматов", "Автоматическое OCR", "Сохранение структуры"],
+      description: "Загружайте любые юридические документы - система автоматически их проиндексирует",
+      features: ["Поддержка PDF, DOC, DOCX, TXT", "Автоматическая категоризация", "Сохранение структуры документов"],
       color: "from-green-500 to-teal-600"
     },
     compare: {
       icon: <GitCompare className="w-6 h-6" />,
-      title: "Сравнение версий",
-      description: "Мгновенно находите различия между версиями договоров с AI-анализом важности изменений",
-      features: ["Визуальное выделение", "AI-анализ критичности", "История версий"],
+      title: "ИИ Ассистент",
+      description: "Получайте экспертные ответы на юридические вопросы с указанием источников",
+      features: ["Ответы на основе вашей базы документов", "Ссылки на конкретные статьи и документы", "Контекстное понимание вопросов"],
       color: "from-orange-500 to-red-600"
     },
     analytics: {
@@ -525,9 +525,7 @@ const DevPlusWebsite = () => {
                     </li>
                   ))}
                 </ul>
-                <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-                  Попробовать эту функцию
-                </button>
+           
               </div>
               
               <div className={`relative rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br ${demos[activeDemo].color}`}>
