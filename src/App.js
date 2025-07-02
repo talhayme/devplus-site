@@ -67,19 +67,35 @@ const DevPlusWebsite = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
+    // Временное решение - отправка напрямую в Telegram
+    const TELEGRAM_BOT_TOKEN = '7981860487:AAEWXPGYxUPm-_kakYLABZtnHuVW3wUaI0Y';
+    const TELEGRAM_CHAT_ID = '111748497';
+    
+    const message = `
+🔔 Новая заявка на демо!
+
+👤 Имя: ${formData.name}
+🏢 Компания: ${formData.company}
+📧 Email: ${formData.email}
+📱 Телефон: ${formData.phone}
+👥 Количество юристов: ${formData.employees}
+💬 Сообщение: ${formData.message || 'Не указано'}
+
+⏰ Время: ${new Date().toLocaleString('ru-RU')}
+`;
+
     try {
-      // Замените URL на ваш сервер
-      // Для Next.js: '/api/demo-request'
-      // Для Express: 'http://localhost:3001/api/demo-request' или 'https://your-server.com/api/demo-request'
-      const response = await fetch('/api/demo-request', {
+      const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: message,
+          parse_mode: 'HTML'
+        })
       });
-
-      const data = await response.json();
 
       if (response.ok) {
         setSubmitStatus('success');
@@ -96,7 +112,6 @@ const DevPlusWebsite = () => {
           setSubmitStatus(null);
         }, 3000);
       } else {
-        console.error('Ошибка:', data);
         setSubmitStatus('error');
       }
     } catch (error) {
@@ -108,24 +123,24 @@ const DevPlusWebsite = () => {
   };
 
   // Модальное окно с формой
-  const DemoFormModal = () => {
+  const DemoFormModal = React.memo(() => {
     if (!showDemoForm) return null;
 
     return (
-      <div className="fixed inset-0 z-50 overflow-y-auto">
+      <div className="fixed inset-0 z-50 overflow-y-auto" onClick={(e) => {
+        if (e.target === e.currentTarget) setShowDemoForm(false);
+      }}>
         <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
           {/* Фон */}
-          <div 
-            className="fixed inset-0 transition-opacity bg-gray-900 bg-opacity-75"
-            onClick={() => setShowDemoForm(false)}
-          />
+          <div className="fixed inset-0 transition-opacity bg-gray-900 bg-opacity-75" />
 
           {/* Модальное окно */}
-          <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+          <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl relative">
             <div className="absolute top-4 right-4">
               <button
                 onClick={() => setShowDemoForm(false)}
                 className="text-gray-400 hover:text-gray-500"
+                type="button"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -157,7 +172,7 @@ const DevPlusWebsite = () => {
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    onChange={(e) => setFormData(prev => ({...prev, name: e.target.value}))}
                   />
                 </div>
 
@@ -170,7 +185,7 @@ const DevPlusWebsite = () => {
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     value={formData.company}
-                    onChange={(e) => setFormData({...formData, company: e.target.value})}
+                    onChange={(e) => setFormData(prev => ({...prev, company: e.target.value}))}
                   />
                 </div>
 
@@ -183,7 +198,7 @@ const DevPlusWebsite = () => {
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    onChange={(e) => setFormData(prev => ({...prev, email: e.target.value}))}
                   />
                 </div>
 
@@ -196,7 +211,7 @@ const DevPlusWebsite = () => {
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    onChange={(e) => setFormData(prev => ({...prev, phone: e.target.value}))}
                   />
                 </div>
 
@@ -207,7 +222,7 @@ const DevPlusWebsite = () => {
                   <select
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     value={formData.employees}
-                    onChange={(e) => setFormData({...formData, employees: e.target.value})}
+                    onChange={(e) => setFormData(prev => ({...prev, employees: e.target.value}))}
                   >
                     <option value="1-5">1-5</option>
                     <option value="6-20">6-20</option>
@@ -224,7 +239,7 @@ const DevPlusWebsite = () => {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     rows={3}
                     value={formData.message}
-                    onChange={(e) => setFormData({...formData, message: e.target.value})}
+                    onChange={(e) => setFormData(prev => ({...prev, message: e.target.value}))}
                     placeholder="Расскажите о ваших задачах..."
                   />
                 </div>
@@ -256,49 +271,62 @@ const DevPlusWebsite = () => {
         </div>
       </div>
     );
-  };
+  });
 
   // Простейший компонент анимации - только появление, без исчезновения
-  const AnimatedCard = ({ children, delay = 0, className = "", animation = "fade-up" }) => {
-    const ref = useRef(null);
+// Исправленный компонент анимации - замените существующий AnimatedCard на этот
+  const AnimatedCard = React.memo(({ children, delay = 0, className = "", animation = "fade-up" }) => {
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
 
-    useEffect(() => {
-      const element = ref.current;
-      if (!element) return;
+  useEffect(() => {
+    const element = ref.current;
+    if (!element || hasAnimated) return;
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !hasAnimated) {
             setTimeout(() => {
-              element.classList.add('animated-visible');
+              setIsVisible(true);
+              setHasAnimated(true);
             }, delay);
-            observer.disconnect(); // Сразу отключаем после первого показа
           }
-        },
-        { threshold: 0.1 }
-      );
-
-      observer.observe(element);
-
-      return () => observer.disconnect();
-    }, [delay]);
-
-    const animationClasses = {
-      'fade-up': 'opacity-0 translate-y-5',
-      'fade-in': 'opacity-0',
-      'scale': 'opacity-0 scale-95',
-      'slide-right': 'opacity-0 -translate-x-5'
-    };
-
-    return (
-      <div
-        ref={ref}
-        className={`animated-element transition-all duration-1000 ease-out ${animationClasses[animation] || animationClasses['fade-up']} ${className}`}
-      >
-        {children}
-      </div>
+        });
+      },
+      { threshold: 0.1 }
     );
+
+    observer.observe(element);
+
+    return () => {
+      if (observer && element) {
+        observer.unobserve(element);
+      }
+    };
+  }, [delay, hasAnimated]);
+
+  const animationClasses = {
+    'fade-up': 'opacity-0 translate-y-5',
+    'fade-in': 'opacity-0',
+    'scale': 'opacity-0 scale-95',
+    'slide-right': 'opacity-0 -translate-x-5'
   };
+
+  return (
+    <div
+      ref={ref}
+      className={`transition-all duration-1000 ease-out ${
+        isVisible 
+          ? 'opacity-100 translate-y-0 translate-x-0 scale-100' 
+          : animationClasses[animation] || animationClasses['fade-up']
+      } ${className}`}
+    >
+      {children}
+    </div>
+  );
+});
 
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
