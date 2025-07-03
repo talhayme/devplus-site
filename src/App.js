@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, memo } from 'react';
-import { ChevronRight, Search, Upload, GitCompare, BarChart3, Check, ArrowRight, Zap, Shield, Clock, TrendingUp, Menu, X, PlayCircle, Sparkles } from 'lucide-react';
+import { ChevronRight, Search, Upload, GitCompare, BarChart3, Check, ArrowRight, Zap, Shield, Clock, TrendingUp, Menu, X, PlayCircle, Sparkles, MessageSquare } from 'lucide-react';
 
 // Вынесем модальное окно в отдельный мемоизированный компонент
 const DemoFormModal = memo(({ showDemoForm, setShowDemoForm }) => {
@@ -251,36 +251,40 @@ const DevPlusWebsite = () => {
     boxShadow: scrollY > 50 ? '0 10px 40px rgba(0, 0, 0, 0.1)' : 'none',
   };
 
-  const demos = {
-    search: {
-      icon: <Search className="w-6 h-6" />,
-      title: "Умный поиск",
-      description: "AI понимает контекст вашего вопроса и находит релевантную информацию во всех документах",
-      features: ["Поиск на естественном языке", "Учет синонимов и юридической терминологии", "Ранжирование по релевантности"],
-      color: "from-blue-500 to-purple-600"
-    },
-    upload: {
-      icon: <Upload className="w-6 h-6" />,
-      title: "Загрузка документов",
-      description: "Загружайте любые юридические документы - система автоматически их проиндексирует",
-      features: ["Поддержка PDF, DOC, DOCX, TXT", "Автоматическая категоризация", "Сохранение структуры документов"],
-      color: "from-green-500 to-teal-600"
-    },
-    compare: {
-      icon: <GitCompare className="w-6 h-6" />,
-      title: "ИИ Ассистент",
-      description: "Получайте экспертные ответы на юридические вопросы с указанием источников",
-      features: ["Ответы на основе вашей базы документов", "Ссылки на конкретные статьи и документы", "Контекстное понимание вопросов"],
-      color: "from-orange-500 to-red-600"
-    },
-    analytics: {
-      icon: <BarChart3 className="w-6 h-6" />,
-      title: "Аналитика",
-      description: "Отслеживайте эффективность команды и экономию времени в режиме реального времени",
-      features: ["Статистика по пользователям", "Частые темы запросов", "Расчет экономии"],
-      color: "from-purple-500 to-pink-600"
-    }
-  };
+const demos = {
+  search: {
+    icon: <Search className="w-6 h-6" />,
+    title: "Умный поиск",
+    description: "AI понимает контекст вашего вопроса и находит релевантную информацию во всех документах",
+    features: ["Поиск на естественном языке", "Учет синонимов и юридической терминологии", "Ранжирование по релевантности"],
+    color: "from-blue-500 to-purple-600",
+    gif: "/demos/search.gif"
+  },
+  upload: {
+    icon: <Upload className="w-6 h-6" />,
+    title: "Загрузка документов",
+    description: "Перетащите файлы или целые папки. Система автоматически распознает и структурирует информацию",
+    features: ["Поддержка всех форматов", "Автоматическое OCR", "Сохранение структуры"],
+    color: "from-green-500 to-teal-600",
+    gif: "/demos/upload.gif"
+  },
+  compare: {
+    icon: <MessageSquare className="w-6 h-6" />,
+    title: "ИИ Ассистент",
+    description: "Получайте экспертные ответы на юридические вопросы с указанием источников",
+    features: ["Ответы на основе вашей базы документов", "Ссылки на конкретные статьи и документы", "Контекстное понимание вопросов"],
+    color: "from-orange-500 to-red-600",
+    gif: "/demos/assistant.gif"
+  },
+  analytics: {
+    icon: <BarChart3 className="w-6 h-6" />,
+    title: "Аналитика",
+    description: "Отслеживайте эффективность команды и экономию времени в режиме реального времени",
+    features: ["Статистика по пользователей", "Частые темы запросов", "Расчет экономии"],
+    color: "from-purple-500 to-pink-600",
+    gif: "/demos/analytics.gif"
+  }
+};
 
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
@@ -528,14 +532,22 @@ const DevPlusWebsite = () => {
            
               </div>
               
-              <div className={`relative rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br ${demos[activeDemo].color}`}>
-                <div className="aspect-video flex items-center justify-center text-white">
-                  <div className="text-center">
-                    <PlayCircle className="w-20 h-20 mx-auto mb-4" />
-                    <p className="text-xl">[Демо: {demos[activeDemo].title}]</p>
-                  </div>
-                </div>
-              </div>
+      <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
+  {demos[activeDemo].gif ? (
+    <img 
+      src={demos[activeDemo].gif} 
+      alt={`Демо: ${demos[activeDemo].title}`}
+      className="w-full h-auto object-cover"
+    />
+  ) : (
+    <div className={`aspect-video flex items-center justify-center text-white bg-gradient-to-br ${demos[activeDemo].color}`}>
+      <div className="text-center">
+        <PlayCircle className="w-20 h-20 mx-auto mb-4" />
+        <p className="text-xl">[Демо: {demos[activeDemo].title}]</p>
+      </div>
+    </div>
+  )}
+</div>
             </div>
           </div>
         </div>
@@ -645,10 +657,10 @@ const DevPlusWebsite = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
             <h2 className="text-4xl font-bold text-white mb-6">
-              Готовы революционизировать вашу юридическую работу?
+              Ускорьте работу юридического отдела в 3 раза
             </h2>
             <p className="text-xl text-white/90 mb-8">
-              Присоединяйтесь к 500+ компаниям, которые уже экономят время и повышают эффективность с DEV Plus
+              Начните экономить до 3 часов в день на поиске документов
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="px-8 py-4 bg-white text-blue-600 rounded-full hover:bg-gray-100 font-semibold transition-all duration-300 transform hover:-translate-y-1"
