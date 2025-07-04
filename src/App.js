@@ -367,11 +367,12 @@ const demos = {
 
               <div className="animate-fade-up opacity-0" style={{ animationDelay: '400ms' }}>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <button className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center">
+                  <button  className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center" onClick={() => setShowDemoForm(true)}>
                     Попробовать бесплатно
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </button>
 
+              
                 </div>
               </div>
 
