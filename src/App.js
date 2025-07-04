@@ -371,10 +371,7 @@ const demos = {
                     Попробовать бесплатно
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </button>
-                  <button className="px-8 py-4 border-2 border-gray-300 rounded-full hover:border-gray-400 transition-colors flex items-center justify-center">
-                    <PlayCircle className="mr-2 w-5 h-5" />
-                    Смотреть демо
-                  </button>
+
                 </div>
               </div>
 
