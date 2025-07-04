@@ -144,7 +144,7 @@ const AnimatedCard = ({ children, delay = 0, className = "", animation = "fade-u
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                DEV Plus
+                Athena Tech
               </span>
             </div>
             
@@ -226,7 +226,7 @@ const AnimatedCard = ({ children, delay = 0, className = "", animation = "fade-u
                     ))}
                   </div>
                   <p className="text-sm text-gray-600">
-                    <span className="font-semibold">500+ компаний</span> уже используют DEV Plus
+                    <span className="font-semibold">500+ компаний</span> уже используют Athena Tech
                   </p>
                 </div>
               </AnimatedCard>
@@ -272,7 +272,7 @@ const AnimatedCard = ({ children, delay = 0, className = "", animation = "fade-u
           <AnimatedCard>
             <h2 className="text-4xl font-bold text-center mb-4">Нам доверяют лидеры рынка</h2>
             <p className="text-xl text-gray-600 text-center mb-12">
-              Более 500 компаний оптимизировали юридические процессы с DEV Plus
+              Более 500 компаний оптимизировали юридические процессы с Athena Tech
             </p>
           </AnimatedCard>
 
@@ -492,7 +492,7 @@ const AnimatedCard = ({ children, delay = 0, className = "", animation = "fade-u
               Готовы революционизировать вашу юридическую работу?
             </h2>
             <p className="text-xl text-white/90 mb-8">
-              Присоединяйтесь к 500+ компаниям, которые уже экономят время и повышают эффективность с DEV Plus
+              Присоединяйтесь к 500+ компаниям, которые уже экономят время и повышают эффективность с Athena Tech
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="px-8 py-4 bg-white text-blue-600 rounded-full hover:bg-gray-100 font-semibold transition-all duration-300 transform hover:-translate-y-1">
@@ -515,7 +515,7 @@ const AnimatedCard = ({ children, delay = 0, className = "", animation = "fade-u
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                   <Sparkles className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-2xl font-bold text-white">DEV Plus</span>
+                <span className="text-2xl font-bold text-white">Athena Tech</span>
               </div>
               <p className="text-sm">Революционная AI-платформа для юридических отделов</p>
             </div>
@@ -548,7 +548,7 @@ const AnimatedCard = ({ children, delay = 0, className = "", animation = "fade-u
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
-            <p>&copy; 2024 DEV Plus. Все права защищены.</p>
+            <p>&copy; 2024 Athena Tech. Все права защищены.</p>
           </div>
         </div>
       </footer>

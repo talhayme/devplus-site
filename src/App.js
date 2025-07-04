@@ -108,7 +108,7 @@ const DemoFormModal = memo(({ showDemoForm, setShowDemoForm }) => {
             Запросить демонстрацию
           </h3>
           <p className="text-gray-600 mb-6">
-            Покажем, как DEV Plus решит ваши задачи. Ответим в течение 24 часов.
+            Покажем, как Athena решит ваши задачи. Ответим в течение 24 часов.
           </p>
 
           {submitStatus === 'success' ? (
@@ -297,7 +297,7 @@ const demos = {
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                DEV Plus
+                Athena
               </span>
             </div>
             
@@ -685,7 +685,7 @@ const demos = {
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                   <Sparkles className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-2xl font-bold text-white">DEV Plus</span>
+                <span className="text-2xl font-bold text-white">Athena</span>
               </div>
               <p className="text-sm">Революционная AI-платформа для юридических отделов</p>
             </div>
@@ -718,7 +718,7 @@ const demos = {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
-            <p>&copy; 2024 DEV Plus. Все права защищены.</p>
+            <p>&copy; 2024 Athena. Все права защищены.</p>
           </div>
         </div>
       </footer>
