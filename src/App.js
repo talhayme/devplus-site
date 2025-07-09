@@ -623,7 +623,8 @@ const demos = {
             <h3 className="text-2xl font-bold mb-4">{plan.name}</h3>
             <div className="mb-6">
               <span className="text-4xl font-bold">{plan.price}</span>
-              {plan.price !== "Индивидуально" && <span className="text-lg"> ₽/мес</span>}
+              {plan.price !== "Индивидуально" && <span className="text-lg">{/*₽/мес*/}</span>} 
+    
             </div>
             <ul className="space-y-3 mb-8">
               {plan.features.map((feature, j) => (
