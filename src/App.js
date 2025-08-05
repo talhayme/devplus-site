@@ -418,7 +418,8 @@ const demos = {
       </section>
 
       {/* Компании-клиенты */}
-      <section id="clients" className="py-20 bg-white">
+      {/*
+     <section id="clients" className="py-20 bg-white">
    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
   {[
     '/logos/company1.png',
@@ -440,7 +441,7 @@ const demos = {
     </div>
   ))}
 </div>
-      </section>
+      </section>*/}
 
       {/* Проблемы */}
       <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
