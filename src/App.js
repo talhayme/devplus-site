@@ -262,6 +262,7 @@ const demos = {
       "Поиск за 1-3 секунды вместо часов"
     ],
     color: "from-blue-500 to-purple-600",
+    gif: "/demos/search.gif",
     example: "Запрос: 'договоры с просрочкой платежа' → Найдет все документы с упоминанием штрафов, пеней, неустоек, санкций"
   },
   generate: {
@@ -274,6 +275,7 @@ const demos = {
       "Автозаполнение реквизитов и дат"
     ],
     color: "from-green-500 to-teal-600",
+    gif: "/demos/upload.gif",  // Или другая подходящая GIF
     example: "Команда: 'Составь иск о взыскании долга' → Готовый документ на основе ваших шаблонов"
   },
   assistant: {
@@ -286,6 +288,7 @@ const demos = {
       "Всегда указывает источники информации"
     ],
     color: "from-orange-500 to-red-600",
+    gif: "/demos/assistant.gif",
     example: "Вопрос: 'Как уволить за прогул?' → Пошаговая инструкция со ссылками на ваши документы"
   },
   analytics: {
@@ -297,7 +300,8 @@ const demos = {
       "Популярные темы запросов",
       "ROI калькулятор в реальном времени"
     ],
-    color: "from-purple-500 to-pink-600"
+    color: "from-purple-500 to-pink-600",
+    gif: "/demos/analytics.gif"
   }
 };
 
