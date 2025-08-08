@@ -539,46 +539,63 @@ const demos = {
 
       {/* Демонстрация функций */}
       <section id="features" className="py-20 bg-gradient-to-b from-white to-gray-50">
-    <div className="animate-fade-up opacity-0" style={{ animationDelay: '400ms' }}>
-  <div className="grid lg:grid-cols-2 gap-12 items-center">
-    <div className="space-y-6">
-      <h3 className="text-3xl font-bold">{demos[activeDemo].title}</h3>
-      <p className="text-xl text-gray-600">{demos[activeDemo].description}</p>
-      
-      {demos[activeDemo].example && (
-        <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500">
-          <p className="text-sm font-medium">{demos[activeDemo].example}</p>
-        </div>
-      )}
-      
-      <ul className="space-y-3">
-        {demos[activeDemo].features.map((feature, i) => (
-          <li key={i} className="flex items-start space-x-3">
-            <Check className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" />
-            <span className="text-gray-700">{feature}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-    
-    <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
-      {demos[activeDemo].gif ? (
-        <img 
-          src={demos[activeDemo].gif} 
-          alt={`Демо: ${demos[activeDemo].title}`}
-          className="w-full h-auto object-cover"
-        />
-      ) : (
-        <div className={`aspect-video flex items-center justify-center text-white bg-gradient-to-br ${demos[activeDemo].color}`}>
-          <div className="text-center p-8">
-            <div className="text-6xl mb-4">{demos[activeDemo].icon}</div>
-            <p className="text-xl">Демонстрация: {demos[activeDemo].title}</p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
+            <h2 className="text-4xl font-bold text-center mb-12">Ключевые возможности системы</h2>
+          </div>
+
+          <div className="animate-fade-up opacity-0" style={{ animationDelay: '200ms' }}>
+            <div className="flex flex-wrap justify-center gap-4 mb-12">
+              {Object.entries(demos).map(([key, demo]) => (
+                <button
+                  key={key}
+                  onClick={() => setActiveDemo(key)}
+                  className={`px-6 py-3 rounded-full transition-all duration-300 flex items-center space-x-2 ${
+                    activeDemo === key
+                      ? 'bg-gradient-to-r ' + demo.color + ' text-white shadow-lg transform scale-105'
+                      : 'bg-white border border-gray-300 hover:border-gray-400'
+                  }`}
+                >
+                  {demo.icon}
+                  <span>{demo.title}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="animate-fade-up opacity-0" style={{ animationDelay: '400ms' }}>
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="space-y-6">
+                <h3 className="text-3xl font-bold">{demos[activeDemo].title}</h3>
+                <p className="text-xl text-gray-600">{demos[activeDemo].description}</p>
+                
+                {demos[activeDemo].example && (
+                  <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500">
+                    <p className="text-sm font-medium">{demos[activeDemo].example}</p>
+                  </div>
+                )}
+                
+                <ul className="space-y-3">
+                  {demos[activeDemo].features.map((feature, i) => (
+                    <li key={i} className="flex items-start space-x-3">
+                      <Check className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-700">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
+                <div className={`aspect-video flex items-center justify-center text-white bg-gradient-to-br ${demos[activeDemo].color}`}>
+                  <div className="text-center p-8">
+                    <div className="text-6xl mb-4">{demos[activeDemo].icon}</div>
+                    <p className="text-xl">Демонстрация: {demos[activeDemo].title}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      )}
-    </div>
-  </div>
-</div>
       </section>
 
       {/* Преимущества с цифрами и источниками */}
