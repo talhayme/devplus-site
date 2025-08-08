@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, memo } from 'react';
-import { ChevronRight, Search, Upload, GitCompare, BarChart3, Check, ArrowRight, Zap, Shield, Clock, TrendingUp, Menu, X, PlayCircle, Sparkles, MessageSquare } from 'lucide-react';
+import { ChevronRight, Search, Upload, GitCompare, BarChart3, Check, ArrowRight, Zap, Shield, Clock, TrendingUp, Menu, X, PlayCircle, Sparkles, MessageSquare, FileText, Brain, Target, Users, Lock, Server, CheckCircle } from 'lucide-react';
 
 // Вынесем модальное окно в отдельный мемоизированный компонент
 const DemoFormModal = memo(({ showDemoForm, setShowDemoForm }) => {
@@ -254,35 +254,50 @@ const DevPlusWebsite = () => {
 const demos = {
   search: {
     icon: <Search className="w-6 h-6" />,
-    title: "Умный поиск",
-    description: "AI понимает контекст вашего вопроса и находит релевантную информацию во всех документах",
-    features: ["Поиск на естественном языке", "Учет синонимов и юридической терминологии", "Ранжирование по релевантности"],
+    title: "Интеллектуальный поиск",
+    description: "Система понимает смысл запроса и находит документы, даже если точные слова не совпадают",
+    features: [
+      "Понимает, что 'расторжение' = 'прекращение договора' = 'разрыв соглашения'",
+      "Находит синонимы: 'неустойка' = 'штраф' = 'пени'",
+      "Поиск за 1-3 секунды вместо часов"
+    ],
     color: "from-blue-500 to-purple-600",
-    gif: "/demos/search.gif"
+    example: "Запрос: 'договоры с просрочкой платежа' → Найдет все документы с упоминанием штрафов, пеней, неустоек, санкций"
   },
-  upload: {
-    icon: <Upload className="w-6 h-6" />,
-    title: "Загрузка документов",
-    description: "Перетащите файлы или целые папки. Система автоматически распознает и структурирует информацию",
-    features: ["Поддержка всех форматов", "Автоматическое OCR", "Сохранение структуры"],
+  generate: {
+    icon: <FileText className="w-6 h-6" />,
+    title: "Генерация документов",
+    description: "Создание договоров, исков и заявлений на основе вашей практики и шаблонов",
+    features: [
+      "Использует только ваши проверенные формулировки",
+      "Учитывает актуальное законодательство",
+      "Автозаполнение реквизитов и дат"
+    ],
     color: "from-green-500 to-teal-600",
-    gif: "/demos/upload.gif"
+    example: "Команда: 'Составь иск о взыскании долга' → Готовый документ на основе ваших шаблонов"
   },
-  compare: {
+  assistant: {
     icon: <MessageSquare className="w-6 h-6" />,
-    title: "ИИ Ассистент",
-    description: "Получайте экспертные ответы на юридические вопросы с указанием источников",
-    features: ["Ответы на основе вашей базы документов", "Ссылки на конкретные статьи и документы", "Контекстное понимание вопросов"],
+    title: "AI-ассистент юриста",
+    description: "Отвечает на вопросы на основе вашей базы документов с указанием источников",
+    features: [
+      "Анализирует судебную практику вашей компании",
+      "Дает пошаговые инструкции",
+      "Всегда указывает источники информации"
+    ],
     color: "from-orange-500 to-red-600",
-    gif: "/demos/assistant.gif"
+    example: "Вопрос: 'Как уволить за прогул?' → Пошаговая инструкция со ссылками на ваши документы"
   },
   analytics: {
     icon: <BarChart3 className="w-6 h-6" />,
-    title: "Аналитика",
-    description: "Отслеживайте эффективность команды и экономию времени в режиме реального времени",
-    features: ["Статистика по пользователей", "Частые темы запросов", "Расчет экономии"],
-    color: "from-purple-500 to-pink-600",
-    gif: "/demos/analytics.gif"
+    title: "Аналитика и отчетность",
+    description: "Отслеживайте эффективность команды и экономию времени",
+    features: [
+      "Статистика по каждому сотруднику",
+      "Популярные темы запросов",
+      "ROI калькулятор в реальном времени"
+    ],
+    color: "from-purple-500 to-pink-600"
   }
 };
 
@@ -303,17 +318,12 @@ const demos = {
             
             <div className="hidden md:flex items-center space-x-8">
               <a href="#features" className="text-gray-700 hover:text-blue-600 transition-colors">Возможности</a>
+              <a href="#benefits" className="text-gray-700 hover:text-blue-600 transition-colors">Преимущества</a>
               <a href="#pricing" className="text-gray-700 hover:text-blue-600 transition-colors">Тарифы</a>
-              <a href="#demo" className="text-gray-700 hover:text-blue-600 transition-colors">Демо</a>
+              <a href="#security" className="text-gray-700 hover:text-blue-600 transition-colors">Безопасность</a>
               <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
               onClick={() => setShowDemoForm(true)}>
-                Начать бесплатно
-              </button>
-              <button 
-                onClick={() => setShowDemoForm(true)}
-                className="text-gray-700 hover:text-blue-600 transition-colors cursor-pointer"
-              >
-                Запросить демо
+                Попробовать 30 дней бесплатно
               </button>
             </div>
 
@@ -350,37 +360,44 @@ const demos = {
             <div className="space-y-8">
               <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
                 <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-                  <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                    AI-юрист
-                  </span>
+                  <span className="text-gray-900">Ваша база документов</span>
                   <br />
-                  <span className="text-gray-900">нового поколения</span>
+                  <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    отвечает на вопросы за секунды
+                  </span>
                 </h1>
               </div>
               
               <div className="animate-fade-up opacity-0" style={{ animationDelay: '200ms' }}>
                 <p className="text-xl text-gray-600 leading-relaxed">
-                  Находите нужные документы за секунды, а не часы. 
-                  Революционная система поиска по юридической базе знаний с AI.
+                  RAG-система для юристов с интеллектуальным поиском. <strong>80% экономия времени</strong> на поиске документов подтверждена исследованием Harvard Law School.
                 </p>
               </div>
 
               <div className="animate-fade-up opacity-0" style={{ animationDelay: '400ms' }}>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <button  className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center" onClick={() => setShowDemoForm(true)}>
-                    Попробовать бесплатно
+                  <button className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center" onClick={() => setShowDemoForm(true)}>
+                    Попробовать 30 дней бесплатно
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </button>
-
-              
                 </div>
               </div>
 
-         <div className="animate-fade-up opacity-0" style={{ animationDelay: '600ms' }}>
-  <p className="text-sm text-gray-600">
-    Начните 14-дневный бесплатный период прямо сейчас
-  </p>
-</div>
+              <div className="animate-fade-up opacity-0" style={{ animationDelay: '600ms' }}>
+                <div className="flex items-center space-x-8">
+                  <div>
+                    <p className="text-3xl font-bold text-blue-600">26 сек</p>
+                    <p className="text-sm text-gray-600">вместо 92 минут на анализ договора*</p>
+                  </div>
+                  <div>
+                    <p className="text-3xl font-bold text-purple-600">ROI меньше 2 мес</p>
+                    <p className="text-sm text-gray-600">окупаемость инвестиций</p>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500 mt-4">
+                  *По данным исследования LawGeex <a href="https://www.virtasant.com/ai-today/ai-contract-mangement-legal" className="underline" target="_blank" rel="noopener noreferrer">[источник]</a>
+                </p>
+              </div>
             </div>
 
             <div className="animate-fade-up opacity-0 relative" style={{ animationDelay: '800ms' }}>
@@ -394,19 +411,19 @@ const demos = {
                   </div>
                   <div className="p-8">
                     <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                      <p className="text-gray-600 mb-2">Поиск:</p>
-                      <p className="text-lg">Срок исковой давности по трудовым спорам?</p>
+                      <p className="text-gray-600 mb-2">Запрос:</p>
+                      <p className="text-lg font-medium">увольнение беременной</p>
                     </div>
                     <div className="space-y-3">
                       <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 border-l-4 border-blue-500">
-                        <p className="font-semibold text-blue-900">Найдено в 3 источниках:</p>
-                        <p className="text-sm mt-2">• 1 месяц - для обжалования увольнения</p>
-                        <p className="text-sm">• 3 месяца - для взыскания зарплаты</p>
-                        <p className="text-sm">• 1 год - по индивидуальным трудовым спорам</p>
+                        <p className="font-semibold text-blue-900">Найдено по ст. 261 ТК РФ:</p>
+                        <p className="text-sm mt-2">• Увольнение запрещено (кроме ликвидации)</p>
+                        <p className="text-sm">• Срочный договор продлевается до окончания беременности</p>
+                        <p className="text-sm">• Перевод на легкий труд обязателен</p>
                       </div>
                       <div className="flex gap-2">
-                        <div className="bg-gray-100 rounded px-3 py-1 text-sm">📄 ТК РФ ст. 392</div>
-                        <div className="bg-gray-100 rounded px-3 py-1 text-sm">📄 Пост. Пленума ВС №2</div>
+                        <div className="bg-gray-100 rounded px-3 py-1 text-sm">📄 ТК РФ ст. 261</div>
+                        <div className="bg-gray-100 rounded px-3 py-1 text-sm">📄 Ваша практика: 12 дел</div>
                       </div>
                     </div>
                   </div>
@@ -417,31 +434,58 @@ const demos = {
         </div>
       </section>
 
-      {/* Компании-клиенты */}
-      {/*
-     <section id="clients" className="py-20 bg-white">
-   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
-  {[
-    '/logos/company1.png',
-    '/logos/company2.png', 
-    '/logos/company3.png',
-    '/logos/company4.png',
-    '/logos/company5.png',
-    '/logos/company6.png'
+      {/* Секция "Как это работает" */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold mb-4">Как работает интеллектуальный поиск</h2>
+            <p className="text-xl text-gray-600">В отличие от обычного поиска, который ищет только точные слова</p>
+          </div>
 
-  ].map((logo, i) => (
-    <div key={i} className="animate-scale opacity-0" style={{ animationDelay: `${i * 100}ms` }}>
-<div className="h-24 flex items-center justify-center hover:opacity-80 transition-opacity cursor-pointer">
-  <img 
-    src={logo} 
-    alt={`Клиент ${i + 1}`}
-    className="max-h-16 max-w-full object-contain filter grayscale hover:grayscale-0 transition-all"
-  />
-</div>
-    </div>
-  ))}
-</div>
-      </section>*/}
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="bg-red-50 border-2 border-red-200 rounded-xl p-6 mb-6">
+                <h3 className="text-xl font-semibold mb-3 text-red-800">❌ Обычный поиск</h3>
+                <ul className="space-y-2 text-gray-700">
+                  <li>• "договор аренды" ≠ "арендное соглашение"</li>
+                  <li>• Пропускает синонимы и связанные понятия</li>
+                  <li>• Работает как Ctrl+F в Word</li>
+                  <li>• Нужно помнить точные формулировки</li>
+                </ul>
+              </div>
+
+              <div className="bg-green-50 border-2 border-green-200 rounded-xl p-6">
+                <h3 className="text-xl font-semibold mb-3 text-green-800">✅ RAG-система Athena</h3>
+                <ul className="space-y-2 text-gray-700">
+                  <li>• "договор аренды" = "арендное соглашение" = "договор найма"</li>
+                  <li>• Понимает: "расторжение" = "прекращение" = "разрыв"</li>
+                  <li>• Работает как опытный юрист</li>
+                  <li>• Понимает контекст и смысл запроса</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-2xl font-bold mb-6">Живые примеры поиска:</h3>
+              
+              <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500">
+                <p className="font-semibold text-blue-900">Запрос: "договоры с просрочкой платежа"</p>
+                <p className="text-sm mt-2">→ Найдет ВСЕ документы с упоминанием: штрафов, пеней, неустоек, санкций, ответственности за неисполнение</p>
+              </div>
+
+              <div className="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-500">
+                <p className="font-semibold text-purple-900">Запрос: "ответственность директора"</p>
+                <p className="text-sm mt-2">→ Найдет: субсидиарную ответственность, привлечение к ответственности, банкротство, административную ответственность</p>
+              </div>
+
+              <div className="bg-green-50 rounded-lg p-4 border-l-4 border-green-500">
+                <p className="font-semibold text-green-900">Запрос: "можно ли уволить за прогул?"</p>
+                <p className="text-sm mt-2">→ Не только найдет документы, но и даст пошаговую инструкцию с учетом вашей практики</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Проблемы */}
       <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
@@ -453,17 +497,17 @@ const demos = {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                title: "Часами ищете нужную статью",
-                description: "Тратите время на поиск в многотомных кодексах и постоянно обновляющемся законодательстве",
+                title: "16 часов на анализ документов",
+                description: "По данным Harvard Law School, юристы тратят до 16 часов на рутинные задачи, которые AI выполняет за минуты",
                 icon: <Clock className="w-8 h-8" />
               },
               {
-                title: "Пропускаете важные изменения",
-                description: "Сложно отследить все поправки в законах и новые судебные прецеденты",
+                title: "22% времени можно автоматизировать",
+                description: "McKinsey: примерно 22% работы юриста может быть автоматизировано с помощью AI",
                 icon: <TrendingUp className="w-8 h-8" />
               },
               {
-                title: "Рутинный поиск информации",
+                title: "Поиск занимает часы",
                 description: "Одни и те же запросы приходится искать снова и снова в разных источниках",
                 icon: <Search className="w-8 h-8" />
               }
@@ -493,7 +537,7 @@ const demos = {
       <section id="features" className="py-20 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
-            <h2 className="text-4xl font-bold text-center mb-12">Посмотрите, как это работает</h2>
+            <h2 className="text-4xl font-bold text-center mb-12">Ключевые возможности системы</h2>
           </div>
 
           <div className="animate-fade-up opacity-0" style={{ animationDelay: '200ms' }}>
@@ -520,6 +564,13 @@ const demos = {
               <div className="space-y-6">
                 <h3 className="text-3xl font-bold">{demos[activeDemo].title}</h3>
                 <p className="text-xl text-gray-600">{demos[activeDemo].description}</p>
+                
+                {demos[activeDemo].example && (
+                  <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500">
+                    <p className="text-sm font-medium">{demos[activeDemo].example}</p>
+                  </div>
+                )}
+                
                 <ul className="space-y-3">
                   {demos[activeDemo].features.map((feature, i) => (
                     <li key={i} className="flex items-start space-x-3">
@@ -528,50 +579,133 @@ const demos = {
                     </li>
                   ))}
                 </ul>
-           
               </div>
               
-      <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
-  {demos[activeDemo].gif ? (
-    <img 
-      src={demos[activeDemo].gif} 
-      alt={`Демо: ${demos[activeDemo].title}`}
-      className="w-full h-auto object-cover"
-    />
-  ) : (
-    <div className={`aspect-video flex items-center justify-center text-white bg-gradient-to-br ${demos[activeDemo].color}`}>
-      <div className="text-center">
-        <PlayCircle className="w-20 h-20 mx-auto mb-4" />
-        <p className="text-xl">[Демо: {demos[activeDemo].title}]</p>
-      </div>
-    </div>
-  )}
-</div>
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
+                <div className={`aspect-video flex items-center justify-center text-white bg-gradient-to-br ${demos[activeDemo].color}`}>
+                  <div className="text-center p-8">
+                    <div className="text-6xl mb-4">{demos[activeDemo].icon}</div>
+                    <p className="text-xl">Демонстрация: {demos[activeDemo].title}</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Преимущества */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 to-purple-600 text-white">
+      {/* Преимущества с цифрами и источниками */}
+      <section id="benefits" className="py-20 bg-gradient-to-br from-blue-600 to-purple-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
-            <h2 className="text-4xl font-bold text-center mb-12">Преимущества для вашего бизнеса</h2>
+            <h2 className="text-4xl font-bold text-center mb-4">Доказанная эффективность</h2>
+            <p className="text-xl text-center mb-12 text-white/90">Подтверждено исследованиями ведущих организаций</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { icon: "💰", value: "ROI 300%", label: "Возврат инвестиций за 6 месяцев" },
-              { icon: "⏱️", value: "3 часа/день", label: "Экономия времени каждого юриста" },
-              { icon: "📈", value: "+40%", label: "Рост продуктивности отдела" },
-              { icon: "🔒", value: "100%", label: "Безопасность ваших данных" }
+              { 
+                icon: "⏱️", 
+                value: "80%", 
+                label: "Экономия времени на поиске",
+                source: "Harvard Law School",
+                link: "https://clp.law.harvard.edu/knowledge-hub/insights/the-impact-of-artificial-intelligence-on-law-law-firms-business-models/"
+              },
+              { 
+                icon: "📈", 
+                value: "16ч → 4мин", 
+                label: "Сокращение времени на анализ",
+                source: "Harvard Law School",
+                link: "https://clp.law.harvard.edu/knowledge-hub/insights/the-impact-of-artificial-intelligence-on-law-law-firms-business-models/"
+              },
+              { 
+                icon: "🚀", 
+                value: "94%", 
+                label: "Точность AI анализа",
+                source: "LawGeex Study",
+                link: "https://www.virtasant.com/ai-today/ai-contract-mangement-legal"
+              },
+              { 
+                icon: "💰", 
+                value: "< 2 мес", 
+                label: "Окупаемость инвестиций",
+                source: "Расчет ROI"
+              }
             ].map((benefit, i) => (
               <div key={i} className="animate-scale opacity-0" style={{ animationDelay: `${i * 100}ms` }}>
                 <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 hover:bg-white/20 transition-all duration-300 text-center">
                   <div className="text-5xl mb-4">{benefit.icon}</div>
                   <div className="text-3xl font-bold mb-2">{benefit.value}</div>
-                  <p className="text-white/80">{benefit.label}</p>
+                  <p className="text-white/80 mb-2">{benefit.label}</p>
+                  {benefit.link ? (
+                    <a href={benefit.link} target="_blank" rel="noopener noreferrer" className="text-xs text-white/60 hover:text-white underline">
+                      {benefit.source} ↗
+                    </a>
+                  ) : (
+                    <p className="text-xs text-white/60">{benefit.source}</p>
+                  )}
                 </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <p className="text-sm text-white/80">
+              Дополнительно: AI юристами выросло с 19% до 79% за один год 
+              <a href="https://www.lawnext.com/2024/10/ai-adoption-by-legal-professionals-jumps-from-19-to-79-in-one-year-clio-study-finds.html" 
+                 className="underline ml-1" target="_blank" rel="noopener noreferrer">
+                (Clio Study 2024)
+              </a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Безопасность */}
+      <section id="security" className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold mb-4">Безопасность корпоративного уровня</h2>
+            <p className="text-xl text-gray-600">Критично важно для работы с конфиденциальными документами</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                icon: <Lock className="w-8 h-8" />,
+                title: "Шифрование данных",
+                description: "Все документы хранятся в зашифрованном виде с использованием AES-256"
+              },
+              {
+                icon: <Shield className="w-8 h-8" />,
+                title: "Изоляция данных",
+                description: "Полная изоляция между организациями, мульти-тенантная архитектура"
+              },
+              {
+                icon: <Server className="w-8 h-8" />,
+                title: "On-premise опция",
+                description: "Возможность развертывания на ваших серверах для полного контроля"
+              },
+              {
+                icon: <CheckCircle className="w-8 h-8" />,
+                title: "Соответствие 152-ФЗ",
+                description: "Полное соответствие требованиям по защите персональных данных"
+              },
+              {
+                icon: <Users className="w-8 h-8" />,
+                title: "Разграничение доступа",
+                description: "Гибкие роли и права доступа вплоть до отдельных документов"
+              },
+              {
+                icon: <BarChart3 className="w-8 h-8" />,
+                title: "Аудит действий",
+                description: "Полное логирование всех действий пользователей в системе"
+              }
+            ].map((feature, i) => (
+              <div key={i} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all">
+                <div className="text-blue-600 mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-gray-600">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -579,93 +713,121 @@ const demos = {
       </section>
 
       {/* Тарифы */}
- <section id="pricing" className="py-20 bg-gray-50">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
-      <h2 className="text-4xl font-bold text-center mb-4">Выберите подходящий тариф</h2>
-      <p className="text-xl text-gray-600 text-center mb-12">Начните с бесплатного пробного периода на 14 дней</p>
-    </div>
+      <section id="pricing" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
+            <h2 className="text-4xl font-bold text-center mb-4">Прозрачные тарифы</h2>
+            <p className="text-xl text-gray-600 text-center mb-12">30 дней бесплатно для всех тарифов</p>
+          </div>
 
-    <div className="grid md:grid-cols-3 gap-8">
-      {[
-        {
-          name: "Стартовый",
-          //price: "Цена по запросу",
-          features: ["До 5 пользователей", "100 документов", "Базовый поиск", "Email поддержка", "Обновления законодательства"],
-          popular: false,
-          buttonText: "Начать бесплатно"
-        },
-        {
-          name: "Профессиональный",
-          //price: "Цена по запросу",
-          features: ["До 20 пользователей", "1000 документов", "Расширенный AI-поиск", "API для интеграций", "Приоритетная поддержка 24/7", "Обучение сотрудников"],
-          popular: true,
-          buttonText: "Попробовать 14 дней"
-        },
-        {
-          name: "Корпоративный",
-          //price: "Цена по запросу",
-          features: ["Неограниченно пользователей", "Неограниченно документов", "Выделенный сервер", "Кастомизация", "Персональный менеджер", "SLA гарантии"],
-          popular: false,
-          buttonText: "Получить расчет"
-        }
-      ].map((plan, i) => (
-        <div key={i} className="animate-fade-up opacity-0" style={{ animationDelay: `${i * 200}ms` }}>
-          <div className={`relative rounded-2xl p-8 ${
-            plan.popular 
-              ? 'bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-2xl transform scale-105' 
-              : 'bg-white border border-gray-200'
-          }`}>
-            {plan.popular && (
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-gray-900 px-4 py-1 rounded-full text-sm font-semibold">
-                Популярный
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Старт",
+                price: "25 000",
+                priceNote: "₽/мес",
+                features: [
+                  "До 5 юристов",
+                  "До 1000 документов", 
+                  "500 запросов в день",
+                  "Базовая поддержка",
+                  "Обновления законодательства"
+                ],
+                popular: false,
+                buttonText: "Начать бесплатно"
+              },
+              {
+                name: "Команда",
+                price: "75 000",
+                priceNote: "₽/мес",
+                features: [
+                  "До 20 юристов",
+                  "До 10 000 документов",
+                  "Неограниченные запросы",
+                  "API для интеграций",
+                  "Приоритетная поддержка",
+                  "Обучение сотрудников"
+                ],
+                popular: true,
+                buttonText: "Попробовать 30 дней"
+              },
+              {
+                name: "Корпоративный",
+                price: "От 150 000",
+                priceNote: "₽/мес",
+                features: [
+                  "Неограниченно пользователей",
+                  "Неограниченно документов",
+                  "On-premise опция",
+                  "Кастомизация под процессы",
+                  "Персональный менеджер",
+                  "SLA 99.9%"
+                ],
+                popular: false,
+                buttonText: "Получить расчет"
+              }
+            ].map((plan, i) => (
+              <div key={i} className="animate-fade-up opacity-0" style={{ animationDelay: `${i * 200}ms` }}>
+                <div className={`relative rounded-2xl p-8 ${
+                  plan.popular 
+                    ? 'bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-2xl transform scale-105' 
+                    : 'bg-white border border-gray-200'
+                }`}>
+                  {plan.popular && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-gray-900 px-4 py-1 rounded-full text-sm font-semibold">
+                      Популярный выбор
+                    </div>
+                  )}
+                  <h3 className="text-2xl font-bold mb-4">{plan.name}</h3>
+                  <div className="mb-6">
+                    <span className="text-4xl font-bold">{plan.price}</span>
+                    <span className="text-lg ml-2">{plan.priceNote}</span>
+                  </div>
+                  <ul className="space-y-3 mb-8">
+                    {plan.features.map((feature, j) => (
+                      <li key={j} className="flex items-start space-x-3">
+                        <Check className={`w-5 h-5 flex-shrink-0 mt-0.5 ${plan.popular ? 'text-white' : 'text-green-500'}`} />
+                        <span className={plan.popular ? 'text-white' : 'text-gray-700'}>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <button 
+                    onClick={() => setShowDemoForm(true)}
+                    className={`w-full py-3 rounded-full font-semibold transition-all duration-300 ${
+                      plan.popular
+                        ? 'bg-white text-blue-600 hover:bg-gray-100'
+                        : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg'
+                    }`}
+                  >
+                    {plan.buttonText}
+                  </button>
+                </div>
               </div>
-            )}
-            <h3 className="text-2xl font-bold mb-4">{plan.name}</h3>
-            <div className="mb-6">
-              <span className="text-4xl font-bold">{plan.price}</span>
-              {plan.price !== "Индивидуально" && <span className="text-lg">{/*₽/мес*/}</span>} 
-    
-            </div>
-            <ul className="space-y-3 mb-8">
-              {plan.features.map((feature, j) => (
-                <li key={j} className="flex items-start space-x-3">
-                  <Check className={`w-5 h-5 flex-shrink-0 mt-0.5 ${plan.popular ? 'text-white' : 'text-green-500'}`} />
-                  <span className={plan.popular ? 'text-white' : 'text-gray-700'}>{feature}</span>
-                </li>
-              ))}
-            </ul>
-            <button 
-              onClick={() => setShowDemoForm(true)}
-              className={`w-full py-3 rounded-full font-semibold transition-all duration-300 ${
-                plan.popular
-                  ? 'bg-white text-blue-600 hover:bg-gray-100'
-                  : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg'
-              }`}
-            >
-              {plan.buttonText}
-            </button>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <p className="text-gray-600">
+              Специальные условия для первых клиентов • Скидка 20% при оплате за год
+            </p>
           </div>
         </div>
-      ))}
-    </div>
-  </div>
-</section>
+      </section>
 
       {/* CTA секция */}
       <section id="demo" className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
             <h2 className="text-4xl font-bold text-white mb-6">
-              Ускорьте работу юридического отдела в 3 раза
+              Готовы сэкономить 80% времени на рутине?
             </h2>
             <p className="text-xl text-white/90 mb-8">
-              Начните экономить до 3 часов в день на поиске документов
+              Присоединяйтесь к юристам, которые уже используют AI для повышения эффективности
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="px-8 py-4 bg-white text-blue-600 rounded-full hover:bg-gray-100 font-semibold transition-all duration-300 transform hover:-translate-y-1"
               onClick={() => setShowDemoForm(true)}>
-                Начать бесплатный период
+                Начать 30 дней бесплатно
               </button>
               <button className="px-8 py-4 border-2 border-white text-white rounded-full hover:bg-white/10 font-semibold transition-all duration-300"
                       onClick={() => setShowDemoForm(true)}>
@@ -687,38 +849,37 @@ const demos = {
                 </div>
                 <span className="text-2xl font-bold text-white">Athena</span>
               </div>
-              <p className="text-sm">Революционная AI-платформа для юридических отделов</p>
+              <p className="text-sm">Legal RAG System — интеллектуальная система поиска по юридическим документам с AI-ассистентом</p>
             </div>
             <div>
               <h4 className="text-white font-semibold mb-4">Продукт</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white transition-colors">Возможности</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Тарифы</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">API</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Интеграции</a></li>
+                <li><a href="#features" className="hover:text-white transition-colors">Возможности</a></li>
+                <li><a href="#pricing" className="hover:text-white transition-colors">Тарифы</a></li>
+                <li><a href="#security" className="hover:text-white transition-colors">Безопасность</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">API документация</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">Компания</h4>
+              <h4 className="text-white font-semibold mb-4">Ресурсы</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white transition-colors">О нас</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Блог</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Карьера</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Контакты</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">База знаний</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Вебинары</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Кейсы клиентов</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Исследования</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">Поддержка</h4>
+              <h4 className="text-white font-semibold mb-4">Контакты</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white transition-colors">Документация</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Поддержка</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Статус системы</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">support@athenalegal.tech</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">+7 (499) 123-45-67</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Telegram поддержка</a></li>
               </ul>
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
-            <p>&copy; 2024 Athena. Все права защищены.</p>
+            <p>&copy; 2024 Athena Legal Tech. Все права защищены. ИП Фамилия И.О.</p>
           </div>
         </div>
       </footer>
