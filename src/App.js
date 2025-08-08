@@ -717,14 +717,14 @@ const demos = {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
             <h2 className="text-4xl font-bold text-center mb-4">Прозрачные тарифы</h2>
-            <p className="text-xl text-gray-600 text-center mb-12">30 дней бесплатно для всех тарифов</p>
+            <p className="text-xl text-gray-600 text-center mb-12">14 дней бесплатно для всех тарифов</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
                 name: "Старт",
-                price: "25 000",
+                //price: "25 000",
                 priceNote: "₽/мес",
                 features: [
                   "До 5 юристов",
@@ -738,7 +738,7 @@ const demos = {
               },
               {
                 name: "Команда",
-                price: "75 000",
+                //price: "75 000",
                 priceNote: "₽/мес",
                 features: [
                   "До 20 юристов",
@@ -753,7 +753,7 @@ const demos = {
               },
               {
                 name: "Корпоративный",
-                price: "От 150 000",
+                //price: "От 150 000",
                 priceNote: "₽/мес",
                 features: [
                   "Неограниченно пользователей",
