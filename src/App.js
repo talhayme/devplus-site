@@ -323,7 +323,7 @@ const demos = {
               <a href="#security" className="text-gray-700 hover:text-blue-600 transition-colors">Безопасность</a>
               <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
               onClick={() => setShowDemoForm(true)}>
-                Попробовать 30 дней бесплатно
+                Попробовать 14 дней бесплатно
               </button>
             </div>
 
@@ -377,7 +377,7 @@ const demos = {
               <div className="animate-fade-up opacity-0" style={{ animationDelay: '400ms' }}>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center" onClick={() => setShowDemoForm(true)}>
-                    Попробовать 30 дней бесплатно
+                    Попробовать 14 дней бесплатно
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
@@ -749,7 +749,7 @@ const demos = {
                   "Обучение сотрудников"
                 ],
                 popular: true,
-                buttonText: "Попробовать 30 дней"
+                buttonText: "Попробовать 14 дней"
               },
               {
                 name: "Корпоративный",
@@ -808,7 +808,7 @@ const demos = {
 
           <div className="mt-12 text-center">
             <p className="text-gray-600">
-              Специальные условия для первых клиентов • Скидка 20% при оплате за год
+              
             </p>
           </div>
         </div>
@@ -827,7 +827,7 @@ const demos = {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="px-8 py-4 bg-white text-blue-600 rounded-full hover:bg-gray-100 font-semibold transition-all duration-300 transform hover:-translate-y-1"
               onClick={() => setShowDemoForm(true)}>
-                Начать 30 дней бесплатно
+                Начать 14 дней бесплатно
               </button>
               <button className="px-8 py-4 border-2 border-white text-white rounded-full hover:bg-white/10 font-semibold transition-all duration-300"
                       onClick={() => setShowDemoForm(true)}>
