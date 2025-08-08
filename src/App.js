@@ -585,14 +585,7 @@ const demos = {
                 </ul>
               </div>
               
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
-                <div className={`aspect-video flex items-center justify-center text-white bg-gradient-to-br ${demos[activeDemo].color}`}>
-                  <div className="text-center p-8">
-                    <div className="text-6xl mb-4">{demos[activeDemo].icon}</div>
-                    <p className="text-xl">Демонстрация: {demos[activeDemo].title}</p>
-                  </div>
-                </div>
-              </div>
+
             </div>
           </div>
         </div>
