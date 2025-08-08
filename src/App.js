@@ -360,10 +360,10 @@ const demos = {
             <div className="space-y-8">
               <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
                 <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-                  <span className="text-gray-900">Ваша база документов</span>
+                  <span className="text-gray-900">Найдите любой документ</span>
                   <br />
                   <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                    отвечает на вопросы за секунды
+                    за секунды
                   </span>
                 </h1>
               </div>
@@ -651,7 +651,7 @@ const demos = {
 
           <div className="mt-12 text-center">
             <p className="text-sm text-white/80">
-              Дополнительно: AI юристами выросло с 19% до 79% за один год 
+              Дополнительно: Использование AI юристами выросло с 19% до 79% за один год
               <a href="https://www.lawnext.com/2024/10/ai-adoption-by-legal-professionals-jumps-from-19-to-79-in-one-year-clio-study-finds.html" 
                  className="underline ml-1" target="_blank" rel="noopener noreferrer">
                 (Clio Study 2024)
