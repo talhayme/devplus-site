@@ -18,7 +18,7 @@ function App() {
   const faqItems = [
     {
       q: "Сколько стоит внедрение?",
-      a: "Зависит от сложности. Простая автоматизация — от 150 000 руб. Полноценный ИИ-ассистент с интеграциями — от 400 000 руб. Точную стоимость называем после аудита."
+      a: "Зависит от сложности. Ориентиры: простая интеграция или ИИ-ассистент — от 150 000 руб., комплексный проект с несколькими системами — от 400 000 руб. Точную стоимость называем после бесплатного аудита, до начала работ."
     },
     {
       q: "Как долго длится внедрение?",
@@ -279,9 +279,16 @@ function App() {
                 <Zap size={20} />
                 Узнать, что можно автоматизировать
               </button>
-              <p className="text-sm text-slate-500 mt-4">
-                30+ проектов | Окупаемость за 2-3 месяца
-              </p>
+              <div className="flex flex-wrap gap-4 mt-4">
+                <span className="inline-flex items-center gap-2 px-4 py-2 bg-[#E8F5EE] rounded-full text-sm text-[#0A8754] font-medium">
+                  <CheckCircle size={16} />
+                  30+ проектов
+                </span>
+                <span className="inline-flex items-center gap-2 px-4 py-2 bg-[#E8F5EE] rounded-full text-sm text-[#0A8754] font-medium">
+                  <TrendingUp size={16} />
+                  Окупаемость за 2-3 месяца
+                </span>
+              </div>
             </div>
 
             {/* Right Column - Demo Card */}
@@ -322,9 +329,6 @@ function App() {
           <h2 className="text-4xl md:text-5xl mb-4 bcg-heading">
             Узнаёте свою компанию?
           </h2>
-          <p className="text-xl text-[#4A4A4A] mb-12">
-            Эти проблемы стоят бизнесу миллионы рублей ежегодно
-          </p>
 
           <div className="grid md:grid-cols-2 gap-8">
             {[
@@ -399,6 +403,9 @@ function App() {
           <div className="grid md:grid-cols-2 gap-8">
             {/* Case 1 - AI */}
             <div className="bg-white rounded-3xl p-10 bcg-card">
+              <span className="inline-block px-3 py-1 bg-[#0A8754] text-white rounded-full text-xs font-semibold mb-4">
+                ИИ-АССИСТЕНТ
+              </span>
               <div className="mb-6">
                 <h3 className="text-2xl font-semibold text-[#1A1A1A] mb-2">Юристы экономят 3 часа в день</h3>
                 <div className="text-sm text-[#4A4A4A]">Клиент: Юридическая компания, 30+ сотрудников</div>
@@ -436,6 +443,9 @@ function App() {
 
             {/* Case 2 - Automation */}
             <div className="bg-white rounded-3xl p-10 bcg-card">
+              <span className="inline-block px-3 py-1 bg-[#0A8754] text-white rounded-full text-xs font-semibold mb-4">
+                АВТОМАТИЗАЦИЯ
+              </span>
               <div className="mb-6">
                 <h3 className="text-2xl font-semibold text-[#1A1A1A] mb-2">Отчёты собираются сами</h3>
                 <div className="text-sm text-[#4A4A4A]">Клиент: Дистрибьютор, 50+ человек</div>
@@ -633,14 +643,17 @@ function App() {
                 <img src="/founder.jpg" alt="Виталий Богачев" className="w-full h-full object-cover" />
               </div>
               <div className="flex-1 text-center md:text-left">
-                <h3 className="text-2xl font-semibold text-[#1A1A1A] mb-2">Виталий Богачев</h3>
                 <div className="text-[#0A8754] font-medium mb-4">Основатель Athena Dev</div>
                 <p className="text-[#4A4A4A] leading-relaxed mb-4">
                   Занимаюсь цифровизацией бизнеса и внедрением ИИ с 2022 года. 30+ проектов: автоматизация процессов, интеграция систем, корпоративные ИИ-ассистенты.
                 </p>
-                <p className="text-[#4A4A4A] leading-relaxed">
+                <p className="text-[#4A4A4A] leading-relaxed mb-4">
                   Работал с юридическими компаниями, производством, дистрибуцией. Знаю, как устроены реальные бизнес-процессы и где технологии действительно помогают, а где — пустая трата денег.
                 </p>
+                <a href="https://t.me/vaboroda" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[#0A8754] hover:text-[#086943] font-medium transition-colors">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.46-1.9-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.015 3.333-1.386 4.025-1.627 4.477-1.635.099-.002.321.023.465.141.121.1.154.234.169.371.015.138.033.322.023.496z"/></svg>
+                  Написать в Telegram
+                </a>
               </div>
             </div>
           </div>
@@ -794,7 +807,7 @@ function App() {
                 </div>
 
                 <button type="submit" className="w-full bcg-button py-4 text-lg font-semibold">
-                  Получить консультацию
+                  Начать с бесплатного аудита
                 </button>
               </div>
             </form>
