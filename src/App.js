@@ -26,7 +26,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
       {/* Custom Styles */}
-      <style>{\`
+      <style>{`
         @keyframes blob {
           0%, 100% { transform: translate(0, 0) scale(1); }
           25% { transform: translate(20px, -30px) scale(1.1); }
@@ -96,7 +96,7 @@ function App() {
         .bcg-link:hover::after {
           width: 100%;
         }
-      \`}</style>
+      `}</style>
 
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 border-b border-slate-200">
