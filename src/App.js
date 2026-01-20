@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Zap, Users, FileText, Clock, TrendingUp, Target, CheckCircle, BarChart } from 'lucide-react';
 
 function App() {
@@ -12,6 +12,19 @@ function App() {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [activeSection, setActiveSection] = useState('problems');
+  const [showModal, setShowModal] = useState(false);
+
+  // Yandex.Metrika
+  useEffect(() => {
+    (function(m,e,t,r,i,k,a){
+      m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();
+      for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+      k=e.createElement(t);a=e.getElementsByTagName(t)[0];k.async=1;k.src=r;a.parentNode.insertBefore(k,a);
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106184385', 'ym');
+
+    window.ym(106184385, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -223,7 +236,10 @@ function App() {
               <p className="text-xl text-[#4A4A4A] mb-8">
                 Автоматизируем рутину, связываем системы, внедряем ИИ — чтобы сотрудники занимались важным, а не копированием данных
               </p>
-              <button className="bcg-button px-8 py-4 text-lg font-semibold inline-flex items-center gap-2">
+              <button
+                className="bcg-button px-8 py-4 text-lg font-semibold inline-flex items-center gap-2"
+                onClick={() => setShowModal(true)}
+              >
                 <Zap size={20} />
                 Получить план автоматизации
               </button>
@@ -494,7 +510,7 @@ function App() {
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#0A8754] to-[#086943] flex items-center justify-center mb-4">
                   <Target className="text-white" size={24} />
                 </div>
-                <h3 className="text-xl font-semibold text-[#1A1A1A] mb-2">Аудит (бесплатно, 3-5 дней)</h3>
+                <h3 className="text-xl font-semibold text-[#1A1A1A] mb-2">Аудит (3-5 дней)</h3>
                 <p className="text-[#4A4A4A]">
                   Разбираемся, как устроены ваши процессы сейчас. Интервью с ключевыми сотрудниками, анализ систем, поиск узких мест. Результат: отчёт с приоритетами — что автоматизировать в первую очередь.
                 </p>
@@ -705,6 +721,78 @@ function App() {
         </div>
       </section>
 
+      {/* Contact Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] flex items-center justify-center p-4" onClick={() => setShowModal(false)}>
+          <div className="bg-white rounded-3xl p-8 max-w-lg w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-semibold text-[#1A1A1A] bcg-heading">Получить план автоматизации</h3>
+              <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
+            </div>
+
+            {isSubmitted ? (
+              <div className="text-center py-8">
+                <CheckCircle className="w-16 h-16 text-[#0A8754] mx-auto mb-4" />
+                <h3 className="text-2xl font-semibold text-[#1A1A1A] mb-2">Заявка принята!</h3>
+                <p className="text-[#4A4A4A]">Свяжемся в течение часа</p>
+              </div>
+            ) : (
+              <form onSubmit={(e) => { handleSubmit(e); }} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-[#4A4A4A] mb-2">Имя</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0A8754] focus:ring-2 focus:ring-[#C8E6D8] transition-all"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-[#4A4A4A] mb-2">Телефон</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0A8754] focus:ring-2 focus:ring-[#C8E6D8] transition-all"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-[#4A4A4A] mb-2">Компания</label>
+                  <input
+                    type="text"
+                    name="company"
+                    value={formData.company}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0A8754] focus:ring-2 focus:ring-[#C8E6D8] transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-[#4A4A4A] mb-2">Опишите задачу</label>
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    rows={3}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0A8754] focus:ring-2 focus:ring-[#C8E6D8] transition-all resize-none"
+                  />
+                </div>
+
+                <button type="submit" className="w-full bcg-button py-4 text-lg font-semibold">
+                  Отправить заявку
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Footer */}
       <footer className="bg-slate-900 text-white py-12 px-6">
         <div className="max-w-7xl mx-auto">
@@ -735,6 +823,13 @@ function App() {
           </div>
         </div>
       </footer>
+
+      {/* Yandex.Metrika noscript fallback */}
+      <noscript>
+        <div>
+          <img src="https://mc.yandex.ru/watch/106184385" style={{position: 'absolute', left: '-9999px'}} alt="" />
+        </div>
+      </noscript>
     </div>
   );
 }
