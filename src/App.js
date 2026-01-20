@@ -262,7 +262,6 @@ const demos = {
       "Поиск за 1-3 секунды вместо часов"
     ],
     color: "from-blue-500 to-purple-600",
-    gif: "/demos/search.gif",
     example: "Запрос: 'договоры с просрочкой платежа' → Найдет все документы с упоминанием штрафов, пеней, неустоек, санкций"
   },
   generate: {
@@ -275,7 +274,6 @@ const demos = {
       "Автозаполнение реквизитов и дат"
     ],
     color: "from-green-500 to-teal-600",
-    gif: "/demos/upload.gif",  // Или другая подходящая GIF
     example: "Команда: 'Составь иск о взыскании долга' → Готовый документ на основе ваших шаблонов"
   },
   assistant: {
@@ -288,7 +286,6 @@ const demos = {
       "Всегда указывает источники информации"
     ],
     color: "from-orange-500 to-red-600",
-    gif: "/demos/assistant.gif",
     example: "Вопрос: 'Как уволить за прогул?' → Пошаговая инструкция со ссылками на ваши документы"
   },
   analytics: {
@@ -300,8 +297,7 @@ const demos = {
       "Популярные темы запросов",
       "ROI калькулятор в реальном времени"
     ],
-    color: "from-purple-500 to-pink-600",
-    gif: "/demos/analytics.gif"
+    color: "from-purple-500 to-pink-600"
   }
 };
 
@@ -327,7 +323,7 @@ const demos = {
               <a href="#security" className="text-gray-700 hover:text-blue-600 transition-colors">Безопасность</a>
               <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
               onClick={() => setShowDemoForm(true)}>
-                Попробовать 14 дней бесплатно
+                Попробовать 30 дней бесплатно
               </button>
             </div>
 
@@ -364,10 +360,10 @@ const demos = {
             <div className="space-y-8">
               <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
                 <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-                  <span className="text-gray-900">Найдите любой документ</span>
+                  <span className="text-gray-900">Ваша база документов</span>
                   <br />
                   <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                    за секунды
+                    отвечает на вопросы за секунды
                   </span>
                 </h1>
               </div>
@@ -381,7 +377,7 @@ const demos = {
               <div className="animate-fade-up opacity-0" style={{ animationDelay: '400ms' }}>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center" onClick={() => setShowDemoForm(true)}>
-                    Попробовать 14 дней бесплатно
+                    Попробовать 30 дней бесплатно
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
@@ -585,7 +581,14 @@ const demos = {
                 </ul>
               </div>
               
-
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
+                <div className={`aspect-video flex items-center justify-center text-white bg-gradient-to-br ${demos[activeDemo].color}`}>
+                  <div className="text-center p-8">
+                    <div className="text-6xl mb-4">{demos[activeDemo].icon}</div>
+                    <p className="text-xl">Демонстрация: {demos[activeDemo].title}</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -648,7 +651,7 @@ const demos = {
 
           <div className="mt-12 text-center">
             <p className="text-sm text-white/80">
-              Дополнительно: Использование AI юристами выросло с 19% до 79% за один год
+              Дополнительно: AI юристами выросло с 19% до 79% за один год 
               <a href="https://www.lawnext.com/2024/10/ai-adoption-by-legal-professionals-jumps-from-19-to-79-in-one-year-clio-study-finds.html" 
                  className="underline ml-1" target="_blank" rel="noopener noreferrer">
                 (Clio Study 2024)
@@ -714,15 +717,15 @@ const demos = {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="animate-fade-up opacity-0" style={{ animationDelay: '0ms' }}>
             <h2 className="text-4xl font-bold text-center mb-4">Прозрачные тарифы</h2>
-            <p className="text-xl text-gray-600 text-center mb-12">14 дней бесплатно для всех тарифов</p>
+            <p className="text-xl text-gray-600 text-center mb-12">30 дней бесплатно для всех тарифов</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
                 name: "Старт",
-                //price: "25 000",
-                //priceNote: "₽/мес",
+                price: "25 000",
+                priceNote: "₽/мес",
                 features: [
                   "До 5 юристов",
                   "До 1000 документов", 
@@ -735,8 +738,8 @@ const demos = {
               },
               {
                 name: "Команда",
-                //price: "75 000",
-                //priceNote: "₽/мес",
+                price: "75 000",
+                priceNote: "₽/мес",
                 features: [
                   "До 20 юристов",
                   "До 10 000 документов",
@@ -746,12 +749,12 @@ const demos = {
                   "Обучение сотрудников"
                 ],
                 popular: true,
-                buttonText: "Попробовать 14 дней"
+                buttonText: "Попробовать 30 дней"
               },
               {
                 name: "Корпоративный",
-                //price: "От 150 000",
-                //priceNote: "₽/мес",
+                price: "От 150 000",
+                priceNote: "₽/мес",
                 features: [
                   "Неограниченно пользователей",
                   "Неограниченно документов",
@@ -805,7 +808,7 @@ const demos = {
 
           <div className="mt-12 text-center">
             <p className="text-gray-600">
-              
+              Специальные условия для первых клиентов • Скидка 20% при оплате за год
             </p>
           </div>
         </div>
@@ -824,7 +827,7 @@ const demos = {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="px-8 py-4 bg-white text-blue-600 rounded-full hover:bg-gray-100 font-semibold transition-all duration-300 transform hover:-translate-y-1"
               onClick={() => setShowDemoForm(true)}>
-                Начать 14 дней бесплатно
+                Начать 30 дней бесплатно
               </button>
               <button className="px-8 py-4 border-2 border-white text-white rounded-full hover:bg-white/10 font-semibold transition-all duration-300"
                       onClick={() => setShowDemoForm(true)}>

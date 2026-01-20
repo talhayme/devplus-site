@@ -1,0 +1,670 @@
+import React, { useState, useEffect, memo } from 'react';
+import { ChevronRight, ArrowRight, Check, Menu, X, TrendingUp, Clock, DollarSign, Users, Target, Shield, Zap, Brain, Database, MessageSquare, FolderOpen, FileText, BarChart3, RefreshCw, AlertCircle, Scale, Package, Settings } from 'lucide-react';
+
+const DemoFormModal = memo(({ showDemoForm, setShowDemoForm }) => {
+  const [formData, setFormData] = useState({ name: '', company: '', email: '', phone: '', employees: '1-10', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    const message = '🔔 Новая заявка на консультацию!\n\n👤 Имя: ' + formData.name + '\n🏢 Компания: ' + formData.company + '\n📧 Email: ' + formData.email + '\n📱 Телефон: ' + formData.phone + '\n👥 Размер: ' + formData.employees + '\n💬 Задача: ' + (formData.message || 'Не указано');
+    try {
+      const response = await fetch('https://api.telegram.org/bot7981860487:AAEWXPGYxUPm-_kakYLABZtnHuVW3wUaI0Y/sendMessage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: '111748497', text: message })
+      });
+      if (response.ok) {
+        setSubmitStatus('success');
+        setTimeout(() => { setShowDemoForm(false); setSubmitStatus(null); setFormData({ name: '', company: '', email: '', phone: '', employees: '1-10', message: '' }); }, 3000);
+      } else { setSubmitStatus('error'); }
+    } catch (error) { setSubmitStatus('error'); } finally { setIsSubmitting(false); }
+  };
+
+  if (!showDemoForm) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto" onClick={(e) => e.target === e.currentTarget && setShowDemoForm(false)}>
+      <div className="flex items-center justify-center min-h-screen px-4">
+        <div className="fixed inset-0 bg-slate-900 bg-opacity-80" />
+        <div className="inline-block w-full max-w-md p-8 my-8 bg-white shadow-2xl rounded-xl relative z-10">
+          <button onClick={() => setShowDemoForm(false)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><X className="w-6 h-6" /></button>
+          <h3 className="text-2xl font-bold mb-2 text-slate-900">Бесплатная консультация</h3>
+          <p className="text-slate-600 mb-6">Обсудим, как ИИ решит задачи вашего бизнеса</p>
+          {submitStatus === 'success' ? (
+            <div className="text-center py-8"><div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4"><Check className="w-8 h-8 text-emerald-600" /></div><h4 className="text-xl font-semibold mb-2 text-slate-900">Заявка принята!</h4><p className="text-slate-600">Свяжемся в течение часа</p></div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input type="text" required placeholder="Ваше имя *" className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
+              <input type="text" required placeholder="Компания *" className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent" value={formData.company} onChange={(e) => setFormData({...formData, company: e.target.value})} />
+              <input type="email" required placeholder="Email *" className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
+              <input type="tel" required placeholder="Телефон *" className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
+              <select className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent" value={formData.employees} onChange={(e) => setFormData({...formData, employees: e.target.value})}>
+                <option>1-10 сотрудников</option><option>11-50 сотрудников</option><option>51-200 сотрудников</option><option>200+ сотрудников</option>
+              </select>
+              <textarea placeholder="Какую задачу хотите автоматизировать?" rows={3} className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent" value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})} />
+              {submitStatus === 'error' && <div className="text-red-600 text-sm flex items-center"><AlertCircle className="w-4 h-4 mr-2" />Ошибка отправки. Попробуйте еще раз</div>}
+              <button type="submit" disabled={isSubmitting} className={'w-full py-4 px-4 rounded-lg font-semibold transition-all ' + (isSubmitting ? 'bg-slate-300 text-slate-500' : 'bg-slate-900 text-white hover:bg-slate-800')}>
+                {isSubmitting ? 'Отправка...' : 'Получить консультацию'}
+              </button>
+              <p className="text-xs text-slate-500 text-center">Отвечаем в течение часа в рабочее время</p>
+            </form>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+});
+
+const AthenaAIWebsite = () => {
+  const [scrollY, setScrollY] = useState(0);
+  const [activeDemo, setActiveDemo] = useState('rag');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showDemoForm, setShowDemoForm] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const problems = [
+    {
+      icon: <Clock className="w-12 h-12" />,
+      title: "40% времени уходит на поиск",
+      description: "Сотрудники тратят 2-3 часа в день на поиск нужной информации в документах и переписках",
+      cost: "≈800 000₽ потерь/год на команду из 10 человек"
+    },
+    {
+      icon: <RefreshCw className="w-12 h-12" />,
+      title: "Рутина съедает ресурсы",
+      description: "Обработка документов, ответы на типовые вопросы, составление отчетов — одно и то же каждый день",
+      cost: "≈60% времени квалифицированных специалистов"
+    },
+    {
+      icon: <TrendingUp className="w-12 h-12" />,
+      title: "Рост без масштабирования",
+      description: "Чтобы обработать больше задач, нужно нанимать больше людей. Линейный рост расходов",
+      cost: "₽70 000+ на нового сотрудника ежемесячно"
+    }
+  ];
+
+  const solutions = {
+    rag: {
+      icon: <Database className="w-8 h-8" />,
+      title: "RAG-система",
+      subtitle: "Корпоративная база знаний",
+      description: "Мгновенный поиск по всем документам компании с пониманием контекста",
+      problem: "Поиск информации занимает часы",
+      solution: "Находит ответ за секунды, понимает вопрос на естественном языке",
+      metrics: ["Экономия 2-3 часов/день", "90% точность ответов", "Работает с любыми форматами"],
+      useCases: ["Техподдержка", "Юридический отдел", "HR", "Продажи"],
+      roi: "Окупаемость за 2-3 месяца"
+    },
+    organizer: {
+      icon: <FolderOpen className="w-8 h-8" />,
+      title: "Умный документооборот",
+      subtitle: "AI File Organizer",
+      description: "Автоматическая обработка и классификация документов без участия человека",
+      problem: "Хаос в документах",
+      solution: "Автоматически сортирует, переименовывает и извлекает данные",
+      metrics: ["Обработка 1000+ документов/час", "Сокращение ошибок на 95%", "0 ручной работы"],
+      useCases: ["Бухгалтерия", "Договорная работа", "Архивы", "Закупки"],
+      roi: "Экономия 40+ часов/неделю"
+    },
+    assistant: {
+      icon: <Brain className="w-8 h-8" />,
+      title: "ИИ-ассистент",
+      subtitle: "Персональный помощник",
+      description: "Автоматизация рутинных задач: ответы на вопросы, составление документов, аналитика",
+      problem: "Рутина отнимает время у важных задач",
+      solution: "ИИ берет на себя типовые задачи, сотрудники фокусируются на главном",
+      metrics: ["60% задач автоматизируется", "24/7 доступность", "Обучается специфике бизнеса"],
+      useCases: ["Поддержка клиентов", "Управление", "Маркетинг", "Аналитика"],
+      roi: "Эффект 3х дополнительных сотрудников"
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full z-50 transition-all" style={{ 
+        backdropFilter: scrollY > 50 ? 'blur(12px)' : 'none', 
+        background: scrollY > 50 ? 'rgba(255,255,255,0.95)' : 'transparent',
+        borderBottom: scrollY > 50 ? '1px solid rgba(0,0,0,0.1)' : 'none'
+      }}>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-slate-900 rounded-lg flex items-center justify-center">
+                <Brain className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-2xl font-bold text-slate-900">Athena Dev</span>
+            </div>
+            <div className="hidden md:flex items-center space-x-8">
+              <a href="#problem" className="text-slate-700 hover:text-slate-900 font-medium">Проблема</a>
+              <a href="#approach" className="text-slate-700 hover:text-slate-900 font-medium">Подход</a>
+              <a href="#solutions" className="text-slate-700 hover:text-slate-900 font-medium">Кейсы</a>
+              <a href="#how" className="text-slate-700 hover:text-slate-900 font-medium">Процесс</a>
+              <button onClick={() => setShowDemoForm(true)} className="px-6 py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 font-semibold">
+                Консультация
+              </button>
+            </div>
+            <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section className="relative min-h-screen flex items-center pt-20 bg-gradient-to-b from-slate-50 to-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-8">
+              <div className="inline-block px-4 py-2 bg-slate-900 text-white text-sm font-semibold rounded-full">
+                Внедрение ИИ в бизнес
+              </div>
+              <h1 className="text-5xl md:text-6xl font-bold leading-tight text-slate-900">
+                Внедряем ИИ<br />под задачи<br />вашего бизнеса
+              </h1>
+              <p className="text-xl text-slate-600 leading-relaxed">
+                Не продаём готовые коробки. <strong className="text-slate-900">Анализируем ваши процессы</strong>, находим узкие места и создаём ИИ-решение, которое решает именно ваши проблемы.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button onClick={() => setShowDemoForm(true)} className="group px-8 py-4 bg-slate-900 text-white rounded-lg hover:bg-slate-800 font-semibold flex items-center justify-center">
+                  Бесплатная консультация
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition" />
+                </button>
+                <a href="#approach" className="px-8 py-4 border-2 border-slate-900 text-slate-900 rounded-lg hover:bg-slate-50 font-semibold text-center">
+                  Как мы работаем
+                </a>
+              </div>
+              <div className="grid grid-cols-3 gap-6 pt-8 border-t border-slate-200">
+                <div>
+                  <p className="text-3xl font-bold text-slate-900">80%</p>
+                  <p className="text-sm text-slate-600 mt-1">экономия времени</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold text-slate-900">2-3 мес</p>
+                  <p className="text-sm text-slate-600 mt-1">окупаемость</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold text-slate-900">24/7</p>
+                  <p className="text-sm text-slate-600 mt-1">работа без выходных</p>
+                </div>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+                <div className="bg-slate-900 px-6 py-4 flex items-center justify-between">
+                  <div className="flex space-x-2">
+                    <div className="w-3 h-3 bg-red-500 rounded-full" />
+                    <div className="w-3 h-3 bg-yellow-500 rounded-full" />
+                    <div className="w-3 h-3 bg-green-500 rounded-full" />
+                  </div>
+                  <span className="text-white text-sm font-medium">AI Assistant</span>
+                </div>
+                <div className="p-8 space-y-4">
+                  <div className="bg-slate-50 rounded-xl p-5 border border-slate-200">
+                    <p className="text-xs text-slate-500 mb-2">ВОПРОС СОТРУДНИКА</p>
+                    <p className="text-slate-900 font-medium">Какая процедура согласования договора с новым поставщиком?</p>
+                  </div>
+                  <div className="bg-slate-900 text-white rounded-xl p-5">
+                    <p className="text-xs text-slate-300 mb-3">ОТВЕТ ИИ-АССИСТЕНТА</p>
+                    <div className="space-y-2 text-sm">
+                      <p>✓ Проверка контрагента в ЕГРЮЛ</p>
+                      <p>✓ Согласование с юридическим отделом</p>
+                      <p>✓ Утверждение финансовым директором</p>
+                      <p>✓ Регистрация в 1С</p>
+                    </div>
+                    <div className="mt-4 pt-4 border-t border-slate-700 flex items-center text-xs text-slate-400">
+                      <FileText className="w-4 h-4 mr-2" />
+                      Источник: Регламент работы с поставщиками 2024
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-slate-500">
+                    <span>Время ответа: 2 сек</span>
+                    <span className="text-emerald-600 font-semibold">✓ Точность 94%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Problem Section */}
+      <section id="problem" className="py-24 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+              Знакомые проблемы?
+            </h2>
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+              Компании теряют миллионы рублей ежегодно из-за неэффективных процессов
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {problems.map((problem, i) => (
+              <div key={i} className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200 hover:shadow-xl transition">
+                <div className="text-slate-400 mb-6">{problem.icon}</div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">{problem.title}</h3>
+                <p className="text-slate-600 mb-6 leading-relaxed">{problem.description}</p>
+                <div className="pt-6 border-t border-slate-200">
+                  <p className="text-sm font-semibold text-red-600">{problem.cost}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trusted By / Partners */}
+      <section className="py-16 bg-white border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+              Работаем с лидерами рынка
+            </h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              Консультируем и внедряем ИИ-решения в крупнейших компаниях России. Строим системы, которые выдерживают корпоративные требования к безопасности и масштабируемости.
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center items-center gap-12 md:gap-16">
+            <img src="/logos/pik.png" alt="ПИК" className="h-12 md:h-16 object-contain grayscale hover:grayscale-0 transition opacity-70 hover:opacity-100" />
+            <img src="/logos/tbank.png" alt="Т-Банк" className="h-12 md:h-16 object-contain grayscale hover:grayscale-0 transition opacity-70 hover:opacity-100" />
+            <img src="/logos/alfa-bank.png" alt="Альфа-Банк" className="h-12 md:h-16 object-contain grayscale hover:grayscale-0 transition opacity-70 hover:opacity-100" />
+          </div>
+        </div>
+      </section>
+
+      {/* Industries */}
+      <section className="py-20 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+              С кем работаем
+            </h2>
+            <p className="text-lg text-slate-600">
+              Внедряем ИИ в компаниях из разных отраслей
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <div className="bg-white rounded-xl p-6 text-center shadow-sm border border-slate-200 hover:shadow-md transition">
+              <div className="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Scale className="w-7 h-7 text-slate-700" />
+              </div>
+              <p className="font-semibold text-slate-900">Юридические услуги</p>
+            </div>
+            <div className="bg-white rounded-xl p-6 text-center shadow-sm border border-slate-200 hover:shadow-md transition">
+              <div className="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="w-7 h-7 text-slate-700" />
+              </div>
+              <p className="font-semibold text-slate-900">Финансовый сектор</p>
+            </div>
+            <div className="bg-white rounded-xl p-6 text-center shadow-sm border border-slate-200 hover:shadow-md transition">
+              <div className="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Package className="w-7 h-7 text-slate-700" />
+              </div>
+              <p className="font-semibold text-slate-900">Ритейл и e-commerce</p>
+            </div>
+            <div className="bg-white rounded-xl p-6 text-center shadow-sm border border-slate-200 hover:shadow-md transition">
+              <div className="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Settings className="w-7 h-7 text-slate-700" />
+              </div>
+              <p className="font-semibold text-slate-900">Производство</p>
+            </div>
+          </div>
+          <p className="text-center text-slate-500 mt-8">Средний срок окупаемости — 2-3 месяца</p>
+        </div>
+      </section>
+
+      {/* Case Study */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="inline-block px-4 py-2 bg-emerald-100 text-emerald-800 text-sm font-semibold rounded-full mb-4">
+              Кейс
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
+              Автоматизация юридического документооборота
+            </h2>
+          </div>
+          <div className="bg-slate-50 rounded-2xl p-8 md:p-10 border border-slate-200">
+            <div className="mb-8">
+              <p className="text-sm font-semibold text-slate-500 mb-2">КЛИЕНТ</p>
+              <p className="text-lg text-slate-900">Юридическая компания, 30+ сотрудников (NDA)</p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+              <div>
+                <div className="flex items-center space-x-3 mb-3">
+                  <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                    <AlertCircle className="w-5 h-5 text-red-600" />
+                  </div>
+                  <p className="font-semibold text-slate-900">Проблема</p>
+                </div>
+                <p className="text-slate-600 leading-relaxed">
+                  Юристы тратили 3-4 часа в день на поиск информации в договорах, регламентах и переписках. Типовые вопросы от сотрудников отвлекали ведущих специалистов.
+                </p>
+              </div>
+              <div>
+                <div className="flex items-center space-x-3 mb-3">
+                  <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+                    <Check className="w-5 h-5 text-emerald-600" />
+                  </div>
+                  <p className="font-semibold text-slate-900">Решение</p>
+                </div>
+                <p className="text-slate-600 leading-relaxed">
+                  RAG-система с доступом к внутренней базе документов. ИИ-ассистент отвечает на вопросы по регламентам и находит нужные пункты в договорах за секунды.
+                </p>
+              </div>
+            </div>
+            <div className="bg-slate-900 rounded-xl p-6 text-white">
+              <p className="text-sm font-semibold text-slate-400 mb-4">РЕЗУЛЬТАТ</p>
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <p className="text-3xl font-bold text-emerald-400">80%</p>
+                  <p className="text-sm text-slate-400 mt-1">сокращение времени поиска</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold text-emerald-400">94%</p>
+                  <p className="text-sm text-slate-400 mt-1">точность ответов</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold text-emerald-400">2 мес</p>
+                  <p className="text-sm text-slate-400 mt-1">окупаемость</p>
+                </div>
+              </div>
+            </div>
+            <p className="text-center text-slate-500 mt-6">Срок внедрения: 4 недели</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Approach */}
+      <section id="approach" className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+              Почему индивидуально, а не «из коробки»?
+            </h2>
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+              Каждый бизнес уникален. Готовые решения решают общие проблемы, мы решаем ваши
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                  <X className="w-6 h-6 text-red-600" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900">Готовые решения</h3>
+              </div>
+              <ul className="space-y-4">
+                <li className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <X className="w-4 h-4 text-red-600" />
+                  </div>
+                  <span className="text-slate-600">Вы подстраиваетесь под систему</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <X className="w-4 h-4 text-red-600" />
+                  </div>
+                  <span className="text-slate-600">Платите за функции, которые не нужны</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <X className="w-4 h-4 text-red-600" />
+                  </div>
+                  <span className="text-slate-600">Интеграция — ваша проблема</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <X className="w-4 h-4 text-red-600" />
+                  </div>
+                  <span className="text-slate-600">Долгое обучение сотрудников</span>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-slate-900 rounded-2xl p-8 text-white">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center">
+                  <Check className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold">Наш подход</h3>
+              </div>
+              <ul className="space-y-4">
+                <li className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Check className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-slate-200">Система создаётся под ваши процессы</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Check className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-slate-200">Платите только за то, что решает задачу</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Check className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-slate-200">Интегрируем в вашу инфраструктуру</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Check className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-slate-200">Обучаем команду работе с системой</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Solutions */}
+      <section id="solutions" className="py-24 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+              Примеры решений
+            </h2>
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+              Каждое решение проектировалось под конкретную задачу клиента
+            </p>
+          </div>
+          
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
+            {Object.entries(solutions).map(([key, sol]) => (
+              <button 
+                key={key} 
+                onClick={() => setActiveDemo(key)} 
+                className={'px-6 py-3 rounded-lg flex items-center space-x-3 font-semibold transition ' + 
+                  (activeDemo === key 
+                    ? 'bg-slate-900 text-white shadow-lg' 
+                    : 'bg-white border-2 border-slate-200 text-slate-700 hover:border-slate-300'
+                  )
+                }
+              >
+                {sol.icon}
+                <span>{sol.title}</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-slate-50 rounded-2xl p-12 border border-slate-200">
+              <div className="grid md:grid-cols-2 gap-12">
+                <div className="space-y-6">
+                  <div>
+                    <div className="text-sm font-semibold text-slate-500 mb-2">{solutions[activeDemo].subtitle.toUpperCase()}</div>
+                    <h3 className="text-3xl font-bold text-slate-900 mb-4">{solutions[activeDemo].title}</h3>
+                    <p className="text-lg text-slate-600 leading-relaxed">{solutions[activeDemo].description}</p>
+                  </div>
+                  
+                  <div className="bg-white rounded-xl p-6 border border-slate-200">
+                    <div className="flex items-start space-x-4">
+                      <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <AlertCircle className="w-6 h-6 text-red-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-slate-900 mb-1">ПРОБЛЕМА</p>
+                        <p className="text-slate-600">{solutions[activeDemo].problem}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-900 text-white rounded-xl p-6">
+                    <div className="flex items-start space-x-4">
+                      <div className="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Check className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-slate-300 mb-1">РЕШЕНИЕ</p>
+                        <p className="text-white">{solutions[activeDemo].solution}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div>
+                    <h4 className="text-lg font-bold text-slate-900 mb-4">Ключевые метрики</h4>
+                    <ul className="space-y-3">
+                      {solutions[activeDemo].metrics.map((metric, i) => (
+                        <li key={i} className="flex items-start space-x-3">
+                          <Check className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-0.5" />
+                          <span className="text-slate-700 font-medium">{metric}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="bg-emerald-50 rounded-xl p-6 border border-emerald-200">
+                    <p className="text-sm font-semibold text-emerald-900 mb-2">ROI</p>
+                    <p className="text-2xl font-bold text-emerald-600">{solutions[activeDemo].roi}</p>
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900 mb-3">Применение</p>
+                    <div className="flex flex-wrap gap-2">
+                      {solutions[activeDemo].useCases.map((useCase, i) => (
+                        <span key={i} className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700">
+                          {useCase}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How We Work */}
+      <section id="how" className="py-24 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+              Как мы работаем
+            </h2>
+            <p className="text-xl text-slate-600">Прозрачный процесс от анализа до результата</p>
+          </div>
+          <div className="grid md:grid-cols-4 gap-8">
+            {[
+              {
+                step: "01",
+                title: "Глубокий аудит",
+                description: "Погружаемся в ваш бизнес: смотрим, где теряется время, какие задачи повторяются, что можно автоматизировать",
+                duration: "1-2 дня"
+              },
+              {
+                step: "02",
+                title: "Прототип решения",
+                description: "Показываем работающий прототип на ваших реальных данных — вы видите результат до оплаты",
+                duration: "3-5 дней"
+              },
+              {
+                step: "03",
+                title: "Внедрение",
+                description: "Разрабатываем решение под ваши процессы, интегрируем в инфраструктуру",
+                duration: "2-4 недели"
+              },
+              {
+                step: "04",
+                title: "Сопровождение",
+                description: "Обучаем команду, дорабатываем по обратной связи, поддержка 24/7",
+                duration: "Постоянно"
+              }
+            ].map((item, i) => (
+              <div key={i} className="relative">
+                <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200 h-full">
+                  <div className="text-5xl font-bold text-slate-200 mb-4">{item.step}</div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h3>
+                  <p className="text-slate-600 mb-4 leading-relaxed">{item.description}</p>
+                  <div className="pt-4 border-t border-slate-200">
+                    <p className="text-sm font-semibold text-slate-500">{item.duration}</p>
+                  </div>
+                </div>
+                {i < 3 && (
+                  <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
+                    <ChevronRight className="w-8 h-8 text-slate-300" />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-24 bg-slate-900 text-white">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            Расскажите о своём бизнесе —<br />найдём, что автоматизировать
+          </h2>
+          <p className="text-xl text-slate-300 mb-10">
+            Бесплатный аудит процессов. Покажем, где ИИ сэкономит время и деньги
+          </p>
+          <button 
+            onClick={() => setShowDemoForm(true)} 
+            className="px-10 py-5 bg-white text-slate-900 rounded-lg hover:bg-slate-100 font-bold text-lg inline-flex items-center"
+          >
+            Получить консультацию
+            <ArrowRight className="ml-3 w-6 h-6" />
+          </button>
+          <p className="text-sm text-slate-400 mt-6">Ответим в течение часа • Без спама и навязчивых звонков</p>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-slate-950 text-white py-12">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <div className="flex items-center justify-center space-x-3 mb-4">
+            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+              <Brain className="w-6 h-6 text-slate-900" />
+            </div>
+            <span className="text-2xl font-bold">Athena Dev</span>
+          </div>
+          <p className="text-slate-400">Внедрение искусственного интеллекта в бизнес</p>
+          <div className="mt-6 pt-6 border-t border-slate-800">
+            <p className="text-slate-500 text-sm">ИП Богачев Виталий Геннадьевич</p>
+            <p className="text-slate-600 text-xs mt-1">ИНН: 772789185062 | ОГРНИП: 324774600732715</p>
+          </div>
+          <p className="text-slate-600 text-xs mt-4">© 2025 Все права защищены</p>
+        </div>
+      </footer>
+
+      <DemoFormModal showDemoForm={showDemoForm} setShowDemoForm={setShowDemoForm} />
+    </div>
+  );
+};
+
+export default AthenaAIWebsite;
