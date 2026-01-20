@@ -26,7 +26,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
       {/* Custom Styles */}
-      <style>{`
+      <style>{\`
         @keyframes blob {
           0%, 100% { transform: translate(0, 0) scale(1); }
           25% { transform: translate(20px, -30px) scale(1.1); }
@@ -96,7 +96,7 @@ function App() {
         .bcg-link:hover::after {
           width: 100%;
         }
-      `}</style>
+      \`}</style>
 
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 border-b border-slate-200">
@@ -119,17 +119,17 @@ function App() {
             {/* Left Column */}
             <div>
               <h1 className="text-5xl md:text-6xl font-light text-slate-900 mb-6 bcg-heading">
-                Анализируем ваши процессы
+                Цифровизация и ИИ для бизнеса за 2-6 недель
               </h1>
               <p className="text-xl text-slate-600 mb-8">
-                Обсудим, как ИИ решит задачи вашего бизнеса
+                Автоматизируем процессы, интегрируем системы, внедряем ИИ-ассистентов — и вы перестаёте терять деньги на рутине
               </p>
               <button className="bcg-button px-8 py-4 text-lg font-semibold inline-flex items-center gap-2">
                 <Zap size={20} />
-                Бесплатная консультация
+                Узнать, что можно автоматизировать
               </button>
               <p className="text-sm text-slate-500 mt-4">
-                Отвечаем в течение часа в рабочее время
+                30+ проектов • Окупаемость за 2-3 месяца
               </p>
             </div>
 
@@ -140,13 +140,13 @@ function App() {
                   <FileText className="text-white" size={24} />
                 </div>
                 <div className="flex-1">
-                  <div className="text-xs font-semibold text-green-600 mb-1">AI Assistant</div>
-                  <div className="text-sm text-slate-900 font-medium">Вопрос сотрудника</div>
+                  <div className="text-xs font-semibold text-green-600 mb-1">Вопрос сотрудника</div>
+                  <div className="text-sm text-slate-900 font-medium">Менеджер отдела продаж</div>
                 </div>
               </div>
               <div className="bg-slate-50 rounded-2xl p-4 mb-4">
                 <p className="text-slate-700">
-                  Какая процедура согласования договора с новым поставщиком?
+                  Какой статус заказа №4521 и когда оплата?
                 </p>
               </div>
               <div className="flex items-start gap-4">
@@ -154,8 +154,10 @@ function App() {
                   <Zap className="text-white" size={24} />
                 </div>
                 <div className="flex-1">
-                  <div className="text-xs font-semibold text-green-600 mb-1">Ответ ИИ-ассистента</div>
-                  <div className="text-xs text-slate-500">Время ответа: 2 сек</div>
+                  <div className="text-xs font-semibold text-green-600 mb-2">Ответ ИИ (2 сек)</div>
+                  <div className="bg-green-50 rounded-xl p-3 text-sm text-slate-700">
+                    Заказ №4521 отгружен 18.01.2025 (ТК СДЭК, трек: 1234567890). Счёт на 847 000 ₽ оплачен 19.01.2025. Акт сверки сформирован, ждёт подписи клиента.
+                  </div>
                 </div>
               </div>
             </div>
@@ -167,23 +169,40 @@ function App() {
       <section className="py-20 px-6 bg-gradient-to-b from-white to-slate-50">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-4xl font-light text-slate-900 mb-4 bcg-heading">
-            Знакомые проблемы?
+            Узнаёте свою компанию?
           </h2>
           <p className="text-xl text-slate-600 mb-16">
-            Компании теряют миллионы рублей ежегодно из-за неэффективных процессов
+            Эти проблемы стоят бизнесу миллионы рублей ежегодно
           </p>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             {[
-              { icon: Clock, stat: '40%', text: 'времени уходит на поиск информации в документах' },
-              { icon: Users, stat: '60%', text: 'задач можно автоматизировать с помощью ИИ' },
-              { icon: TrendingUp, stat: '75%', text: 'времени квалифицированных специалистов тратится впустую' }
+              {
+                icon: Clock,
+                title: 'Данные копируют вручную',
+                text: 'Менеджеры переносят информацию из 1С в Excel, из Excel в CRM, из CRM в отчёты. Каждый день.'
+              },
+              {
+                icon: Target,
+                title: 'Системы не связаны между собой',
+                text: 'Склад не видит продажи, бухгалтерия не видит отгрузки, руководитель собирает данные по кускам из разных источников.'
+              },
+              {
+                icon: FileText,
+                title: 'Информацию ищут часами',
+                text: 'Договоры в папках, регламенты в почте, ответы на вопросы — в головах сотрудников, которые уже уволились.'
+              },
+              {
+                icon: BarChart,
+                title: 'Решения принимают вслепую',
+                text: 'Нет единого дашборда. Чтобы понять, что происходит в бизнесе, нужно обзвонить три отдела.'
+              }
             ].map((item, idx) => (
-              <div key={idx} className="bg-white rounded-3xl p-8 shadow-lg bcg-card">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mx-auto mb-6">
+              <div key={idx} className="bg-white rounded-3xl p-8 shadow-lg bcg-card text-left">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center mb-6">
                   <item.icon className="text-white" size={32} />
                 </div>
-                <div className="text-5xl font-bold text-green-600 mb-4">{item.stat}</div>
+                <h3 className="text-xl font-semibold text-slate-900 mb-3">{item.title}</h3>
                 <p className="text-slate-600">{item.text}</p>
               </div>
             ))}
@@ -194,145 +213,166 @@ function App() {
       {/* Social Proof */}
       <section className="py-20 px-6 bg-white">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl font-light text-slate-900 mb-4 bcg-heading">
-            Работаем с лидерами рынка
-          </h2>
-          <p className="text-xl text-slate-600 mb-16">
-            Консультируем и внедряем ИИ-решения в крупнейших компаниях России
-          </p>
-
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             <div className="text-center">
               <div className="text-5xl font-bold text-green-600 mb-2">30+</div>
-              <div className="text-slate-600">Успешных проектов</div>
+              <div className="text-slate-600">проектов</div>
+              <div className="text-sm text-slate-500 mt-1">Автоматизация, интеграции, ИИ-ассистенты</div>
+            </div>
+            <div className="text-center">
+              <div className="text-5xl font-bold text-green-600 mb-2">2-6</div>
+              <div className="text-slate-600">недель</div>
+              <div className="text-sm text-slate-500 mt-1">От аудита до работающего решения</div>
             </div>
             <div className="text-center">
               <div className="text-5xl font-bold text-green-600 mb-2">2-3</div>
-              <div className="text-slate-600">месяца окупаемость</div>
-            </div>
-            <div className="text-center">
-              <div className="text-5xl font-bold text-green-600 mb-2">95%</div>
-              <div className="text-slate-600">точность ответов</div>
+              <div className="text-slate-600">месяца</div>
+              <div className="text-sm text-slate-500 mt-1">Средний срок окупаемости</div>
             </div>
           </div>
-
-          <p className="text-lg text-slate-600">
-            С кем работаем: <span className="font-semibold text-slate-900">Внедряем ИИ в компаниях из разных отраслей</span>
-          </p>
         </div>
       </section>
 
-      {/* Case Study */}
+      {/* Case Studies */}
       <section className="py-20 px-6 bg-gradient-to-br from-slate-50 to-white">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <span className="inline-block px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-semibold mb-4">
-              Кейс
+              Кейсы
             </span>
             <h2 className="text-4xl font-light text-slate-900 mb-4 bcg-heading">
-              Средний срок окупаемости — 2-3 месяца
+              Реальные результаты наших клиентов
             </h2>
           </div>
 
-          <div className="bg-white rounded-3xl shadow-2xl p-10 bcg-card">
-            <div className="mb-8">
-              <div className="text-sm font-semibold text-green-600 mb-2">Клиент</div>
-              <div className="text-lg text-slate-900">
-                Юридическая компания, 30+ сотрудников (NDA)
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Case 1 - AI */}
+            <div className="bg-white rounded-3xl shadow-2xl p-10 bcg-card">
+              <div className="mb-6">
+                <h3 className="text-2xl font-semibold text-slate-900 mb-2">Юристы экономят 3 часа в день</h3>
+                <div className="text-sm text-slate-600">Клиент: Юридическая компания, 30+ сотрудников</div>
+              </div>
+
+              <div className="mb-6">
+                <div className="text-sm font-semibold text-red-600 mb-2">Было:</div>
+                <div className="text-slate-700">
+                  "Юристы тратили 3-4 часа в день на поиск информации в договорах, регламентах и переписках. Типовые вопросы отвлекали ведущих специалистов."
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <div className="text-sm font-semibold text-green-600 mb-2">Сделали:</div>
+                <div className="text-slate-700">
+                  "RAG-система с доступом к внутренней базе документов. ИИ-ассистент отвечает на вопросы по регламентам и находит нужные пункты в договорах за секунды."
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4 p-4 bg-green-50 rounded-2xl">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600 mb-1">3 ч/день</div>
+                  <div className="text-xs text-slate-600">экономия времени</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600 mb-1">90%</div>
+                  <div className="text-xs text-slate-600">точность ответов</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600 mb-1">4 нед</div>
+                  <div className="text-xs text-slate-600">срок внедрения</div>
+                </div>
               </div>
             </div>
 
-            <div className="mb-8">
-              <div className="text-sm font-semibold text-red-600 mb-2">Проблема</div>
-              <div className="text-slate-700">
-                Юристы тратили 3-4 часа в день на поиск информации в договорах, регламентах и переписках.
-                Типовые вопросы от сотрудников отвлекали ведущих специалистов.
+            {/* Case 2 - Automation */}
+            <div className="bg-white rounded-3xl shadow-2xl p-10 bcg-card">
+              <div className="mb-6">
+                <h3 className="text-2xl font-semibold text-slate-900 mb-2">Отчёты собираются сами</h3>
+                <div className="text-sm text-slate-600">Клиент: Дистрибьютор, 50+ человек</div>
               </div>
-            </div>
 
-            <div className="mb-8">
-              <div className="text-sm font-semibold text-green-600 mb-2">Решение</div>
-              <div className="text-slate-700">
-                RAG-система с доступом к внутренней базе документов. ИИ-ассистент отвечает на вопросы
-                по регламентам и находит нужные пункты в договорах за секунды.
+              <div className="mb-6">
+                <div className="text-sm font-semibold text-red-600 mb-2">Было:</div>
+                <div className="text-slate-700">
+                  "Каждый понедельник менеджеры 2 часа собирали отчёт по продажам: выгружали из 1С, сводили в Excel, отправляли руководству. Данные устаревали к моменту отправки."
+                </div>
               </div>
-            </div>
 
-            <div className="grid md:grid-cols-3 gap-6 p-6 bg-green-50 rounded-2xl">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-green-600 mb-1">80%</div>
-                <div className="text-sm text-slate-600">экономии времени</div>
+              <div className="mb-6">
+                <div className="text-sm font-semibold text-green-600 mb-2">Сделали:</div>
+                <div className="text-slate-700">
+                  "Настроили автоматическую выгрузку из 1С в дашборд. Данные обновляются каждый час. Руководитель видит продажи, остатки, дебиторку в реальном времени."
+                </div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-green-600 mb-1">90%</div>
-                <div className="text-sm text-slate-600">точность ответов</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-green-600 mb-1">4 нед</div>
-                <div className="text-sm text-slate-600">срок внедрения</div>
-              </div>
-            </div>
 
-            <div className="mt-6 text-sm text-slate-500">
-              Результат: Срок внедрения: 4 недели
+              <div className="grid grid-cols-3 gap-4 p-4 bg-green-50 rounded-2xl">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600 mb-1">8 ч/нед</div>
+                  <div className="text-xs text-slate-600">экономия времени</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600 mb-1">0</div>
+                  <div className="text-xs text-slate-600">ошибок в данных</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600 mb-1">3 нед</div>
+                  <div className="text-xs text-slate-600">срок внедрения</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Approach Section */}
+      {/* What We Do Section */}
       <section className="py-20 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-light text-slate-900 mb-4 bcg-heading">
-              Каждый бизнес уникален
+              Что мы делаем
             </h2>
-            <p className="text-xl text-slate-600">
-              Готовые решения решают общие проблемы, мы решаем ваши
-            </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12 mb-16">
-            <div className="bg-slate-100 rounded-3xl p-10">
-              <h3 className="text-2xl font-semibold text-slate-700 mb-4">Готовые решения</h3>
-              <ul className="space-y-3 text-slate-600">
-                <li className="flex items-start gap-3">
-                  <span className="text-red-500">✗</span>
-                  <span>Универсальный подход без учета специфики</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-red-500">✗</span>
-                  <span>Требуют адаптации под ваши процессы</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-red-500">✗</span>
-                  <span>Ограниченная гибкость</span>
-                </li>
-              </ul>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-3xl p-10 bcg-card">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mb-6">
+                <Zap className="text-white" size={32} />
+              </div>
+              <h3 className="text-2xl font-semibold text-green-900 mb-4">Автоматизация процессов</h3>
+              <p className="text-slate-700">
+                Убираем ручной ввод данных и копирование между системами. Автоматические отчёты, уведомления, согласования.
+              </p>
             </div>
 
             <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-3xl p-10 bcg-card">
-              <h3 className="text-2xl font-semibold text-green-900 mb-4">Наш подход</h3>
-              <ul className="space-y-3 text-slate-700">
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="text-green-600 flex-shrink-0" size={20} />
-                  <span>Глубокий анализ ваших процессов</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="text-green-600 flex-shrink-0" size={20} />
-                  <span>Решение под конкретную задачу</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="text-green-600 flex-shrink-0" size={20} />
-                  <span>Полная интеграция с вашими системами</span>
-                </li>
-              </ul>
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mb-6">
+                <Target className="text-white" size={32} />
+              </div>
+              <h3 className="text-2xl font-semibold text-green-900 mb-4">Интеграция систем</h3>
+              <p className="text-slate-700">
+                Связываем 1С, CRM, склад, сайт, телефонию в единую экосистему. Данные синхронизируются автоматически.
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-3xl p-10 bcg-card">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mb-6">
+                <Users className="text-white" size={32} />
+              </div>
+              <h3 className="text-2xl font-semibold text-green-900 mb-4">ИИ-ассистенты</h3>
+              <p className="text-slate-700">
+                Отвечают на вопросы сотрудников по внутренним документам. Ищут информацию в базе знаний за секунды.
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-3xl p-10 bcg-card">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mb-6">
+                <BarChart className="text-white" size={32} />
+              </div>
+              <h3 className="text-2xl font-semibold text-green-900 mb-4">Дашборды и аналитика</h3>
+              <p className="text-slate-700">
+                Вся информация о бизнесе на одном экране. Обновляется в реальном времени.
+              </p>
             </div>
           </div>
-
-          <p className="text-center text-lg text-slate-600">
-            Примеры решений: <span className="font-semibold">Каждое решение проектировалось под конкретную задачу клиента</span>
-          </p>
         </div>
       </section>
 
@@ -349,26 +389,60 @@ function App() {
           </div>
 
           <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { step: '01', title: 'Аудит', desc: 'Анализируем процессы и находим точки роста', icon: Target },
-              { step: '02', title: 'Прототип', desc: 'Создаем MVP за 2-3 недели', icon: Zap },
-              { step: '03', title: 'Тестирование', desc: 'Проверяем на реальных данных', icon: BarChart },
-              { step: '04', title: 'Внедрение', desc: 'Масштабируем и обучаем команду', icon: CheckCircle }
-            ].map((item, idx) => (
-              <div key={idx} className="relative">
-                <div className="bg-white rounded-3xl p-8 shadow-lg bcg-card h-full">
-                  <div className="text-5xl font-bold text-green-200 mb-4">{item.step}</div>
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mb-4">
-                    <item.icon className="text-white" size={24} />
-                  </div>
-                  <h3 className="text-xl font-semibold text-slate-900 mb-2">{item.title}</h3>
-                  <p className="text-slate-600">{item.desc}</p>
+            <div className="relative">
+              <div className="bg-white rounded-3xl p-8 shadow-lg bcg-card h-full">
+                <div className="text-5xl font-bold text-green-200 mb-4">01</div>
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mb-4">
+                  <Target className="text-white" size={24} />
                 </div>
-                {idx < 3 && (
-                  <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-green-300"></div>
-                )}
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">Аудит (бесплатно, 3-5 дней)</h3>
+                <p className="text-slate-600">
+                  Разбираемся, как устроены ваши процессы сейчас. Интервью с ключевыми сотрудниками, анализ систем, поиск узких мест. Результат: отчёт с приоритетами — что автоматизировать в первую очередь.
+                </p>
               </div>
-            ))}
+              <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-green-300"></div>
+            </div>
+
+            <div className="relative">
+              <div className="bg-white rounded-3xl p-8 shadow-lg bcg-card h-full">
+                <div className="text-5xl font-bold text-green-200 mb-4">02</div>
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mb-4">
+                  <FileText className="text-white" size={24} />
+                </div>
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">Проектирование (1 неделя)</h3>
+                <p className="text-slate-600">
+                  Рисуем архитектуру решения: какие системы связываем, что автоматизируем, где нужен ИИ. Согласуем с вами до начала разработки.
+                </p>
+              </div>
+              <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-green-300"></div>
+            </div>
+
+            <div className="relative">
+              <div className="bg-white rounded-3xl p-8 shadow-lg bcg-card h-full">
+                <div className="text-5xl font-bold text-green-200 mb-4">03</div>
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mb-4">
+                  <Zap className="text-white" size={24} />
+                </div>
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">Разработка (2-4 недели)</h3>
+                <p className="text-slate-600">
+                  Делаем MVP — минимальный работающий продукт. Интеграции, автоматизации, ИИ-ассистент — зависит от задачи. Тестируем на реальных данных.
+                </p>
+              </div>
+              <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-green-300"></div>
+            </div>
+
+            <div className="relative">
+              <div className="bg-white rounded-3xl p-8 shadow-lg bcg-card h-full">
+                <div className="text-5xl font-bold text-green-200 mb-4">04</div>
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mb-4">
+                  <CheckCircle className="text-white" size={24} />
+                </div>
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">Запуск и поддержка</h3>
+                <p className="text-slate-600">
+                  Обучаем сотрудников, запускаем в работу. Поддержка и доработки — 3 месяца после запуска включены.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -390,10 +464,11 @@ function App() {
               <div className="flex-1 text-center md:text-left">
                 <h3 className="text-2xl font-semibold text-slate-900 mb-2">Виталий Богачев</h3>
                 <div className="text-green-600 font-medium mb-4">Основатель Athena Dev</div>
+                <p className="text-slate-600 leading-relaxed mb-4">
+                  Занимаюсь цифровизацией бизнеса и внедрением ИИ с 2022 года. 30+ проектов: автоматизация процессов, интеграция систем, корпоративные ИИ-ассистенты.
+                </p>
                 <p className="text-slate-600 leading-relaxed">
-                  Эксперт по внедрению ИИ в бизнес-процессы. Консультирует крупнейшие компании России
-                  по вопросам автоматизации с помощью искусственного интеллекта. Специализируется на
-                  RAG-системах, корпоративных ассистентах и автоматизации документооборота.
+                  Работал с юридическими компаниями, производством, дистрибуцией. Знаю, как устроены реальные бизнес-процессы и где технологии действительно помогают, а где — пустая трата денег.
                 </p>
               </div>
             </div>
@@ -406,13 +481,36 @@ function App() {
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-light text-slate-900 mb-4 bcg-heading">
-              Бесплатный аудит процессов
+              Узнайте, что можно автоматизировать в вашей компании
             </h2>
-            <p className="text-xl text-slate-600">
-              Покажем, где ИИ сэкономит время и деньги
+            <p className="text-xl text-slate-600 mb-4">
+              Бесплатный аудит процессов — покажем, где вы теряете время и деньги
             </p>
-            <p className="text-sm text-slate-500 mt-2">
-              Ответим в течение часа • Без спама и навязчивых звонков
+
+            <div className="bg-white rounded-2xl p-6 mb-6 text-left">
+              <div className="text-sm font-semibold text-green-700 mb-3">Что вы получите:</div>
+              <ul className="space-y-2 text-slate-600">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="text-green-600 flex-shrink-0 mt-0.5" size={18} />
+                  <span>Список процессов, которые можно автоматизировать</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="text-green-600 flex-shrink-0 mt-0.5" size={18} />
+                  <span>Приоритеты: что даст максимальный эффект при минимальных затратах</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="text-green-600 flex-shrink-0 mt-0.5" size={18} />
+                  <span>Оценку сроков и стоимости</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="text-green-600 flex-shrink-0 mt-0.5" size={18} />
+                  <span>Пример похожего проекта из вашей отрасли</span>
+                </li>
+              </ul>
+            </div>
+
+            <p className="text-sm text-slate-500">
+              Ответим в течение часа в рабочее время. Без спама и навязчивых звонков — обещаем.
             </p>
           </div>
 
@@ -529,7 +627,7 @@ function App() {
             <div>
               <h4 className="font-semibold mb-3">О компании</h4>
               <p className="text-slate-400 text-sm">
-                Внедрение ИИ для оптимизации бизнес-процессов
+                Цифровизация бизнеса и внедрение ИИ-решений
               </p>
             </div>
           </div>
