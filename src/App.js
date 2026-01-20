@@ -13,10 +13,55 @@ function App() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [activeSection, setActiveSection] = useState('problems');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
+
+    // Формируем сообщение для Telegram
+    const message = `🔔 Новая заявка на консультацию!
+
+👤 Имя: ${formData.name}
+🏢 Компания: ${formData.company}
+📧 Email: ${formData.email}
+📱 Телефон: ${formData.phone}
+👥 Размер: ${formData.size}
+💬 Задача: ${formData.message || 'Не указано'}
+
+⏰ Время: ${new Date().toLocaleString('ru-RU')}`;
+
+    try {
+      // Отправляем в Telegram
+      const response = await fetch('https://api.telegram.org/bot7981860487:AAEWXPGYxUPm-_kakYLABZtnHuVW3wUaI0Y/sendMessage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: '111748497',
+          text: message
+        })
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        setTimeout(() => {
+          setIsSubmitted(false);
+          // Очищаем форму после успешной отправки
+          setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            company: '',
+            size: '',
+            message: ''
+          });
+        }, 3000);
+      } else {
+        alert('Ошибка отправки. Попробуйте позже.');
+      }
+    } catch (error) {
+      console.error('Ошибка:', error);
+      alert('Ошибка отправки. Попробуйте позже.');
+    }
   };
 
   const handleChange = (e) => {
@@ -119,17 +164,17 @@ function App() {
             {/* Left Column */}
             <div>
               <h1 className="text-5xl md:text-6xl font-light text-slate-900 mb-6 bcg-heading">
-                Цифровизация и ИИ для бизнеса за 2-6 недель
+                Ваш бизнес работает на Excel-таблицах и ручных процессах?
               </h1>
               <p className="text-xl text-slate-600 mb-8">
-                Автоматизируем процессы, интегрируем системы, внедряем ИИ-ассистентов — и вы перестаёте терять деньги на рутине
+                Автоматизируем рутину, связываем системы, внедряем ИИ — чтобы сотрудники занимались важным, а не копированием данных
               </p>
               <button className="bcg-button px-8 py-4 text-lg font-semibold inline-flex items-center gap-2">
                 <Zap size={20} />
-                Узнать, что можно автоматизировать
+                Получить план автоматизации
               </button>
               <p className="text-sm text-slate-500 mt-4">
-                30+ проектов • Окупаемость за 2-3 месяца
+                Ответ в течение часа
               </p>
             </div>
 
