@@ -13,6 +13,34 @@ function App() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [activeSection, setActiveSection] = useState('problems');
   const [showModal, setShowModal] = useState(false);
+  const [openFaq, setOpenFaq] = useState(null);
+
+  const faqItems = [
+    {
+      q: "Сколько стоит внедрение?",
+      a: "Зависит от сложности. Простая автоматизация — от 150 000 руб. Полноценный ИИ-ассистент с интеграциями — от 400 000 руб. Точную стоимость называем после аудита."
+    },
+    {
+      q: "Как долго длится внедрение?",
+      a: "От 2 до 6 недель. Простые интеграции — 2 недели. ИИ-ассистент с обучением на ваших документах — 4-6 недель."
+    },
+    {
+      q: "Что если решение не подойдёт?",
+      a: "Перед началом работы делаем аудит и честно говорим, если автоматизация не даст эффекта. Не берёмся за проекты, в которых не уверены."
+    },
+    {
+      q: "Нужен ли IT-отдел на нашей стороне?",
+      a: "Нет. Мы берём на себя всю техническую часть. От вас нужен только один человек, который ответит на вопросы о процессах и даст доступ к системам."
+    },
+    {
+      q: "Какие системы вы интегрируете?",
+      a: "1С (все версии), Битрикс24, amoCRM, Мегаплан, Google Workspace, Telegram, почтовые сервисы, и практически любые системы с API."
+    },
+    {
+      q: "Есть ли поддержка после запуска?",
+      a: "Да, 3 месяца поддержки включены в стоимость. Дальше — по желанию, от 30 000 руб./мес."
+    }
+  ];
 
   // Yandex.Metrika
   useEffect(() => {
@@ -211,6 +239,13 @@ function App() {
             >
               О нас
             </a>
+            <a
+              href="#faq"
+              onClick={(e) => { e.preventDefault(); scrollToSection('faq'); }}
+              className="text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+            >
+              FAQ
+            </a>
           </nav>
           <button
             className="bcg-button px-6 py-3 font-semibold"
@@ -232,20 +267,20 @@ function App() {
             {/* Left Column */}
             <div>
               <h1 className="text-5xl md:text-6xl lg:text-7xl text-slate-900 mb-6 bcg-heading leading-tight">
-                Ваш бизнес работает на Excel-таблицах и ручных процессах?
+                Цифровизация и ИИ для бизнеса за 2-6 недель
               </h1>
               <p className="text-xl text-[#4A4A4A] mb-8">
-                Автоматизируем рутину, связываем системы, внедряем ИИ — чтобы сотрудники занимались важным, а не копированием данных
+                Автоматизируем процессы, интегрируем системы, внедряем ИИ-ассистентов — и вы перестаёте терять деньги на рутине
               </p>
               <button
                 className="bcg-button px-8 py-4 text-lg font-semibold inline-flex items-center gap-2"
                 onClick={() => setShowModal(true)}
               >
                 <Zap size={20} />
-                Получить план автоматизации
+                Узнать, что можно автоматизировать
               </button>
               <p className="text-sm text-slate-500 mt-4">
-                Ответ в течение часа
+                30+ проектов | Окупаемость за 2-3 месяца
               </p>
             </div>
 
@@ -256,13 +291,13 @@ function App() {
                   <FileText className="text-white" size={24} />
                 </div>
                 <div className="flex-1">
-                  <div className="text-xs font-semibold text-[#0A8754] mb-1">Вопрос сотрудника</div>
-                  <div className="text-sm text-slate-900 font-medium">Менеджер отдела продаж</div>
+                  <div className="text-xs font-semibold text-[#0A8754] mb-1">Вопрос руководителя</div>
+                  <div className="text-sm text-slate-900 font-medium">Директор по продажам</div>
                 </div>
               </div>
               <div className="bg-slate-100 rounded-2xl p-4 mb-4">
                 <p className="text-[#4A4A4A]">
-                  Какой статус заказа №4521 и когда оплата?
+                  Сколько заявок в работе у отдела продаж?
                 </p>
               </div>
               <div className="flex items-start gap-4">
@@ -270,9 +305,9 @@ function App() {
                   <Zap className="text-white" size={24} />
                 </div>
                 <div className="flex-1">
-                  <div className="text-xs font-semibold text-[#0A8754] mb-2">Ответ ИИ (2 сек)</div>
+                  <div className="text-xs font-semibold text-[#0A8754] mb-2">Ответ из дашборда (2 сек)</div>
                   <div className="bg-[#E8F5EE] rounded-xl p-3 text-sm text-[#4A4A4A]">
-                    Заказ №4521 отгружен 18.01.2025 (ТК СДЭК, трек: 1234567890). Счёт на 847 000 руб. оплачен 19.01.2025. Акт сверки сформирован, ждёт подписи клиента.
+                    Сейчас 23 заявки в работе. 8 — на этапе КП, 12 — ждут решения клиента, 3 — готовы к закрытию. Общая сумма воронки: 4.2 млн руб.
                   </div>
                 </div>
               </div>
@@ -492,8 +527,28 @@ function App() {
         </div>
       </section>
 
+      {/* Integrations Section */}
+      <section className="py-14 px-6 section-gray">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl mb-4 bcg-heading">
+            Интегрируемся с вашими системами
+          </h2>
+          <p className="text-xl text-[#4A4A4A] mb-12">
+            Не заставляем менять то, что работает — связываем в единую экосистему
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+            {['1С', 'Битрикс24', 'amoCRM', 'Мегаплан', 'Google', 'Telegram', 'Excel'].map((name) => (
+              <div key={name} className="text-2xl font-semibold text-slate-400 hover:text-[#0A8754] transition-colors">
+                {name}
+              </div>
+            ))}
+          </div>
+          <p className="text-slate-500 mt-8">И ещё 50+ систем с открытым API</p>
+        </div>
+      </section>
+
       {/* Process Section */}
-      <section id="process" className="py-14 px-6 section-gray">
+      <section id="process" className="py-14 px-6 section-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl mb-4 bcg-heading">
@@ -564,7 +619,7 @@ function App() {
       </section>
 
       {/* Founder Section */}
-      <section id="founder" className="py-14 px-6 section-white">
+      <section id="founder" className="py-14 px-6 section-gray">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl mb-4 bcg-heading">
@@ -588,6 +643,31 @@ function App() {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-14 px-6 section-white">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-4xl md:text-5xl mb-12 bcg-heading text-center">
+            Частые вопросы
+          </h2>
+          <div className="space-y-4">
+            {faqItems.map((item, idx) => (
+              <div key={idx} className="border-b border-slate-200">
+                <button
+                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  className="w-full py-5 flex justify-between items-center text-left"
+                >
+                  <span className="text-lg font-semibold text-[#1A1A1A]">{item.q}</span>
+                  <span className="text-2xl text-[#0A8754]">{openFaq === idx ? '\u2212' : '+'}</span>
+                </button>
+                {openFaq === idx && (
+                  <p className="pb-5 text-[#4A4A4A] leading-relaxed">{item.a}</p>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -727,7 +807,7 @@ function App() {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] flex items-center justify-center p-4" onClick={() => setShowModal(false)}>
           <div className="bg-white rounded-3xl p-8 max-w-lg w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-semibold text-[#1A1A1A] bcg-heading">Получить план автоматизации</h3>
+              <h3 className="text-2xl font-semibold text-[#1A1A1A] bcg-heading">Узнать, что можно автоматизировать</h3>
               <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
             </div>
 
