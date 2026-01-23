@@ -267,7 +267,7 @@ function App() {
             {/* Left Column */}
             <div>
               <h1 className="text-5xl md:text-6xl lg:text-7xl text-slate-900 mb-6 bcg-heading leading-tight">
-                Цифровизация и ИИ для бизнеса за 2-6 недель
+                Цифровизация и AI для бизнеса за 2-6 недель
               </h1>
               <p className="text-xl text-[#4A4A4A] mb-8">
                 Автоматизируем процессы, интегрируем системы, внедряем ИИ-ассистентов — и вы перестаёте терять деньги на рутине
