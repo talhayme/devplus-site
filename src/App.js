@@ -897,11 +897,6 @@ function App() {
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-3">Контакты</h4>
-              <p className="text-slate-400 text-sm">Email: hello@athenadev.ru</p>
-              <p className="text-slate-400 text-sm mt-1">Telegram: @athenadev</p>
-            </div>
-            <div>
               <h4 className="font-semibold mb-3">О компании</h4>
               <p className="text-slate-400 text-sm">
                 Цифровизация бизнеса и внедрение ИИ-решений
