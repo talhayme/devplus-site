@@ -904,7 +904,7 @@ function App() {
             </div>
           </div>
           <div className="border-t border-slate-800 pt-8 text-center text-slate-500 text-sm">
-            © 2025 Athena Dev. Все права защищены
+            © 2026 Athena Dev. Все права защищены
           </div>
         </div>
       </footer>
