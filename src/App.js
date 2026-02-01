@@ -709,6 +709,19 @@ function App() {
                     </li>
                   ))}
                 </ul>
+                <a
+                  href={`https://t.me/athenadev_support?text=${encodeURIComponent(`Здравствуйте! Интересует услуга "${service.title}"`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 block w-full text-center py-3 px-6 rounded-xl font-semibold transition-all duration-200 hover:-translate-y-0.5"
+                  style={{
+                    background: 'linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-violet) 50%, var(--accent-purple) 100%)',
+                    color: '#fff',
+                    boxShadow: '0 0 20px rgba(139, 92, 246, 0.3)'
+                  }}
+                >
+                  Заказать
+                </a>
               </div>
             ))}
           </div>
