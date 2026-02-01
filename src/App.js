@@ -788,39 +788,6 @@ function App() {
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="py-20 px-6 section-gray">
-        <div className="max-w-3xl mx-auto">
-          <div className="card p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
-            <div className="w-32 h-32 rounded-full bg-slate-200 flex-shrink-0 overflow-hidden">
-              <img
-                src="/founder.jpg"
-                alt="Виталий Богачев"
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center bg-slate-100"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>';
-                }}
-              />
-            </div>
-            <div className="text-center md:text-left">
-              <h3 className="text-xl font-bold text-slate-900 mb-1">Виталий Богачев</h3>
-              <div className="text-blue-500 text-sm font-medium mb-4">Основатель Athena Dev</div>
-              <p className="text-slate-500 leading-relaxed mb-4">
-                Внедряю ИИ-решения в бизнес с 2023 года. 30+ проектов: персональные ассистенты, корпоративные базы знаний, автоматизация рутины. Работаю с теми, кто хочет использовать современные технологии, но не хочет разбираться в коде и серверах.
-              </p>
-              <a
-                href="https://t.me/athenadev"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:text-blue-600 text-sm font-medium"
-              >
-                Telegram: @athenadev
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Contact Form Section */}
       <section id="contact" className="py-20 px-6 bg-slate-900">
