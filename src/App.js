@@ -270,6 +270,37 @@ function App() {
     }));
   };
 
+  const orderService = async (serviceTitle, servicePrice) => {
+    const message = `🛒 Новый заказ услуги!
+
+📦 Услуга: ${serviceTitle}
+💰 Стоимость: ${servicePrice}
+
+⏰ Время: ${new Date().toLocaleString('ru-RU')}`;
+
+    try {
+      const response = await fetch('https://api.telegram.org/bot7981860487:AAEWXPGYxUPm-_kakYLABZtnHuVW3wUaI0Y/sendMessage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: '111748497',
+          text: message
+        })
+      });
+
+      if (response.ok) {
+        alert('Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
+      } else {
+        alert('Ошибка отправки. Попробуйте позже.');
+      }
+    } catch (error) {
+      console.error('Ошибка:', error);
+      alert('Ошибка отправки. Попробуйте позже.');
+    }
+  };
+
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -709,19 +740,18 @@ function App() {
                     </li>
                   ))}
                 </ul>
-                <a
-                  href={`https://t.me/athenadev_support?text=${encodeURIComponent(`Здравствуйте! Интересует услуга "${service.title}"`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-6 block w-full text-center py-3 px-6 rounded-xl font-semibold transition-all duration-200 hover:-translate-y-0.5"
+                <button
+                  onClick={() => orderService(service.title, service.price)}
+                  className="mt-6 block w-full text-center py-3 px-6 rounded-xl font-semibold transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
                   style={{
                     background: 'linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-violet) 50%, var(--accent-purple) 100%)',
                     color: '#fff',
-                    boxShadow: '0 0 20px rgba(139, 92, 246, 0.3)'
+                    boxShadow: '0 0 20px rgba(139, 92, 246, 0.3)',
+                    border: 'none'
                   }}
                 >
                   Заказать
-                </a>
+                </button>
               </div>
             ))}
           </div>
