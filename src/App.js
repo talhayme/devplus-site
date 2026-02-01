@@ -11,6 +11,9 @@ function App() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [orderModal, setOrderModal] = useState({ open: false, service: null, price: null });
+  const [orderForm, setOrderForm] = useState({ name: '', contact: '' });
+  const [orderSubmitted, setOrderSubmitted] = useState(false);
 
   const interestOptions = [
     { id: 'assistant', label: 'Персональный ассистент (календарь, почта, задачи)' },
@@ -270,11 +273,27 @@ function App() {
     }));
   };
 
-  const orderService = async (serviceTitle, servicePrice) => {
+  const openOrderModal = (serviceTitle, servicePrice) => {
+    setOrderModal({ open: true, service: serviceTitle, price: servicePrice });
+    setOrderForm({ name: '', contact: '' });
+    setOrderSubmitted(false);
+  };
+
+  const closeOrderModal = () => {
+    setOrderModal({ open: false, service: null, price: null });
+    setOrderSubmitted(false);
+  };
+
+  const submitOrder = async (e) => {
+    e.preventDefault();
+
     const message = `🛒 Новый заказ услуги!
 
-📦 Услуга: ${serviceTitle}
-💰 Стоимость: ${servicePrice}
+📦 Услуга: ${orderModal.service}
+💰 Стоимость: ${orderModal.price}
+
+👤 Имя: ${orderForm.name}
+📱 Контакт: ${orderForm.contact}
 
 ⏰ Время: ${new Date().toLocaleString('ru-RU')}`;
 
@@ -291,7 +310,7 @@ function App() {
       });
 
       if (response.ok) {
-        alert('Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
+        setOrderSubmitted(true);
       } else {
         alert('Ошибка отправки. Попробуйте позже.');
       }
@@ -741,7 +760,7 @@ function App() {
                   ))}
                 </ul>
                 <button
-                  onClick={() => orderService(service.title, service.price)}
+                  onClick={() => openOrderModal(service.title, service.price)}
                   className="mt-6 block w-full text-center py-3 px-6 rounded-xl font-semibold transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
                   style={{
                     background: 'linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-violet) 50%, var(--accent-purple) 100%)',
@@ -1049,6 +1068,108 @@ function App() {
           </p>
         </div>
       </section>
+
+      {/* Order Modal */}
+      {orderModal.open && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: 'rgba(0, 0, 0, 0.8)', backdropFilter: 'blur(8px)' }}
+          onClick={closeOrderModal}
+        >
+          <div
+            className="w-full max-w-md rounded-2xl p-8"
+            style={{
+              background: 'var(--bg-elevated)',
+              border: '1px solid rgba(255, 255, 255, 0.1)'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-start mb-6">
+              <div>
+                <h3 className="text-xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>
+                  Заказать услугу
+                </h3>
+                <p className="text-sm" style={{ color: 'var(--accent-violet)' }}>
+                  {orderModal.service} • {orderModal.price}
+                </p>
+              </div>
+              <button
+                onClick={closeOrderModal}
+                className="p-1 rounded-lg transition-colors"
+                style={{ color: 'var(--text-muted)' }}
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {orderSubmitted ? (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ background: 'rgba(139, 92, 246, 0.2)' }}>
+                  <Check className="w-8 h-8" style={{ color: 'var(--accent-violet)' }} />
+                </div>
+                <h4 className="text-lg font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+                  Заявка отправлена!
+                </h4>
+                <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+                  Свяжемся с вами в ближайшее время
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={submitOrder} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
+                    Имя
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={orderForm.name}
+                    onChange={(e) => setOrderForm({ ...orderForm, name: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.03)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      color: 'var(--text-primary)'
+                    }}
+                    placeholder="Ваше имя"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
+                    Telegram или телефон
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={orderForm.contact}
+                    onChange={(e) => setOrderForm({ ...orderForm, contact: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.03)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      color: 'var(--text-primary)'
+                    }}
+                    placeholder="@username или +7..."
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full py-4 rounded-xl font-semibold text-white transition-all duration-200 hover:-translate-y-0.5"
+                  style={{
+                    background: 'linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-violet) 50%, var(--accent-purple) 100%)',
+                    boxShadow: '0 0 20px rgba(139, 92, 246, 0.3)'
+                  }}
+                >
+                  Отправить заявку
+                </button>
+                <p className="text-center text-xs" style={{ color: 'var(--text-muted)' }}>
+                  Свяжемся в течение 4 часов в рабочее время
+                </p>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="py-12 px-6" style={{ background: 'var(--bg-primary)', borderTop: '1px solid rgba(255, 255, 255, 0.05)' }}>
