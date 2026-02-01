@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, FileSearch, Zap, ChevronDown, Menu, X, Check } from 'lucide-react';
+import { MessageSquare, FileSearch, Zap, ChevronDown, Menu, X, Check, Briefcase, Scale, BarChart3, Users, ShoppingCart, Headphones, Calendar, FileText, Clock, User } from 'lucide-react';
 
 function App() {
   const [formData, setFormData] = useState({
@@ -50,7 +50,7 @@ function App() {
     },
     {
       q: "Что если не подойдет?",
-      a: "Если в течение 14 дней вы поймете, что решение вам не подходит — вернем деньги."
+      a: "Перед началом работы проводим консультацию и честно говорим, подходит ли вам решение. Не беремся за проекты, в которых не уверены."
     }
   ];
 
@@ -123,12 +123,12 @@ function App() {
   ];
 
   const examples = [
-    { emoji: "👔", role: "Руководитель", text: "Утренняя сводка в Telegram: встречи, письма, задачи. Экономлю 30 мин/день" },
-    { emoji: "⚖️", role: "Юрист", text: "Ищу пункты в договорах через бота. Ответ за секунды с цитатой" },
-    { emoji: "📊", role: "Маркетолог", text: "Прошу собрать информацию по теме и сделать саммари. 2 часа → 10 минут" },
-    { emoji: "🏢", role: "HR-отдел", text: "Новички спрашивают бота про отпуска, больничные, правила. Не дергают коллег" },
-    { emoji: "💼", role: "Менеджер продаж", text: "Перед звонком — справка о клиенте. Собирает из CRM и интернета" },
-    { emoji: "📞", role: "Поддержка", text: "ИИ отвечает на типовые вопросы. 60% обращений закрываются сами" }
+    { icon: Briefcase, role: "Руководитель", text: "Утренняя сводка в Telegram: встречи, письма, задачи. Экономлю 30 мин/день" },
+    { icon: Scale, role: "Юрист", text: "Ищу пункты в договорах через бота. Ответ за секунды с цитатой" },
+    { icon: BarChart3, role: "Маркетолог", text: "Прошу собрать информацию по теме и сделать саммари. 2 часа → 10 минут" },
+    { icon: Users, role: "HR-отдел", text: "Новички спрашивают бота про отпуска, больничные, правила. Не дергают коллег" },
+    { icon: ShoppingCart, role: "Менеджер продаж", text: "Перед звонком — справка о клиенте. Собирает из CRM и интернета" },
+    { icon: Headphones, role: "Поддержка", text: "ИИ отвечает на типовые вопросы. 60% обращений закрываются сами" }
   ];
 
   const pricing = [
@@ -227,7 +227,7 @@ function App() {
 🎯 Интересует:
   - ${interestLabels || 'Не выбрано'}
 
-💬 Подробности: ${formData.details || 'Не указано'}
+Подробности: ${formData.details || 'Не указано'}
 
 ⏰ Время: ${new Date().toLocaleString('ru-RU')}`;
 
@@ -467,7 +467,7 @@ function App() {
             {/* Left Column */}
             <div>
               <h1 className="text-4xl md:text-5xl heading leading-tight mb-6">
-                Внедрим ИИ в вашу работу за 1-2 недели
+                Внедрим ИИ за 1-2 недели
               </h1>
               <p className="text-lg text-slate-500 mb-8 leading-relaxed">
                 Персональные ассистенты, поиск по документам, автоматизация рутины — настроим под ваши задачи. Без программистов и технических знаний с вашей стороны.
@@ -511,7 +511,7 @@ function App() {
               <div className="mini-card p-5">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
-                    <span className="text-xl">💬</span>
+                    <MessageSquare className="w-5 h-5 text-blue-600" />
                   </div>
                   <div className="flex-1">
                     <div className="text-sm font-semibold text-slate-900 mb-2">Ассистент в Telegram</div>
@@ -529,7 +529,7 @@ function App() {
               <div className="mini-card p-5">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
-                    <span className="text-xl">📄</span>
+                    <FileText className="w-5 h-5 text-green-600" />
                   </div>
                   <div className="flex-1">
                     <div className="text-sm font-semibold text-slate-900 mb-2">Поиск по документам</div>
@@ -547,7 +547,7 @@ function App() {
               <div className="mini-card p-5">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
-                    <span className="text-xl">⚡</span>
+                    <Clock className="w-5 h-5 text-amber-600" />
                   </div>
                   <div className="flex-1">
                     <div className="text-sm font-semibold text-slate-900 mb-2">Автоматический отчет</div>
@@ -619,7 +619,7 @@ function App() {
               <ul className="space-y-4">
                 {forWhom.suitable.map((item, idx) => (
                   <li key={idx} className="flex items-start gap-3">
-                    <span className="text-green-500 mt-0.5">✓</span>
+                    <Check className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
                     <span className="text-slate-600">{item}</span>
                   </li>
                 ))}
@@ -679,7 +679,9 @@ function App() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {examples.map((example, idx) => (
               <div key={idx} className="card p-6">
-                <div className="text-2xl mb-3">{example.emoji}</div>
+                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-3">
+                  <example.icon className="w-5 h-5 text-blue-600" />
+                </div>
                 <h3 className="text-base font-bold text-slate-900 mb-2">{example.role}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed">{example.text}</p>
               </div>
@@ -797,7 +799,7 @@ function App() {
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   e.target.style.display = 'none';
-                  e.target.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center text-slate-400 text-4xl">👤</div>';
+                  e.target.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center bg-slate-100"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>';
                 }}
               />
             </div>
