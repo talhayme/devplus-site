@@ -1,135 +1,178 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, Brain, Zap, Search, Clock, Shield, ChevronDown, Menu, X } from 'lucide-react';
+import { MessageSquare, FileSearch, Zap, ChevronDown, Menu, X, Check } from 'lucide-react';
 
 function App() {
   const [formData, setFormData] = useState({
     name: '',
     contact: '',
-    tasks: ''
+    interests: [],
+    details: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const interestOptions = [
+    { id: 'assistant', label: 'Персональный ассистент (календарь, почта, задачи)' },
+    { id: 'documents', label: 'Поиск по документам компании' },
+    { id: 'automation', label: 'Автоматизация отчетов и рутины' },
+    { id: 'other', label: 'Другое / не уверен' }
+  ];
+
   const faqItems = [
     {
+      q: "Какой ИИ вы используете?",
+      a: "Зависит от задачи. Чаще всего — Claude (Anthropic) и GPT-4 (OpenAI). Для персональных ассистентов — OpenClaw. Подберем оптимальный вариант под ваши задачи и бюджет."
+    },
+    {
       q: "Сколько стоит использование после установки?",
-      a: "Сам ассистент бесплатный (опенсорс). Вы платите за API -- обычно $5-15/мес при легком использовании. Поможем настроить лимиты."
+      a: "Сам софт бесплатный или с минимальной платой. Вы платите за API (запросы к ИИ) — обычно $10-30/мес при обычном использовании. Поможем настроить лимиты, чтобы не было сюрпризов."
     },
     {
-      q: "Нужен ли мне свой сервер?",
-      a: "Не обязательно. Можем настроить облачный сервер за $5-10/мес. Если есть свой -- используем его."
+      q: "Нужен ли свой сервер?",
+      a: "Не обязательно. Можем развернуть в облаке за $10-20/мес. Если есть свой сервер или важна приватность — настроим у вас."
     },
     {
-      q: "Чем это лучше ChatGPT?",
-      a: "ChatGPT забывает контекст и только советует. OpenClaw помнит все, работает в Telegram и выполняет действия: письма, календарь, файлы."
+      q: "Где будут храниться наши документы?",
+      a: "На вашем сервере или в защищенном облаке — вы выбираете. Данные не передаются третьим лицам. Можем подписать NDA."
     },
     {
-      q: "Это безопасно?",
-      a: "Ассистент работает на вашем сервере -- данные не уходят третьим лицам. Настраиваем разумные ограничения доступа."
+      q: "Чем это лучше обычного ChatGPT?",
+      a: "ChatGPT — универсальный чат, который забывает контекст и не знает ваших документов. Мы настраиваем ИИ под вас: он помнит контекст, ищет в ваших файлах, выполняет действия, работает в привычных инструментах."
     },
     {
       q: "Нужны ли технические знания?",
-      a: "Нет. Общаетесь с ассистентом в Telegram -- как с человеком. Всю техническую часть берем на себя."
+      a: "С вашей стороны — нет. Вы общаетесь с ИИ как с человеком: в Telegram, через веб-интерфейс или голосом. Всю техническую часть берем на себя."
+    },
+    {
+      q: "Сколько времени занимает внедрение?",
+      a: "Простые решения — 3-5 дней. Комплексные с документами и интеграциями — 1-2 недели. Точный срок скажем после консультации."
     },
     {
       q: "Что если не подойдет?",
-      a: "Вернем деньги в течение 7 дней, если поймете, что это не для вас."
+      a: "Если в течение 14 дней вы поймете, что решение вам не подходит — вернем деньги."
     }
   ];
 
-  const features = [
+  const services = [
     {
       icon: MessageSquare,
-      title: "Живет в мессенджере",
-      text: "Пишете в Telegram или WhatsApp -- как обычному человеку. Доступен 24/7 с телефона."
+      title: "Персональный ассистент",
+      price: "от 29 900 ₽",
+      description: "ИИ-помощник в Telegram, WhatsApp или Slack. Помнит контекст, выполняет задачи, работает 24/7.",
+      features: [
+        "Управление календарем",
+        "Напоминания и сводки",
+        "Поиск информации",
+        "Работа с почтой",
+        "Заметки и задачи"
+      ]
     },
     {
-      icon: Brain,
-      title: "Помнит все",
-      text: "Не забывает контекст после разговора. Знает ваши проекты, предпочтения, привычки."
+      icon: FileSearch,
+      title: "Поиск по документам",
+      price: "от 49 900 ₽",
+      description: "Сотрудники задают вопрос — получают ответ с цитатой из ваших документов.",
+      features: [
+        "Договоры и регламенты",
+        "Инструкции и базы знаний",
+        "Ответы за 2-3 секунды",
+        "Ссылка на источник",
+        "Работает в Telegram/Web"
+      ]
     },
     {
       icon: Zap,
-      title: "Делает, а не советует",
-      text: "Отправляет письма, создает события в календаре, ищет файлы, заполняет формы."
-    },
-    {
-      icon: Search,
-      title: "Ищет в документах",
-      text: "Загружаем вашу базу знаний -- ассистент находит нужное за секунды."
-    },
-    {
-      icon: Clock,
-      title: "Работает по расписанию",
-      text: "Утренние сводки, еженедельные отчеты, напоминания -- автоматически."
-    },
-    {
-      icon: Shield,
-      title: "Данные у вас",
-      text: "Работает на вашем сервере. Никто кроме вас не видит переписку."
+      title: "ИИ-автоматизации",
+      price: "от 39 900 ₽",
+      description: "Настраиваем ИИ для конкретных задач: отчеты, обработка заявок, генерация контента.",
+      features: [
+        "Еженедельные отчеты",
+        "Обработка почты",
+        "Ответы клиентам",
+        "Анализ данных"
+      ]
     }
   ];
 
   const steps = [
     {
       num: "01",
-      title: "Созвон",
-      text: "30 минут обсуждаем ваши задачи. Что хотите автоматизировать? Какие инструменты используете?"
+      title: "Консультация",
+      text: "Обсуждаем задачи. Что автоматизировать? Где болит?",
+      time: "30 минут"
     },
     {
       num: "02",
-      title: "Установка",
-      text: "За 1-3 дня разворачиваем ассистента, подключаем к Telegram, настраиваем под ваши задачи."
+      title: "Настройка",
+      text: "Разворачиваем ИИ, загружаем документы, настраиваем под вас.",
+      time: "3-7 дней"
     },
     {
       num: "03",
-      title: "Обучение",
-      text: "Показываем, как пользоваться. Даем инструкцию и поддержку на старте."
+      title: "Тестирование",
+      text: "Проверяем на реальных задачах. Дорабатываем.",
+      time: "2-3 дня"
+    },
+    {
+      num: "04",
+      title: "Запуск",
+      text: "Обучаем команду, запускаем в работу. Поддержка 2-4 недели.",
+      time: "1-2 часа"
     }
+  ];
+
+  const examples = [
+    { emoji: "👔", role: "Руководитель", text: "Утренняя сводка в Telegram: встречи, письма, задачи. Экономлю 30 мин/день" },
+    { emoji: "⚖️", role: "Юрист", text: "Ищу пункты в договорах через бота. Ответ за секунды с цитатой" },
+    { emoji: "📊", role: "Маркетолог", text: "Прошу собрать информацию по теме и сделать саммари. 2 часа → 10 минут" },
+    { emoji: "🏢", role: "HR-отдел", text: "Новички спрашивают бота про отпуска, больничные, правила. Не дергают коллег" },
+    { emoji: "💼", role: "Менеджер продаж", text: "Перед звонком — справка о клиенте. Собирает из CRM и интернета" },
+    { emoji: "📞", role: "Поддержка", text: "ИИ отвечает на типовые вопросы. 60% обращений закрываются сами" }
   ];
 
   const pricing = [
     {
       name: "СТАРТ",
       price: "29 900",
-      subtitle: "Базовый ассистент",
+      subtitle: "Одно решение на выбор",
+      description: "Выберите: Ассистент в Telegram / Поиск по документам / Одна автоматизация",
       features: [
-        "Установка OpenClaw",
-        "Telegram-подключение",
-        "5 базовых навыков",
+        "Базовая настройка",
         "Обучение 1 час",
         "Поддержка 2 недели"
       ],
-      timeline: "1-2 дня",
+      timeline: "3-5 дней",
       popular: false,
       buttonText: "Выбрать"
     },
     {
       name: "БИЗНЕС",
       price: "79 900",
-      subtitle: "Ассистент + документы",
+      subtitle: "Комплексное внедрение",
+      description: null,
       features: [
-        "Все из \"Старт\"",
-        "Загрузка документов",
-        "Поиск по вашим файлам",
-        "15 навыков",
-        "Календарь и почта",
+        "Персональный ассистент",
+        "Поиск по документам",
+        "До 1000 документов",
+        "2-3 автоматизации",
+        "Telegram + Web-интерфейс",
+        "Обучение",
         "Поддержка 1 месяц"
       ],
-      timeline: "3-5 дней",
+      timeline: "1-2 недели",
       popular: true,
       buttonText: "Выбрать"
     },
     {
-      name: "КОРПОРАТИВНЫЙ",
+      name: "ПОД КЛЮЧ",
       price: "от 150 000",
-      subtitle: "Полная кастомизация",
+      subtitle: "Все под вас",
+      description: null,
       features: [
         "Все из \"Бизнес\"",
-        "Несколько ассистентов",
-        "Интеграция с CRM/1С",
-        "Кастомные навыки",
+        "Кастомные сценарии",
+        "Интеграции с вашими системами",
         "Обучение команды",
         "Поддержка 3 месяца"
       ],
@@ -139,28 +182,21 @@ function App() {
     }
   ];
 
-  const examples = [
-    {
-      emoji: "suit",
-      role: "Руководитель",
-      text: "Каждое утро получаю сводку в Telegram: задачи, важные письма, напоминания. Экономлю 30 минут в день."
-    },
-    {
-      emoji: "chart",
-      role: "Маркетолог",
-      text: "Прошу найти статьи по теме и сделать саммари. Раньше 2 часа -- теперь 10 минут."
-    },
-    {
-      emoji: "balance",
-      role: "Юрист",
-      text: "Ищу нужные пункты в договорах через Telegram. Ассистент знает всю базу документов."
-    },
-    {
-      emoji: "briefcase",
-      role: "Менеджер по продажам",
-      text: "Перед звонком прошу справку о клиенте. Ассистент собирает все из CRM и интернета."
-    }
-  ];
+  const forWhom = {
+    suitable: [
+      "Руководитель, который тонет в рутине",
+      "Команда, которая тратит часы на поиск в документах",
+      "Бизнес, где одни и те же вопросы задают снова и снова",
+      "Вы хотите использовать ИИ, но не хотите разбираться в технике",
+      "Уже пробовали ChatGPT — хотите что-то более мощное"
+    ],
+    notSuitable: [
+      "Нужен чат-бот для сайта (это другое)",
+      "Хотите \"попробовать ИИ\" без конкретной задачи",
+      "Ищете самое дешевое решение",
+      "Компания меньше 5 человек"
+    ]
+  };
 
   // Yandex.Metrika
   useEffect(() => {
@@ -177,12 +213,21 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const interestLabels = formData.interests.map(id => {
+      const option = interestOptions.find(o => o.id === id);
+      return option ? option.label : id;
+    }).join('\n  - ');
+
     // Формируем сообщение для Telegram
-    const message = `🤖 Новая заявка на ИИ-ассистента!
+    const message = `🚀 Новая заявка на внедрение ИИ!
 
 👤 Имя: ${formData.name}
 📱 Контакт: ${formData.contact}
-💬 Задачи: ${formData.tasks || 'Не указано'}
+
+🎯 Интересует:
+  - ${interestLabels || 'Не выбрано'}
+
+💬 Подробности: ${formData.details || 'Не указано'}
 
 ⏰ Время: ${new Date().toLocaleString('ru-RU')}`;
 
@@ -204,7 +249,8 @@ function App() {
         setFormData({
           name: '',
           contact: '',
-          tasks: ''
+          interests: [],
+          details: ''
         });
       } else {
         alert('Ошибка отправки. Попробуйте позже.');
@@ -219,22 +265,21 @@ function App() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleInterestChange = (id) => {
+    setFormData(prev => ({
+      ...prev,
+      interests: prev.interests.includes(id)
+        ? prev.interests.filter(i => i !== id)
+        : [...prev.interests, id]
+    }));
+  };
+
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
     setMobileMenuOpen(false);
-  };
-
-  const getEmoji = (type) => {
-    switch(type) {
-      case 'suit': return <span className="text-2xl">👔</span>;
-      case 'chart': return <span className="text-2xl">📊</span>;
-      case 'balance': return <span className="text-2xl">⚖️</span>;
-      case 'briefcase': return <span className="text-2xl">💼</span>;
-      default: return null;
-    }
   };
 
   return (
@@ -260,8 +305,8 @@ function App() {
         }
         .btn-primary:hover {
           background: #2563EB;
-          transform: translateY(-1px);
-          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
         }
 
         .btn-outline {
@@ -274,17 +319,19 @@ function App() {
         .btn-outline:hover {
           border-color: #3B82F6;
           color: #3B82F6;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .card {
           background: white;
           border-radius: 16px;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-          transition: all 0.2s ease;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+          transition: all 0.25s ease;
         }
         .card:hover {
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-          transform: translateY(-2px);
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+          transform: translateY(-4px);
         }
 
         .section-gray {
@@ -296,27 +343,32 @@ function App() {
           position: relative;
         }
 
-        .chat-demo {
-          background: #1E293B;
-          border-radius: 16px;
-          overflow: hidden;
+        .mini-card {
+          background: white;
+          border-radius: 12px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+          transition: all 0.2s ease;
+        }
+        .mini-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
         }
 
-        .chat-header {
-          background: #334155;
-          padding: 12px 16px;
+        .checkbox-custom {
+          width: 20px;
+          height: 20px;
+          border: 2px solid #CBD5E1;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
+          cursor: pointer;
+          flex-shrink: 0;
         }
-
-        .chat-bubble-user {
+        .checkbox-custom.checked {
           background: #3B82F6;
-          color: white;
-          border-radius: 16px 16px 4px 16px;
-        }
-
-        .chat-bubble-assistant {
-          background: #F1F5F9;
-          color: #1E293B;
-          border-radius: 16px 16px 16px 4px;
+          border-color: #3B82F6;
         }
       `}</style>
 
@@ -327,6 +379,12 @@ function App() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
+            <button
+              onClick={() => scrollToSection('services')}
+              className="text-slate-600 hover:text-slate-900 transition-colors text-sm"
+            >
+              Услуги
+            </button>
             <button
               onClick={() => scrollToSection('how')}
               className="text-slate-600 hover:text-slate-900 transition-colors text-sm"
@@ -351,7 +409,7 @@ function App() {
             className="hidden md:block btn-primary px-5 py-2.5 text-sm font-semibold"
             onClick={() => scrollToSection('contact')}
           >
-            Получить ассистента
+            Обсудить проект
           </button>
 
           {/* Mobile Menu Button */}
@@ -367,6 +425,12 @@ function App() {
         {mobileMenuOpen && (
           <div className="md:hidden bg-white border-t border-slate-100 px-6 py-4">
             <nav className="flex flex-col gap-4">
+              <button
+                onClick={() => scrollToSection('services')}
+                className="text-slate-600 hover:text-slate-900 text-left py-2"
+              >
+                Услуги
+              </button>
               <button
                 onClick={() => scrollToSection('how')}
                 className="text-slate-600 hover:text-slate-900 text-left py-2"
@@ -389,7 +453,7 @@ function App() {
                 className="btn-primary px-5 py-2.5 text-sm font-semibold mt-2"
                 onClick={() => scrollToSection('contact')}
               >
-                Получить ассистента
+                Обсудить проект
               </button>
             </nav>
           </div>
@@ -399,70 +463,100 @@ function App() {
       {/* Hero Section */}
       <section className="pt-28 pb-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-[55%_45%] gap-12 items-center">
             {/* Left Column */}
             <div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl heading leading-tight mb-6">
-                ИИ-ассистент в вашем Telegram за 3 дня
+              <h1 className="text-4xl md:text-5xl heading leading-tight mb-6">
+                Внедрим ИИ в вашу работу за 1-2 недели
               </h1>
               <p className="text-lg text-slate-500 mb-8 leading-relaxed">
-                Установим и настроим персонального помощника на базе OpenClaw. Он помнит контекст, ищет в документах, выполняет задачи — пока вы спите.
+                Персональные ассистенты, поиск по документам, автоматизация рутины — настроим под ваши задачи. Без программистов и технических знаний с вашей стороны.
               </p>
+
+              <div className="space-y-3 mb-8">
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <Check className="w-3 h-3 text-blue-600" />
+                  </div>
+                  <span className="text-slate-700">Ассистент в Telegram, WhatsApp или Slack</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <Check className="w-3 h-3 text-blue-600" />
+                  </div>
+                  <span className="text-slate-700">Поиск по вашим документам за секунды</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <Check className="w-3 h-3 text-blue-600" />
+                  </div>
+                  <span className="text-slate-700">Автоматизация отчетов и рутинных задач</span>
+                </div>
+              </div>
+
               <button
-                className="btn-primary px-8 py-4 text-base font-semibold mb-4"
+                className="btn-primary px-8 py-4 text-base font-semibold mb-3"
                 onClick={() => scrollToSection('contact')}
               >
-                Получить своего ассистента
+                Обсудить внедрение
               </button>
               <p className="text-sm text-slate-400">
-                Бесплатный созвон 30 минут • Без технических знаний
+                Бесплатная консультация 30 минут
               </p>
             </div>
 
-            {/* Right Column - Chat Demo */}
-            <div className="chat-demo shadow-2xl">
-              <div className="chat-header flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
-                  <Zap className="text-white" size={20} />
-                </div>
-                <div>
-                  <div className="text-white font-medium text-sm">OpenClaw Assistant</div>
-                  <div className="text-slate-400 text-xs">онлайн</div>
+            {/* Right Column - Mini Cards */}
+            <div className="space-y-4">
+              {/* Card 1 - Assistant */}
+              <div className="mini-card p-5">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl">💬</span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm font-semibold text-slate-900 mb-2">Ассистент в Telegram</div>
+                    <div className="bg-slate-50 rounded-lg p-3 mb-2">
+                      <p className="text-sm text-slate-600">"Что у меня сегодня?"</p>
+                    </div>
+                    <div className="bg-blue-50 rounded-lg p-3">
+                      <p className="text-sm text-blue-700">"3 встречи, 4 письма требуют ответа. Напомнить про счет до 18:00?"</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="p-4 space-y-4">
-                {/* User message */}
-                <div className="flex justify-end">
-                  <div className="chat-bubble-user px-4 py-2.5 max-w-xs">
-                    <p className="text-sm">Что у меня сегодня?</p>
+
+              {/* Card 2 - Documents */}
+              <div className="mini-card p-5">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl">📄</span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm font-semibold text-slate-900 mb-2">Поиск по документам</div>
+                    <div className="bg-slate-50 rounded-lg p-3 mb-2">
+                      <p className="text-sm text-slate-600">"Найди пункт про оплату"</p>
+                    </div>
+                    <div className="bg-green-50 rounded-lg p-3">
+                      <p className="text-sm text-green-700">"П. 4.2 Договора №127: Оплата производится в течение 5 рабочих дней..."</p>
+                    </div>
                   </div>
                 </div>
+              </div>
 
-                {/* Assistant message */}
-                <div className="flex justify-start">
-                  <div className="chat-bubble-assistant px-4 py-3 max-w-sm">
-                    <p className="text-sm leading-relaxed">
-                      📅 Сегодня 3 встречи:<br/>
-                      • 10:00 — Созвон с дизайнером<br/>
-                      • 14:00 — Планерка команды<br/>
-                      • 17:30 — Звонок клиенту<br/><br/>
-                      📬 4 письма требуют ответа<br/>
-                      💰 Напомнить про счет до 18:00?
-                    </p>
+              {/* Card 3 - Automation */}
+              <div className="mini-card p-5">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl">⚡</span>
                   </div>
-                </div>
-
-                {/* User message */}
-                <div className="flex justify-end">
-                  <div className="chat-bubble-user px-4 py-2.5 max-w-xs">
-                    <p className="text-sm">Да, напомни в 17:00</p>
-                  </div>
-                </div>
-
-                {/* Assistant message */}
-                <div className="flex justify-start">
-                  <div className="chat-bubble-assistant px-4 py-2.5">
-                    <p className="text-sm">✓ Напоминание установлено</p>
+                  <div className="flex-1">
+                    <div className="text-sm font-semibold text-slate-900 mb-2">Автоматический отчет</div>
+                    <div className="bg-slate-50 rounded-lg p-3 mb-2">
+                      <p className="text-sm text-slate-600">"Каждый понедельник 9:00"</p>
+                    </div>
+                    <div className="bg-amber-50 rounded-lg p-3">
+                      <p className="text-sm text-amber-700">"Продажи за неделю: 2.4М, новых заявок: 23, конверсия: 12%"</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -471,47 +565,123 @@ function App() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-20 px-6 section-gray">
+      {/* Services Section */}
+      <section id="services" className="py-20 px-6 section-gray">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl heading mb-4">
-              Один помощник — десятки задач
+              Три способа внедрить ИИ в ваш бизнес
             </h2>
             <p className="text-slate-500 text-lg">
-              OpenClaw — это не просто чат-бот. Это агент, который действует.
+              Выберите один или комбинируйте — подберем решение под ваши задачи
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, idx) => (
-              <div key={idx} className="card p-6">
-                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-4">
-                  <feature.icon className="text-blue-500" size={24} />
+          <div className="grid md:grid-cols-3 gap-6">
+            {services.map((service, idx) => (
+              <div key={idx} className="card p-8">
+                <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mb-5">
+                  <service.icon className="text-blue-500" size={28} />
                 </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">{feature.title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">{feature.text}</p>
+                <div className="text-sm font-semibold text-blue-600 mb-2">{service.price}</div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">{service.title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed mb-5">{service.description}</p>
+                <ul className="space-y-2">
+                  {service.features.map((feature, fIdx) => (
+                    <li key={fIdx} className="flex items-start gap-2 text-sm text-slate-600">
+                      <Check className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section id="how" className="py-20 px-6">
+      {/* For Whom Section */}
+      <section id="for-whom" className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl heading mb-4">
-              От заявки до ассистента — 3 шага
-            </h2>
-          </div>
+          <h2 className="text-3xl md:text-4xl heading text-center mb-12">
+            Подойдет вам, если...
+          </h2>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Suitable */}
+            <div className="card p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                  <Check className="w-5 h-5 text-green-600" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-900">Подойдет</h3>
+              </div>
+              <ul className="space-y-4">
+                {forWhom.suitable.map((item, idx) => (
+                  <li key={idx} className="flex items-start gap-3">
+                    <span className="text-green-500 mt-0.5">✓</span>
+                    <span className="text-slate-600">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Not Suitable */}
+            <div className="card p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                  <X className="w-5 h-5 text-red-600" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-900">Не подойдет</h3>
+              </div>
+              <ul className="space-y-4">
+                {forWhom.notSuitable.map((item, idx) => (
+                  <li key={idx} className="flex items-start gap-3">
+                    <span className="text-red-500 mt-0.5">✗</span>
+                    <span className="text-slate-600">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section id="how" className="py-20 px-6 section-gray">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl heading text-center mb-12">
+            От заявки до работающего ИИ — 4 шага
+          </h2>
+
+          <div className="grid md:grid-cols-4 gap-6">
             {steps.map((step, idx) => (
-              <div key={idx} className="card p-8 text-center">
-                <div className="text-5xl font-bold text-blue-100 mb-4">{step.num}</div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-3">{step.title}</h3>
-                <p className="text-slate-500 leading-relaxed">{step.text}</p>
+              <div key={idx} className="card p-6 text-center">
+                <div className="text-4xl font-bold text-blue-100 mb-4">{step.num}</div>
+                <h3 className="text-lg font-bold text-slate-900 mb-3">{step.title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed mb-4">{step.text}</p>
+                <div className="inline-block px-3 py-1 bg-blue-50 rounded-full text-xs font-medium text-blue-600">
+                  {step.time}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Examples Section */}
+      <section id="examples" className="py-20 px-6">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl heading text-center mb-12">
+            Как это используют
+          </h2>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {examples.map((example, idx) => (
+              <div key={idx} className="card p-6">
+                <div className="text-2xl mb-3">{example.emoji}</div>
+                <h3 className="text-base font-bold text-slate-900 mb-2">{example.role}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">{example.text}</p>
               </div>
             ))}
           </div>
@@ -526,32 +696,41 @@ function App() {
               Тарифы
             </h2>
             <p className="text-slate-500 text-lg">
-              Выберите подходящий вариант или обсудим на созвоне
+              Или соберем индивидуальное решение — обсудим на консультации
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
             {pricing.map((plan, idx) => (
               <div
                 key={idx}
                 className={`card p-8 ${plan.popular ? 'pricing-card-popular' : ''}`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-xs font-semibold px-4 py-1 rounded-full">
                     Популярный
                   </div>
                 )}
                 <div className="text-sm font-semibold text-slate-400 mb-2">{plan.name}</div>
                 <div className="flex items-baseline gap-1 mb-2">
-                  <span className="text-3xl font-bold text-slate-900">{plan.price}</span>
-                  {!plan.price.includes('от') && <span className="text-slate-500">₽</span>}
+                  {plan.price.includes('от') ? (
+                    <span className="text-2xl font-bold text-slate-900">{plan.price} ₽</span>
+                  ) : (
+                    <>
+                      <span className="text-3xl font-bold text-slate-900">{plan.price}</span>
+                      <span className="text-slate-500">₽</span>
+                    </>
+                  )}
                 </div>
-                <div className="text-sm text-slate-500 mb-6">{plan.subtitle}</div>
+                <div className="text-sm font-medium text-slate-700 mb-2">{plan.subtitle}</div>
+                {plan.description && (
+                  <p className="text-sm text-slate-500 mb-4">{plan.description}</p>
+                )}
 
                 <ul className="space-y-3 mb-6">
                   {plan.features.map((feature, fIdx) => (
                     <li key={fIdx} className="flex items-start gap-2 text-sm text-slate-600">
-                      <span className="text-blue-500 mt-0.5">✓</span>
+                      <Check className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
                       {feature}
                     </li>
                   ))}
@@ -570,37 +749,20 @@ function App() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* Examples Section */}
-      <section id="examples" className="py-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl heading mb-4">
-              Как используют ассистента
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {examples.map((example, idx) => (
-              <div key={idx} className="card p-6">
-                <div className="mb-4">{getEmoji(example.emoji)}</div>
-                <h3 className="text-base font-semibold text-slate-900 mb-2">{example.role}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">{example.text}</p>
-              </div>
-            ))}
-          </div>
+          <p className="text-center text-slate-500 text-sm">
+            После установки вы платите только за использование ИИ — обычно $10-30/мес. Поможем настроить лимиты.
+          </p>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" className="py-20 px-6 section-gray">
+      <section id="faq" className="py-20 px-6">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl heading text-center mb-12">
             Частые вопросы
           </h2>
-          <div className="space-y-2">
+          <div className="space-y-3">
             {faqItems.map((item, idx) => (
               <div key={idx} className="card overflow-hidden">
                 <button
@@ -625,7 +787,7 @@ function App() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 px-6">
+      <section id="about" className="py-20 px-6 section-gray">
         <div className="max-w-3xl mx-auto">
           <div className="card p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
             <div className="w-32 h-32 rounded-full bg-slate-200 flex-shrink-0 overflow-hidden">
@@ -640,10 +802,10 @@ function App() {
               />
             </div>
             <div className="text-center md:text-left">
-              <h3 className="text-xl font-semibold text-slate-900 mb-1">Виталий Богачев</h3>
+              <h3 className="text-xl font-bold text-slate-900 mb-1">Виталий Богачев</h3>
               <div className="text-blue-500 text-sm font-medium mb-4">Основатель Athena Dev</div>
               <p className="text-slate-500 leading-relaxed mb-4">
-                Помогаю предпринимателям внедрять ИИ в работу — без необходимости разбираться в коде. 30+ установок ассистентов для руководителей, маркетологов, юристов.
+                Внедряю ИИ-решения в бизнес с 2023 года. 30+ проектов: персональные ассистенты, корпоративные базы знаний, автоматизация рутины. Работаю с теми, кто хочет использовать современные технологии, но не хочет разбираться в коде и серверах.
               </p>
               <a
                 href="https://t.me/athenadev"
@@ -663,23 +825,23 @@ function App() {
         <div className="max-w-xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Получите своего ИИ-ассистента
+              Обсудим ваш проект
             </h2>
             <p className="text-slate-400">
-              Оставьте заявку — созвонимся и обсудим, как ассистент поможет вам
+              Расскажите о задачах — предложим решение и назовем сроки
             </p>
           </div>
 
           {isSubmitted ? (
             <div className="bg-white rounded-2xl p-10 text-center">
               <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">✓</span>
+                <Check className="w-8 h-8 text-green-600" />
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">Спасибо!</h3>
-              <p className="text-slate-500">Свяжемся в течение часа</p>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Спасибо!</h3>
+              <p className="text-slate-500">Свяжемся в течение 4 часов</p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-8">
+            <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-8" style={{ maxWidth: '500px', margin: '0 auto' }}>
               <div className="space-y-5">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -697,26 +859,48 @@ function App() {
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Telegram или WhatsApp <span className="text-red-500">*</span>
+                    Telegram, WhatsApp или Email <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     name="contact"
                     value={formData.contact}
                     onChange={handleChange}
-                    placeholder="@username или +7..."
+                    placeholder="@username, +7... или email"
                     className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
                     required
                   />
                 </div>
 
                 <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-3">
+                    Что хотите автоматизировать?
+                  </label>
+                  <div className="space-y-3">
+                    {interestOptions.map((option) => (
+                      <label
+                        key={option.id}
+                        className="flex items-start gap-3 cursor-pointer"
+                        onClick={() => handleInterestChange(option.id)}
+                      >
+                        <div className={`checkbox-custom ${formData.interests.includes(option.id) ? 'checked' : ''}`}>
+                          {formData.interests.includes(option.id) && (
+                            <Check className="w-3 h-3 text-white" />
+                          )}
+                        </div>
+                        <span className="text-sm text-slate-600">{option.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Какие задачи хотите автоматизировать?
+                    Расскажите подробнее
                   </label>
                   <textarea
-                    name="tasks"
-                    value={formData.tasks}
+                    name="details"
+                    value={formData.details}
                     onChange={handleChange}
                     rows={4}
                     className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none resize-none"
@@ -725,14 +909,14 @@ function App() {
                 </div>
 
                 <button type="submit" className="w-full btn-primary py-4 font-semibold">
-                  Записаться на созвон
+                  Отправить заявку
                 </button>
               </div>
             </form>
           )}
 
           <p className="text-center text-slate-500 text-sm mt-6">
-            Созвон 30 минут, бесплатно. Объясним все простым языком.
+            Ответим в течение 4 часов в рабочее время. Консультация бесплатная.
           </p>
         </div>
       </section>
@@ -744,7 +928,7 @@ function App() {
             <div>
               <div className="text-xl font-bold text-white mb-2">Athena Dev</div>
               <p className="text-slate-400 text-sm">
-                Установка ИИ-ассистентов для бизнеса
+                Внедрение ИИ-решений для бизнеса
               </p>
             </div>
             <div className="text-left md:text-right">
@@ -765,7 +949,7 @@ function App() {
             </div>
           </div>
           <div className="border-t border-slate-800 pt-8 text-center text-slate-500 text-sm">
-            © 2026 Athena Dev
+            &copy; 2026 Athena Dev
           </div>
         </div>
       </footer>
