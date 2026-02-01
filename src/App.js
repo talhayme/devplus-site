@@ -47,10 +47,6 @@ function App() {
     {
       q: "Сколько времени занимает внедрение?",
       a: "Простые решения — 3-5 дней. Комплексные с документами и интеграциями — 1-2 недели. Точный срок скажем после консультации."
-    },
-    {
-      q: "Что если не подойдет?",
-      a: "Перед началом работы проводим консультацию и честно говорим, подходит ли вам решение. Не беремся за проекты, в которых не уверены."
     }
   ];
 
@@ -902,18 +898,12 @@ function App() {
             </div>
             <div className="text-left md:text-right">
               <a
-                href="https://t.me/athenadev"
+                href="https://t.me/athenadev_support"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-slate-400 hover:text-white text-sm block mb-1"
-              >
-                Telegram: @athenadev
-              </a>
-              <a
-                href="mailto:hello@athenadev.tech"
                 className="text-slate-400 hover:text-white text-sm block"
               >
-                Email: hello@athenadev.tech
+                Telegram: @athenadev_support
               </a>
             </div>
           </div>
